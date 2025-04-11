@@ -10,6 +10,11 @@ export default {
         protocol: 'https',
         hostname: '*.public.blob.vercel-storage.com',
         search: ''
+      },
+      {
+        protocol: 'http',
+        hostname: 'cdn.communityjameel.io',
+        search: ''
       }
     ]
   }
