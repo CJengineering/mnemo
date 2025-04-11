@@ -1,7 +1,7 @@
 'use client';
 
 import {
-  Tooltip,
+  TooltipBasic,
   TooltipContent,
   TooltipTrigger
 } from '@/components/ui/tooltip';
@@ -21,7 +21,7 @@ export function NavItem({
   const pathname = usePathname();
 
   return (
-    <Tooltip>
+    <TooltipBasic>
       <TooltipTrigger asChild>
         <Link
           href={href}
@@ -37,6 +37,6 @@ export function NavItem({
         </Link>
       </TooltipTrigger>
       <TooltipContent side="right">{label}</TooltipContent>
-    </Tooltip>
+    </TooltipBasic>
   );
 }

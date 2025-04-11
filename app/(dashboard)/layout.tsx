@@ -5,6 +5,7 @@ import {
   Package,
   Package2,
   PanelLeft,
+  PanelsTopLeft,
   Settings,
   ShoppingCart,
   Users2
@@ -21,7 +22,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import {
-  Tooltip,
+  TooltipBasic,
   TooltipContent,
   TooltipTrigger
 } from '@/components/ui/tooltip';
@@ -44,8 +45,8 @@ export default function DashboardLayout({
         <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
           <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
             <MobileNav />
-            <DashboardBreadcrumb />
-            <SearchInput />
+       
+            {/* <SearchInput /> */}
             <User />
           </header>
           <main className="grid flex-1 items-start gap-2 p-4 sm:px-6 sm:py-0 md:gap-4 bg-muted/40">
@@ -70,12 +71,12 @@ function DesktopNav() {
           <span className="sr-only">Acme Inc</span>
         </Link>
 
-        <NavItem href="#" label="Dashboard">
+        <NavItem href="/" label="Dashboard">
           <Home className="h-5 w-5" />
         </NavItem>
 
-        <NavItem href="#" label="Orders">
-          <ShoppingCart className="h-5 w-5" />
+        <NavItem href="/page-editor-test" label="Build Page">
+          <PanelsTopLeft className="h-5 w-5" />
         </NavItem>
 
         <NavItem href="/" label="Products">
@@ -91,7 +92,7 @@ function DesktopNav() {
         </NavItem>
       </nav>
       <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
-        <Tooltip>
+        <TooltipBasic>
           <TooltipTrigger asChild>
             <Link
               href="#"
@@ -102,7 +103,7 @@ function DesktopNav() {
             </Link>
           </TooltipTrigger>
           <TooltipContent side="right">Settings</TooltipContent>
-        </Tooltip>
+        </TooltipBasic>
       </nav>
     </aside>
   );
