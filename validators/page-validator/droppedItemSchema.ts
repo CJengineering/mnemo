@@ -5,9 +5,13 @@ export const droppedItemSchema = z.object({
   id: z.string(),
   type: z.enum([
     'h1', 'h2', 'p', 'img', 'ul', 'youtube',
-    'button', 'link', 'video', 'rich-text', 'embed'
+    'button', 'link', 'video', 'rich-text', 'embed', 'postAccordion'
   ]),
   content: z.string(),
+  children: z
+    .any() // Allow `children` to be any type, but optional
+    .optional()
+    .nullable(),
   image: z
     .object({
       src: z.string().url(),
