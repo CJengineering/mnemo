@@ -28,7 +28,6 @@ import { useEditorItems } from './hooks/useEditorItems';
 import { DraggableLibraryItem } from './draggable-library-item';
 import { generateHtml } from './utils/generateHtml';
 import { mapData } from '@/validators/page-validator/mapData';
-import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 
 import {
   Bot,
@@ -52,7 +51,9 @@ import TestOnlySidebar from '@/components/sidebar/sitemap-sidebar/sitemap-sideba
 import TestOnlySidebarV2 from '@/components/sidebar/sitemap-sidebar/sidebar-V2';
 import { Example } from '@/components/mnemo-context/testComponent';
 import { useMnemo } from '@/components/mnemo-context/mnemo-context';
+
 import { mapAllChunksToDroppedItems } from '@/lib/mappers/mapAllChunksToDroppedItems';
+import { DataChunk } from '@/components/mnemo-context/type';
 
 export default function Editor() {
   const searchParams = useSearchParams();
@@ -72,13 +73,17 @@ export default function Editor() {
   >('draggable');
 
   const [activeItem, setActiveItem] = useState<DroppedItem | null>(null);
-  useEffect(() => {
-    const saved = localStorage.getItem('contentPage');
-    if (saved) {
-      const parsed = JSON.parse(saved);
-      setItems(parsed.data); // rebuilds editor
-    }
-  }, []);
+  // useEffect(() => {
+  //   const saved = localStorage.getItem('contentPage');
+  //   if (saved) {
+  //     const parsed = JSON.parse(saved);
+  //     setItems(parsed.data); // rebuilds editor
+  //   }
+  // }, []);
+
+   const pageParam = searchParams.get('page');
+  
+
   const {
     items,
     setItems,
@@ -90,6 +95,32 @@ export default function Editor() {
     removeItem,
     reorderItems
   } = useEditorItems();
+
+  const { pages } = useMnemo();
+  useEffect(() => {
+    console.log('⚙️ pages in context:', pages.map(p => p.slug));
+    console.log('⚙️ pageParam:', pageParam);
+  
+    if (!pageParam) {
+      setItems([]);
+      return;
+    }
+  
+    // build slug exactly as it lives in your DB
+    const fullSlug = pageParam.startsWith('/') ? pageParam : `/${pageParam}`;
+    console.log('⚙️ looking for slug:', fullSlug);
+  
+    const matched = pages.find(p => p.slug === fullSlug);
+    console.log('⚙️ matched page:', matched);
+  
+    if (matched) {
+      setItems(matched.data as DroppedItem[]);
+
+    } else {
+      setItems([]);
+    }
+  }, [pageParam, pages, setItems]);
+
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { over, active } = event;
@@ -240,22 +271,7 @@ export default function Editor() {
     localStorage.setItem('contentPage', JSON.stringify(contentPage));
     alert('Page saved to localStorage!');
   };
-  const paths = [
-    'about/overview',
-    'about/team',
-    'about/jameel-family',
-    'about/family-album',
-    'about/brand',
-
-    'programmes/subFolder/subsubFolder',
-    'discover/media',
-    'discover/news',
-    'discover/events',
-    'discover/studios',
-    'discover/newsletter',
-    'discover/2024-in-review',
-    'discover/stories/harvesting-hope'
-  ];
+ 
   const { dataChunks } = useMnemo();
 
   const droppedItems = mapAllChunksToDroppedItems(dataChunks);
@@ -348,6 +364,7 @@ export default function Editor() {
           <ResizablePanel defaultSize={70}>
             {viewMode === 'preview' && (
               <div className="prose space-y-4 p-4 bg-white border rounded min-h-[400px]">
+                {JSON.stringify(items)}
                 {items.map((item) => (
                   <div key={item.id}>
                     {BLOCKS_CONFIG[item.type].render(item, 'preview')}

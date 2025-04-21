@@ -12,7 +12,7 @@ export default {
         search: ''
       },
       {
-        protocol: 'http',
+        protocol: 'https',
         hostname: 'cdn.communityjameel.io',
         search: ''
       }

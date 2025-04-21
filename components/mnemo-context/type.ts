@@ -15,8 +15,8 @@ export interface DataChunk {
     id: number;
     slug: string;
     data: Record<string, any>;
-    dataHtml: Record<string, any>;
-    dataSeo: Record<string, any>;
+    data_html: Record<string, any>;
+    data_seo: Record<string, any>;
     createdAt: string;
     updatedAt: string;
   }

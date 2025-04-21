@@ -15,7 +15,7 @@ const storage = new Storage({
       });
    
 const bucket = storage.bucket("mnemo");
-const CDN_BASE_URL = "http://cdn.communityjameel.io";
+const CDN_BASE_URL = "https://cdn.communityjameel.io";
 
 /**
  * Compress and convert an image to WebP format
