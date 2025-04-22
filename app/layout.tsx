@@ -1,5 +1,5 @@
 import { MnemoProvider } from '@/components/mnemo-context/mnemo-context';
-import './globals.css';
+import './globals.scss';
 
 import { Analytics } from '@vercel/analytics/react';
 
@@ -16,7 +16,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="flex min-h-screen w-full flex-col">
+      <body className="flex min-h-screen w-full flex-col overflow-y-auto">
         <MnemoProvider>{children}</MnemoProvider>
       </body>
       <Analytics />

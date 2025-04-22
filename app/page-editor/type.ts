@@ -32,6 +32,7 @@ export type DroppedItem = {
   id: string;
   type: BlockType;
   content: string;
+  programme: string;
   image?: ImageType;
   button?: {
     url: string;
@@ -56,3 +57,13 @@ export type BlockDefinition = {
   render: (item: DroppedItem, mode: 'edit' | 'preview') => JSX.Element;
   overlay?: (item: DroppedItem) => JSX.Element;
 };
+export type Programme ={
+  id: string;
+  title: string;
+  description: string;
+  shortTitle: string;
+  acronym: string;
+  data:any;
+  createdAt: string;
+  updatedAt: string;
+}

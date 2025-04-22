@@ -15,6 +15,7 @@ export function DraggableLibraryItem({ block }: { block: DroppedItem }) {
       type={block.type as BlockType}
       image={block.image}
       button={block.button}
+   
       link={block.button}
     >
       <div className="p-2 bg-white border rounded shadow cursor-move prose text-sm">

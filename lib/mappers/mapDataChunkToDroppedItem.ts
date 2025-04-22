@@ -1,5 +1,6 @@
 import { DataChunk } from "@/components/mnemo-context/type";
 import { BlockType, DroppedItem } from "app/page-editor/type";
+import { programmes } from "app/page-editor/programme-data";
 
 
 export function mapDataChunkToDroppedItem(chunk: DataChunk): DroppedItem {
@@ -14,10 +15,12 @@ export function mapDataChunkToDroppedItem(chunk: DataChunk): DroppedItem {
     }
   }
 
+  const programme = programmes.find((prog)=>prog.id === chunk.programme_id);
   return {
     id: String(chunk.id),
     type: chunk.type as BlockType,
     content: parsedData?.content ?? '',
+    programme: programme?.shortTitle || 'N/A',
     image: parsedData?.image || parsedData?.url
       ? {
           src: parsedData.url ?? '',

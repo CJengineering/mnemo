@@ -131,6 +131,7 @@ export default function Editor() {
 
     const newItem: DroppedItem = {
       id: nanoid(),
+      programme: 'J-PAL',
       type:
         active.data?.current?.type ??
         (active.data?.current?.image ? 'img' : 'p'),
@@ -194,6 +195,7 @@ export default function Editor() {
     const accordionId = overId.replace('accordion-', '');
     const newItem: DroppedItem = {
       id: crypto.randomUUID(),
+      programme: 'J-PAL',
       type:
         activeData?.type ?? (activeData?.image ? 'img' : 'p'),
       content: activeData?.content ?? '',
@@ -294,6 +296,7 @@ export default function Editor() {
         if (fromLibrary && active.data?.current) {
           const previewItem: DroppedItem = {
             id: 'preview',
+            programme: 'J-PAL',
             type: active.data.current.image ? 'img' : 'p',
             content: active.data.current.content,
             image: active.data.current.image
@@ -342,6 +345,7 @@ export default function Editor() {
                 ...prev,
                 {
                   id: nanoid(),
+                  programme: 'J-PAL',
                   type: 'postAccordion',
                   content: 'Accordion Title',
                   children: [] // 👈 empty children array
@@ -364,7 +368,7 @@ export default function Editor() {
           <ResizablePanel defaultSize={70}>
             {viewMode === 'preview' && (
               <div className="prose space-y-4 p-4 bg-white border rounded min-h-[400px]">
-                {JSON.stringify(items)}
+               
                 {items.map((item) => (
                   <div key={item.id}>
                     {BLOCKS_CONFIG[item.type].render(item, 'preview')}
