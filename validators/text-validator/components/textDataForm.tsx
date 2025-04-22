@@ -43,6 +43,7 @@ import {
 } from '@/tip-tap/extensions/Table/menus';
 import { ImageBlockMenu } from '@/tip-tap/extensions/ImageBlock/components/ImageBlockMenu';
 import API from '@/tip-tap/lib/api';
+import { SimpleEditor } from 'app/page-editor/@/components/tiptap-templates/simple/simple-editor';
 
 // ✅ Define the schema for text data
 const formSchema = z.object({
@@ -71,9 +72,11 @@ const formSchema = z.object({
   ] as [BlockType, ...BlockType[]])
 });
 
-export function TextDataForm({ dataChunk }: { dataChunk?: any }) {
+export function TextDataForm({ id }: { id?: string }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [dataChunk, setDataChunk] = useState<any | null>(null);
+  const [initialContent, setInitialContent] = useState<any | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [programmes, setProgrammes] = useState<{ id: string; title: string }[]>(
     []
@@ -89,6 +92,7 @@ export function TextDataForm({ dataChunk }: { dataChunk?: any }) {
   const aiToken = 'nbul';
   const { editor, users, collabState } = useBlockEditor({
     aiToken,
+
     ydoc: providerState.yDoc,
     provider: providerState.provider,
 
@@ -96,19 +100,23 @@ export function TextDataForm({ dataChunk }: { dataChunk?: any }) {
       setIsEditable(currentEditor.isEditable);
     }
   });
-  const contentHTML = editor.getHTML();
+
   const isEditMode = !!dataChunk;
   useEffect(() => {
     async function fetchProgrammes() {
       try {
-        const res = await fetch('https://mnemo-app-100166227581.europe-west1.run.app/programmes');
+        const res = await fetch(
+          'https://mnemo-app-100166227581.europe-west1.run.app/programmes'
+        );
         const data = await res.json();
         if (data.success) {
           // Extract only the id and title from each programme
-          const programmes = data.programmes.map((programme: { id: any; title: any; }) => ({
-            id: programme.id,
-            title: programme.title,
-          }));
+          const programmes = data.programmes.map(
+            (programme: { id: any; title: any }) => ({
+              id: programme.id,
+              title: programme.title
+            })
+          );
           setProgrammes(programmes);
         }
       } catch (error) {
@@ -131,12 +139,97 @@ export function TextDataForm({ dataChunk }: { dataChunk?: any }) {
     }
   });
 
+  const forceEditorReinitialization = (editor: any) => {
+    if (!editor) return;
+
+    console.log('Forcing editor reinitialization...');
+
+    // Force editor to be editable
+    editor.setEditable(true);
+
+    // Focus the editor
+    editor.commands.focus('end');
+
+    // Get the current content and reset it to force a full re-render
+    const currentContent = editor.getHTML();
+
+    // Setting content with a slight delay helps with initialization issues
+    setTimeout(() => {
+      // First clear the content
+      editor.commands.clearContent();
+
+      // Then set it back
+      editor.commands.setContent(currentContent);
+
+      // Focus again after content is reset
+      editor.commands.focus('end');
+
+      console.log('Editor reinitialized with content:', currentContent);
+    }, 50);
+  };
+
+  // Modify your fetchDataChunk function inside the useEffect
+  useEffect(() => {
+    if (!id) return;
+
+    async function fetchDataChunk() {
+      try {
+        const res = await fetch(
+          `https://mnemo-app-100166227581.europe-west1.run.app/data-chunks/${id}`
+        );
+        const data = await res.json();
+        if (data.success && data.dataChunk) {
+          setDataChunk(data.dataChunk);
+          if (data.dataChunk.type === 'rich-text') {
+            // Store the content but don't set initialContent yet
+            // We'll do this after resetting the form
+            const richTextContent = data.dataChunk.data;
+
+            // Reset the form first
+            form.reset({
+              name: data.dataChunk.name || '',
+              data: data.dataChunk.data || '',
+              editor: data.dataChunk.metaData?.editor || '',
+              keywords: (data.dataChunk.metaData?.keywords || []).join(', '),
+              datePublished: data.dataChunk.metaData?.datePublished || '',
+              programmeId: data.dataChunk.programmeId || '',
+              type: data.dataChunk.type || 'p'
+            });
+
+            // Then set initialContent with a slight delay
+            // This helps avoid race conditions with form resets
+            setTimeout(() => {
+              setInitialContent(richTextContent);
+            }, 50);
+          } else {
+            // For non-rich-text types, just reset the form
+            form.reset({
+              name: data.dataChunk.name || '',
+              data: data.dataChunk.data || '',
+              editor: data.dataChunk.metaData?.editor || '',
+              keywords: (data.dataChunk.metaData?.keywords || []).join(', '),
+              datePublished: data.dataChunk.metaData?.datePublished || '',
+              programmeId: data.dataChunk.programmeId || '',
+              type: data.dataChunk.type || 'p'
+            });
+          }
+        }
+      } catch (err) {
+        console.error('❌ Failed to fetch data chunk:', err);
+      }
+    }
+
+    fetchDataChunk();
+  }, [id, form]);
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setLoading(true);
     setError(null);
     setSuccess(null);
+    const contentHTML = editor.getHTML();
+    console.log('Editor content:', contentHTML);
     const payload = {
-      data: values.type === 'rich-text' ? contentHTML : values.data,
+      data: values.data,
       name: values.name,
       type: values.type,
       metaData: {
@@ -151,7 +244,7 @@ export function TextDataForm({ dataChunk }: { dataChunk?: any }) {
     const endpoint = isEditMode
       ? `${baseUrl}/data-chunks/${dataChunk.id}` // PUT endpoint
       : `${baseUrl}/data-chunks`; // POST endpoint
-  
+
     const method = isEditMode ? 'PUT' : 'POST';
     try {
       const response = await fetch(endpoint, {
@@ -179,7 +272,7 @@ export function TextDataForm({ dataChunk }: { dataChunk?: any }) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 z-50">
         <input type="hidden" {...form.register('type')} value="text" />
         {/* ✅ Text Content */}
         <FormField
@@ -201,7 +294,7 @@ export function TextDataForm({ dataChunk }: { dataChunk?: any }) {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Content Type</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select value={field.value} onValueChange={field.onChange}>
                 <FormControl>
                   <SelectTrigger>
                     <SelectValue placeholder="Select content type" />
@@ -329,7 +422,18 @@ export function TextDataForm({ dataChunk }: { dataChunk?: any }) {
                       </div>
                     )}
                     {currentType === 'rich-text' && (
-                      <div className="relative flex flex-col flex-1 h-full overflow-hidden">
+                      <SimpleEditor
+                      initialContent={initialContent || field.value}
+                      onChange={(content) => {
+                        field.onChange(content);
+                      }}
+                      />
+                    )}
+
+                    {/* {currentType === 'rich-text' && (
+                      <div className="relative flex flex-col flex-1 h-[300px] overflow-hidden" ref={menuContainerRef}>
+                        
+             
                         <EditorContent
                           editor={editor}
                           className="flex-1 overflow-y-auto"
@@ -339,7 +443,7 @@ export function TextDataForm({ dataChunk }: { dataChunk?: any }) {
                           isEditable={isEditable}
                         />
                         <LinkMenu editor={editor} appendTo={menuContainerRef} />
-                        <TextMenu editor={editor} />
+                        <TextMenu editor={editor}  />
                         <ColumnsMenu
                           editor={editor}
                           appendTo={menuContainerRef}
@@ -357,7 +461,7 @@ export function TextDataForm({ dataChunk }: { dataChunk?: any }) {
                           appendTo={menuContainerRef}
                         />
                       </div>
-                    )}
+                    )} */}
                     {['button', 'link'].includes(currentType) && (
                       <div className="space-y-2">
                         <Input
@@ -468,7 +572,6 @@ export function TextDataForm({ dataChunk }: { dataChunk?: any }) {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-              
                   {programmes.map((programme) => (
                     <SelectItem key={programme.id} value={programme.id}>
                       {programme.title}

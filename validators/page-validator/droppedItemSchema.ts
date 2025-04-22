@@ -7,6 +7,7 @@ export const droppedItemSchema = z.object({
     'h1', 'h2', 'p', 'img', 'ul', 'youtube',
     'button', 'link', 'video', 'rich-text', 'embed', 'postAccordion'
   ]),
+  programme: z.string(),
   content: z.string(),
   children: z
     .any() // Allow `children` to be any type, but optional

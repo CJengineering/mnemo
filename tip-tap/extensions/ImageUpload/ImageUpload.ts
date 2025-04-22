@@ -3,7 +3,7 @@ import { ImageUpload as ImageUploadComponent } from './view/ImageUpload'
 
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {
-    imageUpload: {
+    customImageUpload: {
       setImageUpload: () => ReturnType
     }
   }

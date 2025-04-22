@@ -2,7 +2,7 @@
 
 export interface DataChunk {
     id: number;
-    programmeId: string;
+    programme_id: string;
     name: string;
     type: string;
     metaData: Record<string, any>;

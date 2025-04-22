@@ -10,7 +10,7 @@ import { ExtensionKit } from '../extensions/extension-kit'
 import { userColors, userNames } from '../lib/constants'
 import { randomElement } from '../lib/utils'
 import type { EditorUser } from '../components/BlockEditor/types'
-import { initialContent } from '../lib/data/initialContent'
+import { initialContent  } from '../lib/data/initialContent'
 import { Ai } from '../extensions/Ai'
 import { AiImage, AiWriter } from '../extensions'
 
@@ -29,6 +29,7 @@ export const useBlockEditor = ({
   ...editorOptions
 }: {
   aiToken?: string
+
   ydoc: YDoc | null
   provider?: TiptapCollabProvider | null | undefined
   userId?: string
