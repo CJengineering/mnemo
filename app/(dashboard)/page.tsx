@@ -3,6 +3,7 @@ import { File, PlusCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ProductsTable } from './products-table';
 import { getProducts } from '@/lib/db';
+import { auth } from '@/lib/auth';
 
 export default async function ProductsPage(
   props: {
@@ -16,9 +17,12 @@ export default async function ProductsPage(
     search,
     Number(offset)
   );
-
+let session = await auth();
+  let user = session?.user;
   return (
-    <Tabs defaultValue="all">
+<div>
+  hello {user?.name}
+<Tabs defaultValue="all">
       <div className="flex items-center">
         <TabsList>
           <TabsTrigger value="all">All</TabsTrigger>
@@ -51,5 +55,6 @@ export default async function ProductsPage(
         />
       </TabsContent>
     </Tabs>
+</div>
   );
 }

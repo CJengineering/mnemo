@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { DataChunk, Page, Programme } from './type';
 
-const BASE_URL = 'https://mnemo-app-100166227581.europe-west1.run.app';
+const BASE_URL = 'https://mnemo-app-e4f6j5kdsq-ew.a.run.app/';
 
 interface MnemoContextType {
   dataChunks: DataChunk[];
@@ -14,7 +14,9 @@ interface MnemoContextType {
 
 const MnemoContext = createContext<MnemoContextType | undefined>(undefined);
 
-export const MnemoProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const MnemoProvider: React.FC<{ children: React.ReactNode }> = ({
+  children
+}) => {
   const [dataChunks, setDataChunks] = useState<DataChunk[]>([]);
   const [pages, setPages] = useState<Page[]>([]);
   const [programmes, setProgrammes] = useState<Programme[]>([]);
@@ -35,10 +37,19 @@ export const MnemoProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   const fetchProgrammes = async () => {
-    const res = await fetch(`${BASE_URL}/programmes`);
+    const res = await fetch(`${BASE_URL}/collection-items?type=programme`);
     if (!res.ok) throw new Error('Failed to fetch programmes');
     const json = await res.json();
-    setProgrammes(json.programmes);
+    // Transform collection items to match expected programme format
+    const programmes =
+      json.collectionItems?.map((item: any) => ({
+        id: item.id,
+        title: item.title,
+        slug: item.slug,
+        status: item.status,
+        ...item.data
+      })) || [];
+    setProgrammes(programmes);
   };
 
   const refreshAll = async () => {
@@ -54,7 +65,9 @@ export const MnemoProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   }, []);
 
   return (
-    <MnemoContext.Provider value={{ dataChunks, pages, programmes, refreshAll }}>
+    <MnemoContext.Provider
+      value={{ dataChunks, pages, programmes, refreshAll }}
+    >
       {children}
     </MnemoContext.Provider>
   );

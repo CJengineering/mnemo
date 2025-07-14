@@ -1,0 +1,436 @@
+export const teamsData = [
+
+  {
+    id: "6720a482388ba75176bfbdf1",
+    name: "Lucy Rochford",
+    photoHiRes:
+      "https://www.dropbox.com/scl/fi/8367o94pwe8uz01tvhz3h/LUCY_ROCHFORED_PROFILE_HIRES.jpg?rlkey=4ws82oqezs1f250tok2i6b5zj&dl=0",
+    imageUrl:
+      "https://cdn.communityjameel.io/website/collection/team/lucy-rochford/672e0e68dd5eea47bfcc5258_LUCY_ROCHFORD_COMMUNITY_JAMEEL.png",
+    slug: "lucy-rochford",
+    position: "Arts and Culture Programmes Officer",
+    order: 10,
+    paragraphDescription:
+      '<p id="">Lucy Rochford is an Arts and Culture Programmes Officer at Community Jameel, an independent, global organisation advancing science and learning for communities to thrive.</p><p id="">Lucy has a robust background in UK Politics, having served as a Parliamentary Assistant to the Secretary of State for Education, Gillian Keegan MP and a research assistant in the House of Lords for Lord Lucas. Most recently, she contributed to the UK Election Campaign, honing her skills in political strategy and analysis.</p><p id="">Lucy holds a First-Class degree in Business Management. Beyond her political endeavours she is an accomplished runner with over 10 ultramarathons completed worldwide. Notably, in 2022, she ran over 300 miles from Mount Everest Base Camp to Kathmandu.</p>',
+    metaDescription:
+      "Lucy Rochford is an Arts and Culture Programmes Officer at Community Jameel",
+    altTextImage: "",
+    filter: "fe9cb4ecfb6b2b3673fb682e3ae1b662",
+  },
+  {
+    id: "6708c8c5dd6b2ea24837b4a4",
+    name: "Theo Mackenzie",
+    photoHiRes:
+      "https://www.dropbox.com/scl/fi/7is73mmvirm8l3s63ba34/THEO_MACKENZIE_HIRES_01.jpg?rlkey=rypjr9264l3rf2gopp01o4oxl&dl=0",
+    imageUrl:
+      "https://cdn.communityjameel.io/website/collection/team/theo-mackenzie/6708c8530f1192997df21c0d_THEO_MACKENZIE_WEBSITE.jpg",
+    slug: "theo-mackenzie",
+    position: "Junior Product Manager",
+    order: 19,
+    paragraphDescription:
+      '<p id="">Theo Mackenzie is a Junior Product Manager at Community Jameel, an independent, global organisation advancing science and learning for communities to thrive.</p><p id="">He is currently pursuing an MA (Hons) in Arabic and Middle East Studies at the University of St Andrews, Scotland, with a particular focus on Islamic architecture and cultural heritage. Theo has joined Community Jameel for a year-long industry placement before returning to complete his final exams.</p><p id="">In 2023, Theo gained experience with the organisation as a summer intern, where he supported the team at the J-PAL Colloquium in Paris and the Third Foundations’ Dialogue in Monaco. He speaks English, French, and Spanish, and is continuing to develop his proficiency in Arabic.</p>',
+    metaDescription:
+      "Theo Mackenzie is a Junior Product Manager at Community Jameel",
+    altTextImage: "",
+    filter: "fe9cb4ecfb6b2b3673fb682e3ae1b662",
+  },
+  {
+    id: "6667fe4348eb29f5c91a8625",
+    name: "Suzan Wadnomiry",
+    photoHiRes:
+      "https://www.dropbox.com/scl/fi/1g9vy8ty35087o5q64tqh/SUZAN_WADNOMIRY.jpg?rlkey=ql265m1w0amoz06ugjiuowmwz&dl=0",
+    imageUrl:
+      "https://cdn.communityjameel.io/website/collection/team/suzan-wadnomiry/6667fe33c85341472021dd96_SUZAN_WADNOMIRY_1000PX.jpg",
+    slug: "suzan-wadnomiry",
+    position: "Arts and Culture Programmes Officer",
+    order: 9,
+    paragraphDescription:
+      '<p id="">Suzan Wadnomiry is an Arts and Culture Programmes Officer at Community Jameel, an independent, global organisation advancing science and learning for communities to thrive. </p><p id="">An experienced brand development manager with a diverse background in retail management, business development, marketin, and operations, Suzan has a demonstrated track record of driving growth, improving sales and implementing effective strategies to strengthen brand positioning and expand reach across various channels. </p><p id="">Suzan holds a BA in Business Management from Misr University for Science and Technology in Cairo, and a Diploma in Fashion Design from Istituto di Moda Burgo in Milan.</p>',
+    metaDescription:
+      "Suzan Wadnomiry is an Arts and Culture Officer at Community Jameel, an independent, global organisation advancing science and learning for communities to thrive. ",
+    altTextImage: "",
+    filter: "fe9cb4ecfb6b2b3673fb682e3ae1b662",
+  },
+  
+  {
+    id: "6437abda55dcf6c07759fece",
+    name: "Ambreen Shaikh",
+    photoHiRes:
+      "https://www.dropbox.com/s/fwl51erlaf3aa60/AMBREEN_SHAIKH_COMMUNITY_JAMEEL_HIRES.jpg?dl=0",
+    imageUrl:
+      "https://cdn.communityjameel.io/website/collection/team/ambreen-shaikh/645e17334cbd41d88166cc54_Ambreen_SHaikh_PHOTO.jpg",
+    slug: "ambreen-shaikh",
+    position: "Senior Programmes Officer",
+    order: 6,
+    paragraphDescription:
+      '<p id="">Ambreen is Senior Programmes Officer at Community Jameel, an independent, global organisation advancing science and learning for communities to thrive. </p><p id="">Prior to joining Community Jameel, Ambreen has worked for the UK Government in the <a href="https://www.gov.uk/government/organisations/uk-health-security-agency" target="_blank" id="">UK Health Security Agency</a> during the height of the pandemic and later, in the Department for Education. She also has previous experience working with refugees and underprivileged school children at various NGOs. Her expertise lies in tackling global issues through a holistic synthesis of related disciplines.</p><p id="">Ambreen studied a unique interdisciplinary degree and holds a BASc in Liberal Arts, studying geopolitics, international relations, and energy policy from University College London.</p>',
+    metaDescription:
+      "Ambreen is Senior Programmes Officer at Community Jameel, an independent, global organisation advancing science and learning for communities to thrive. ",
+    altTextImage: "",
+    filter: "fe9cb4ecfb6b2b3673fb682e3ae1b662",
+  },
+  {
+    id: "6422f29c3df0a71d0d0b3c41",
+    name: "Timour Spiridonov",
+    photoHiRes:
+      "https://www.dropbox.com/s/yw7t2d2fegtxak7/TIMOUR_SPIRIDONOV_COMMUNITY_JAMEEL_HIRES.jpg?dl=0",
+    imageUrl:
+      "https://cdn.communityjameel.io/website/collection/team/timour-spiridonov/6422f1820ccc72f1af82d193_TIMUR_SPIRIDONOV.jpg",
+    slug: "timour-spiridonov",
+    position: "Software Engineer",
+    order: 12,
+    paragraphDescription:
+      '<p id="">Timour Spiridonov is the Web Engineer of Community Jameel, an independent, global organisation advancing science and learning for communities to thrive. Prior to joining Community Jameel in early 2023, Timour was a freelance software engineer working in France, Tunisia and the United Kingdom. He specialises in creating scalable web applications and has a particular interest in data science and machine learning. Timour works mainly in python, ruby, and javascript. He actively studies and tests a variety no-code and low-code tools. His skills and experience are essential for Community Jameel to scale its web applications and digital products.</p><p id="">As part of his role at Community Jameel, Timour is researching and testing applications of machine learning to solve real-world problems. With his strong analytical skills and knowledge of data science, Timour is designing and implementing effective machine learning models that not only improve Community Jameel’s impact but also address internal operations.</p><p id="">Prior to forging a career as a developer in 2017, Timour worked in the textile industry in Tunisia, where he scaled manufacturing operations and developed white label products for global brands. Timour is also a certified tennis coach and continues to support his local tennis community.</p><p id=""><br></p>',
+    metaDescription:
+      "Timour Spiridonov is the Web Engineer of Community Jameel, an independent, global organisation advancing science and learning for communities to thrive.",
+    altTextImage: "",
+    filter: "fe9cb4ecfb6b2b3673fb682e3ae1b662",
+  },
+  {
+    id: "63c69dc6d8e54ac4f02fedce",
+    name: "Sabrina Gilby",
+    photoHiRes:
+      "https://www.dropbox.com/s/h7blbzzk8ak8l5k/SABRINA_GILBY_COMMUNITY_JAMEEL_HIRES.jpg?dl=0",
+    imageUrl:
+      "https://cdn.communityjameel.io/website/collection/team/sabrina-gilby/63e679107f28ad0f6cc8825e_SABRINA_GILBY_PORTRAIT_JPG.jpg",
+    slug: "sabrina-gilby",
+    position: "Product Manager",
+    order: 12,
+    paragraphDescription:
+      '<p id="">Sabrina Gilby is a Creative Associate at Community Jameel, an independent, global organisation advancing science and learning for communities to thrive. Sabrina\'s focus is on research and production of creative multimedia content for Community Jameel. </p><p id="">Prior to joining Community Jameel, Sabrina was a research consultant directing public opinion analysis and monitoring and evaluation projects for private sector, governmental, and non-governmental organisations. Her previous experience includes business development and research roles at creative communications agencies in Paris and Beirut and directing partnerships for <a href="https://www.watersprite.org.uk/" id="">Watersprite</a>, Britain\'s largest student-led film festival. </p><p id="">Sabrina holds a BA in Management Studies with French and Arabic from the University of Cambridge. </p>',
+    metaDescription:
+      "Sabrina Gilby is a Creative Associate at Community Jameel, an international organisation advancing science to help communities adapt to a rapidly changing world. ",
+    altTextImage: "",
+    filter: "fe9cb4ecfb6b2b3673fb682e3ae1b662",
+  },
+  {
+    id: "63b2f6b835ae824e1da116ef",
+    name: "Nader Diab",
+    photoHiRes:
+      "https://www.dropbox.com/s/zkpxiojdsjstlri/NADER_DIAB_COMMUNITY_JAMEEL_HIRES.jpg?dl=0",
+    imageUrl:
+      "https://cdn.communityjameel.io/website/collection/team/nader-diab/63b2f74f7146bd948c810e40_NADER_DIAB_COMMUNITY_JAMEEL_500PX.png",
+    slug: "nader-diab",
+    position: "Head of Programmes",
+    order: 4,
+    paragraphDescription:
+      '<p id="">Nader Diab is the Head of Programmes at Community Jameel, an independent, global organisation advancing science and learning for communities to thrive. Nader leads efforts to monitor and optimise Community Jameel’s programmes. He also engages policymakers and policy partners to achieve impact at scale. </p><p id="">Prior to joining Community Jameel, Nader worked for various NGOs and intergovernmental organisations in areas of international law and policy. </p><p id="">Nader has a BA in law from the Lebanese University and an LLM from the Geneva Academy of International Humanitarian Law and Human Rights, and has published chapters and papers in books and academic journals in his field. He speaks Arabic, French and English. </p><p id="">As part of his interest in visual storytelling, Nader also studied videography and drone piloting.</p>',
+    metaDescription:
+      "Nader Diab is Head of Programmes at Community Jameel, an independent, global organisation advancing science to help communities thrive in a rapidly changing world.",
+    altTextImage: "",
+    filter: "fe9cb4ecfb6b2b3673fb682e3ae1b662",
+  },
+  {
+    id: "63613db0188ecb437aa5f44c",
+    name: "Salma Zeid",
+    photoHiRes: "",
+    imageUrl:
+      "https://cdn.communityjameel.io/website/collection/team/salma-zeid/6360b90d4e80025c7e828e87_Salma_Zeid.jpg",
+    slug: "salma-zeid",
+    position: "COP27 Youth Delegate",
+    order: 9,
+    paragraphDescription:
+      '<p id="">Salma is an Associate Consultant with <a href="https://dalberg.com/" target="_blank">Dalberg Advisors</a>, a strategy and policy advisory firm specializing in global development. While at Dalberg, most of her work has been with different parts of the UN System and UAE-based philanthropies, on topics such as climate and biodiversity, gender equity and women’s rights, and strategy evaluation and design. </p><p id="">Prior to joining Dalberg, Salma worked as a Strategy Analyst at Community Jameel, an international organization advancing science to ahelp communities adapt in a rapidly changing world. Out of the major fields of development that Community Jameel focuses on, Salma supported projects related to education including the development of a refugee education project in Bangladesh. </p><p id="">Salma has several notable research experiences. She worked as a research assistant at <a href="https://steinhardt.nyu.edu/ihdsc/global-ties" target="_blank">Global TIES for Children</a>, an international research center at NYU dedicated to projects which promote children’s holistic development in low-income countries and conflict-affected countries. She assisted on the Education in Emergencies project focusing on improving the quality of education in Lebanon, Niger, and Sierra Leone. Salma also worked at <a href="https://www.alqasimifoundation.com/" target="_blank">Al Qasimi Foundation for Policy Research</a> where she contributed to the background research of projects and policies in the GCC. </p><p id="">Salma is Egyptian and holds a B.A. degree in Economics from New York University Abu Dhabi.</p>',
+    altTextImage: "",
+    filter: "d24453a5e50034f288a04ccc4fb09148",
+  },
+  {
+    id: "63613d19428d6a16b5225ce3",
+    name: "Youssef Azzam",
+    photoHiRes: "",
+    imageUrl:
+      "https://cdn.communityjameel.io/website/collection/team/youssef-azzam/63613cb522435d4271918d9f_Youssef_Azam.jpg",
+    slug: "youssef-azzam",
+    position: "COP27 Youth Delegate",
+    order: 10,
+    paragraphDescription:
+      '<p id="">Youssef Azzam is an Egyptian engineer and musician. He graduated from <a href="https://nyuad.nyu.edu/en/" target="_blank" id="">NYU Abu Dhabi</a> (NYUAD) with a bachelor\'s degree in electrical engineering and a minor in film and new media. During the academic year 2019-2020, he was a Junior Strategy and Entrepreneurship Analyst for Community Jameel, an independent, global organisation advancing science to help communities thrive in a rapidly changing world. In 2022, Youssef was a Youth Delegate for Community Jameel at COP27 in Sharm El-Sheikh.</p><p id="">Youssef established the GCC\'s first <a href="https://ncusar.org/modelarableague/" target="_blank">Model Arab League</a> (MAL) student group and conference, focusing on youth empowerment and leadership development. He led 200+ members into winning awards from Cairo, Rabat and Washington D.C. Simultaneously, he implemented projects focused on strategy development, social impact, and sustainable livelihoods in Egypt, Jordan, India, and the United Arab Emirates.</p><p id="">As a musician, Youssef founded his band <a href="https://www.facebook.com/shaghaf98/" target="_blank">Shaghaf</a> (Arabic for passion). Fostering a growing interest in the MENA music scene, he analyses technology\'s impact on the artistic process. Youssef focuses on the internet\'s effect on music-making, musicians\' abilities to release music, and how music is discovered and shared through social media. He aspires to lead a technology business in the domains of social impact and sustainable development.</p>',
+    altTextImage: "",
+    filter: "d24453a5e50034f288a04ccc4fb09148",
+  },
+  {
+    id: "62e8eee01aa45f5653c2a936",
+    name: "Hala El Masri",
+    photoHiRes:
+      "https://www.dropbox.com/s/c1gzqu67wwdh1x7/HALA_EL_MASRI_COMMUNITY_JAMEEL_HIRES.jpg?dl=0",
+    imageUrl:
+      "https://cdn.communityjameel.io/website/collection/team/hala-el-masri/62e8eed935fea13ff60ccd52_HALA_EL_MASRI_COMMUNITY_JAMEEL.jpg",
+    slug: "hala-el-masri",
+    position: "Programmes Officer",
+    order: 7,
+    paragraphDescription:
+      '<p id="">Hala El Masri is a Programmes Officer at Community Jameel, an independent, global organisation advancing science and learning for communities to thrive. </p><p id="">Hala holds a BA from the <a href="https://www.aub.edu.lb/" target="_blank" id="">American University of Beirut</a> in Political Science and a minor in Public Policy, and is completeing her MSc in International Social and Public Policy from the <a href="https://www.lse.ac.uk/" target="_blank" id="">London School of Economics</a>. </p><p id="">Her previous experience is centered on research in areas of policy, particularly in the Global South. She brings expertise in development and social policy to shape and support programmes to be effective and efficient.</p>',
+    metaDescription:
+      "Hala El Masri is Programmes Officer at Community Jameel, an independent, global organisation advancing science to help communities thrive in a rapidly changing world. ",
+    altTextImage: "",
+    filter: "fe9cb4ecfb6b2b3673fb682e3ae1b662",
+  },
+  {
+    id: "62e8ee389cc0dbceb2b015be",
+    name: "Dalia Atallah",
+    photoHiRes:
+      "https://www.dropbox.com/s/vjhx0l4teu4g2xr/DALIA_ATALLAH_COMMUNITY_JAMEEL_HIRES.jpg?dl=0",
+    imageUrl:
+      "https://cdn.communityjameel.io/website/collection/team/dalia-atallah/62e8e56ab58df9805596ddc9_DALIA_ATALLAH_COMMUNITY_JAMEEL.jpg",
+    slug: "dalia-atallah",
+    position: "Programmes Officer",
+    order: 11,
+    paragraphDescription:
+      '<p id="">Dalia Atallah is a Programmes Officer at Community Jameel, an independent, global organisation advancing science and learning for communities to thrive.</p><p id="">Prior to joining Community Jameel, Dalia worked on international relations, humanitarian efforts, advocacy, youth engagement and performance arts, including with <a href="https://www.acted.org/en/" id="">ACTED</a>, the <a href="https://www.un.int/lebanon/" id="">Permanent Mission of Lebanon to the United Nations</a>, the <a href="https://auroraprize.com/en" id="">Aurora Prize for Awakening Humanity</a> and <a href="https://arcenciel.org/en/" id="">Arcenciel Lebanon</a>. As the founder of <a href="https://www.instagram.com/echohereco?igsh=M29kbjFlMHNoNGR1" id="">EchoHerEco</a>, she promotes sustainable development by empowering Lebanese craftswomen.</p><p id="">Dalia holds a dual Master’s degree from <a href="https://www.sciencespo.fr/psia/" id="">Sciences Po\'s Paris School of International Affairs</a> (PSIA) and <a href="https://www.sipa.columbia.edu/" id="">Columbia University\'s School of International and Public Affairs</a> (SIPA), specialising in International Security, Human Rights and Humanitarian Policy, with minors in Global Risks and International Conflict Resolution. She contributed to strategic initiatives at <a href="https://www.mei.columbia.edu/" id="">Columbia University’s Middle East Institute</a>, undertook research at <a href="http://sciencespo.fr/ceri/en" id="">Sciences Po CERI,</a> and was a fellow at the <a href="https://unu.edu/cpr" id="">United Nations University Centre for Policy Research</a> focused on global peacebuilding efforts.</p>',
+    metaDescription:
+      "Dalia Atallah is a Junior Officer at Community Jameel, an international organisation advancing science to help communities adapt in a rapidly changing world.",
+    altTextImage: "",
+    filter: "fe9cb4ecfb6b2b3673fb682e3ae1b662",
+  },
+  {
+    id: "62bc6dfa72e59c1e51c6f5dc",
+    name: "James Kidner",
+    photoHiRes: "",
+    imageUrl:
+      "https://cdn.communityjameel.io/website/collection/team/james-kidner/62bc6d8d9b7d7449eb4e8062_James_Kidner_500px.jpg",
+    slug: "james-kidner",
+    position: "Director of Partnerships, Rebellion Defence",
+    order: 5,
+    paragraphDescription:
+      '<p>James Kidner has been working in technology start-ups for the last five years, after a career in the Diplomatic Service.&nbsp;He joined <a href="https://rebelliondefense.com/" target="_blank">Rebellion Defence</a>, a new UK-US company building software for defence and security, in 2019 as Director of Partnerships. This followed three years at <a href="https://www.improbable.io/" target="_blank">Improbable</a>, another technology unicorn, which makes platforms for computer games and large-scale simulations. Before that, he served for three decades in the <a href="https://www.gov.uk/government/organisations/foreign-commonwealth-development-office" target="_blank">Foreign and Commonwealth Office</a> and in other Whitehall positions, including on the Senior Directing Staff of the Royal College of Defence Studies from 2014-2016, in the Prime Minister’s Strategy Unit, and in the office of the Leader of the House of Commons. Overseas, he worked in India, Malaysia and Bulgaria; and from 2003 – 2006 he was Deputy Private Secretary to The Prince of Wales. James was the founding Director of Coexist – a new educational charity working to help people understand religion’s role in today’s globalised society. He has a BA and MA from Oxford University, where he studied History at Christ Church. He lives on a family farm on Dartmoor.</p>',
+    metaDescription:
+      "James Kidner has been working in technology start-ups for the last five years, after a career in the Diplomatic Service.",
+    altTextImage: "",
+    filter: "2e13032295d06cb32ab76c38a07299fc",
+  },
+  {
+    id: "61f7a1806f70e0b93de6ef87",
+    name: "Shobhini Mukerji",
+    photoHiRes: "",
+    imageUrl:
+      "https://cdn.communityjameel.io/website/collection/team/shobhini-mukerji/61f7a00ff431663f0e3c74b8_SOBHINI_MUKERJI_COMMUNITY_JAMEEL_ADVISORY_COMMITEE.jpg",
+    slug: "shobhini-mukerji",
+    position:
+      "Executive Director, Abdul Latif Jameel Poverty Action Lab (J-PAL) South Asia",
+    order: 4,
+    paragraphDescription:
+      '<p id="">Shobhini Mukerji is the executive director of the <a href="https://www.povertyactionlab.org/" id="">Abdul Latif Jameel Poverty Action Lab</a> (J-PAL) <a href="https://www.povertyactionlab.org/south-asia" id="">South Asia office</a>. J-PAL started as a centre at the economics department of Massachusetts Institute of Technology (MIT) to improve the effectiveness of anti-poverty programmes by providing policymakers with clear scientific evidence on what works and not in the fight against global poverty. In 2019, J-PAL co-founders Esther Duflo and Abhijit Banerjee, and long-time research affiliate Michael Kremer, won the Nobel Prize in Economics. </p><p id="">As the CEO of J-PAL’s largest office, hosted by <a href="https://ifmr.in/index.html" id="">IFMR</a>, and employing 200 full time staff, Shobhini oversees the pan-India operations of J-PAL SA, which has partnerships with over 16 state governments and several central government agencies. Shobhini works closely with donors, policymakers, civil society partners, and research institutions to promote collaborations to increase the use of evidence in decision-making and scale-ups of successful social programmes in India and the South Asia region. Shobhini has over 18 years of extensive research and evaluation experience, ranging from designing and managing large scale primary data collection and analysis, to providing advice to organisations and governments on research design, monitoring, and evaluation strategies. Her research includes recently published papers on primary education interventions in India found to be highly impactful and at the stages of being scaled up across several Indian states and in parts of Africa, to reach over 40 million children. </p><p id="">Shobhini is on the executive board of <a href="https://www.careindia.org/" id="">CARE India</a>, the largest non-profit in India focusing on empowerment of women and girls through programmes in health, education, livelihoods and disaster preparedness. Shobhini began her career working at <a href="http://pratham.org/" id="">Pratham</a>, one of the largest non-governmental organisations of India, working towards universal quality primary education to ensure every child is in school and has mastered basic literacy and numeracy. In the past, Shobhini has served on various expert committees for reviewing research proposals and on advisory boards of non-profits.</p><p id="">Shobhini holds a Master’s degree in social research methods from the London School of Economics with a focus on social policy and statistics.</p>',
+    metaDescription:
+      "Shobhini Mukerji is the executive director of the Abdul Latif Jameel Poverty Action Lab (J-PAL) South Asia office.",
+    altTextImage: "",
+    filter: "2e13032295d06cb32ab76c38a07299fc",
+  },
+  {
+    id: "61efbabe58b4ce508feb2650",
+    name: "Professor Elfatih Eltahir",
+    photoHiRes: "",
+    imageUrl:
+      "https://cdn.communityjameel.io/website/collection/team/professor-elfatih-eltahir/61efba950a0d89449a9ba867_PROFESSOR_ELTAHIR.jpg",
+    slug: "dr-elfatih-eltahir",
+    position:
+      "Professor of Civil and Environmental Engineering, Massachusetts Institute of Technology",
+    order: 3,
+    paragraphDescription:
+      '<p id=""><a href="https://cee.mit.edu/people_individual/elfatih-eltahir/" id="">Professor Eltahir</a> is HM King Bhumibol Professor of Hydrology and Climate, and Professor of Civil and Environmental Engineering at the Massachusetts Institute of Technology (MIT). Professor Eltahir earned a BSc in civil engineering from the <a href="https://www.uofk.edu/en/" id="">University of Khartoum</a> in 1985 (First Class Honours); an MSc in hydrology from the <a href="http://www.nui.ie/" id="">National University of Ireland</a> in 1988 (First Class Honors); and an SM in meteorology and ScD in hydro-climatology, both from MIT in 1993. &nbsp;</p><p id="">Professor Eltahir is a recipient of the US Presidential Early Career Award for Scientists and Engineers (PECASE) in 1997; and the Kuwait Prize in Applied Science in 2000 for his work on climate change. He has been elected Fellow of the <a href="https://www.agu.org/" id="">American Geophysical Union</a> (AGU) in 2008. He received the Hydrologic Sciences Award of the American Geophysical Union in 2017.</p><p id="">Titles of recentbooks: <em id="">A Path Forward for Sharing the Nile Water: Sustainable, Smart, Equitable, and Incremental</em> (2019); <em id="">Projecting the Impacts of Climate Change on Malaria Transmission in Africa: Field Observations and Disease Transmission Modelling</em> (2020); <em id="">Natural Variability of the Nile Floods: From Pharaoh\'s Dream to El Niño / La Niña </em>(2021).</p><p id="">Professor Eltahir’s research focuses on understanding how global climate change as well as regional land use change/land cover change may impact society through changes in the patterns of water availability, extreme weather, and spread of vector-borne diseases. Together with his students, he develops sophisticated numerical models that are used for predicting such impacts at regional scales. The models are tested against satellite observations and archived data sets of hydrologic and atmospheric variables, as well as data collected in field campaigns. &nbsp;</p>',
+    metaDescription:
+      "Professor Eltahir is H. M. King Bhumibol Professor of Hydrology and Climate, and Professor of Civil and Environmental Engineering at MIT.",
+    altTextImage: "",
+    filter: "2e13032295d06cb32ab76c38a07299fc",
+  },
+  {
+    id: "61efba71137a8e75b7bedb90",
+    name: "Dr Erum Mariam",
+    photoHiRes: "",
+    imageUrl:
+      "https://cdn.communityjameel.io/website/collection/team/dr-erum-mariam/61efba6e137a8e0721bedb8a_ERUM_MARIAM.jpg",
+    slug: "dr-erum-mariam",
+    position: "Executive Director, BRAC Institute of Educational Development ",
+    order: 2,
+    paragraphDescription:
+      '<p>Dr Mariam is the executive director of <a href="https://www.bracied.com/">BRAC Institute of Educational Development</a> (IED), BRAC University, in Bangladesh. Dr Mariam completed her PhD in Education from the University of Cambridge in 2008. </p><p>She has extensive experience of scaling up education interventions both nationally and globally, and was involved in the expansion of the unique BRAC run Non-Formal Primary (NFP) Schools in the 1990s. </p><p>Since 2008, Dr Mariam has promoted BRAC IED’s vision of contributing to the improvement of quality, equity, and efficiency in the education system in partnership with the public sector. </p><p>The globally recognised Play Labs and <a href="https://www.bracied.com/what-we-do/ecd-and-play/brac-hpl/">Humanitarian Play Labs</a> have been developed under her leadership, focusing on early stimulation and children’s wellbeing in diverse settings.</p><p>‍</p>',
+    metaDescription:
+      "Dr Mariam is the executive director of BRAC Institute of Educational Development (IED), BRAC University, in Bangladesh.",
+    altTextImage: "",
+    filter: "2e13032295d06cb32ab76c38a07299fc",
+  },
+  {
+    id: "61efba05f46538730294587c",
+    name: "Professor the Lord Darzi of Denham OM KBE PC FRS",
+    photoHiRes:
+      "https://storage.googleapis.com/cj-tech-381914-cj-media-bucket/people/1200px-Official_portrait_of_Lord_Darzi_of_Denham_crop_2.jpg",
+    imageUrl:
+      "https://cdn.communityjameel.io/website/collection/team/professor-the-lord-darzi-of-denham-om-kbe-pc-frs/620666d111ac3fd1b9843867_LORD_DARZI_PROFILE_PHOTO.jpg",
+    slug: "lord-darzi",
+    position:
+      "Co-Director, Institute of Global Health Innovation, Imperial College London ",
+    order: 1,
+    paragraphDescription:
+      '<p><a href="https://www.imperial.ac.uk/medicine/">Professor Darzi</a> is co-director of the <a href="https://www.imperial.ac.uk/global-health-innovation/">Institute of Global Health Innovation</a> at Imperial College London and&nbsp;holds the Paul Hamlyn Chair of Surgery. He is a consultant surgeon at <a href="https://www.imperial.nhs.uk/">Imperial College NHS Trust</a> and the <a href="https://www.royalmarsden.nhs.uk/">Royal Marsden NHS Foundation Trust</a>. Professor Darzi is non-executive director of NHS England, chair of the Accelerated Access Collaborative, co-director of the NHS Digital Academy and executive chair of the <a href="https://www.wish.org.qa/">World Innovation Summit for Health</a> in Qatar. He is also chair for the Pre-emptive Medicine and Health Security Initiative at <a href="https://www.flagshippioneering.com/">Flagship Pioneering</a> UK plc.</p><p>Professor Darzi leads a large multidisciplinary team across a diverse and impactful portfolio of academic and policy research, driving the identification, development and adoption of innovation across international healthcare systems and championing high quality care. His research portfolio focuses on convergence science across engineering, physical and data sciences, specifically in the areas of robotics, sensing, imaging and digital&nbsp;and AI technologies, where he has published over 1,400 peer-reviewed research papers to-date, developing his status as a leading voice in the field of global health policy and innovation. Most recently, he has led a number of national and international initiatives in response to COVID-19, including the <a href="https://www.imperial.ac.uk/medicine/research-and-impact/groups/react-study/">REACT programme</a>, the largest and most comprehensive study of its kind, which is monitoring England’s epidemic to guide public health decision-making.</p><p>In recognition of his academic achievements, Professor Darzi was elected a Fellow of the Academy of Medical Sciences, an Honorary Fellow of the Royal Academy of Engineering, a Fellow of the Royal Society, a foreign associate of the Institute of Medicine, and is a past president of the British Science Association. </p><p>In 2002, Professor Darzi was knighted for his services to medicine and surgery, and in 2007 he was introduced as Lord Darzi of Denham to the UK’s House of Lords as the Parliamentary Under-Secretary of State for Health. He has been a member of Her Majesty’s Most Honourable Privy Council since June 2009 and was awarded the Order of Merit for exceptionally meritorious service towards the advancement of medicine in January 2016. </p><p>Professor Darzi has been recognised for his efforts in global health, having been awarded the&nbsp;Qatari Sash of Independence&nbsp;in 2014 by His Highness the Emir, Sheikh Tamim bin Hamad Al Thani, and the&nbsp;Order of Honour&nbsp;by the President of Armenia in 2017.&nbsp;Most recently, in 2019, Professor Darzi received the Order of the Rising Sun, Gold Rays with Neck Ribbon, in recognition of his contributions to global health and the development of medicine in Japan.&nbsp;</p>',
+    metaDescription:
+      "Professor Darzi is co-director of the Institute of Global Health Innovation at Imperial College London and holds the Paul Hamlyn Chair of Surgery. ",
+    altTextImage: "",
+    filter: "2e13032295d06cb32ab76c38a07299fc",
+  },
+  {
+    id: "61ee828a15a318a761bde74b",
+    name: "Yara Sakr",
+    photoHiRes:
+      "https://www.dropbox.com/s/t4bdoysdv1wsvyt/YARA_SAKR_COMMUNITY_JAMEEL_HIRES.jpg?dl=0",
+    imageUrl:
+      "https://cdn.communityjameel.io/website/collection/team/yara-sakr/6670768dd3495867bf69d078_YARA_SAKR_PHOTO_SQUARE.png",
+    slug: "yara-sakr",
+    position: "General Manager, Public Relations and Communications",
+    order: 5,
+    paragraphDescription:
+      '<p id="">Yara Sakr is General Manager for Public Relations and Communications at Community Jameel, an independent, global organisation advancing science and learning for communities to thrive. As part of her role, she oversees all communication activities for the organisation and highlights its partner programmes.</p><p id="">Her previous experience spans investor relations, communications, and business development at a number of private sector entities and non-governmental organisations.</p><p id="">Yara holds a B.A. in Political Science from the <a href="https://www.aucegypt.edu/home" id="">American University in Cairo</a> and an MSc in Global Politics from the <a href="https://www.lse.ac.uk/" id="">London School of Economics and Political Science</a>.</p><p id="">‍</p>',
+    metaDescription:
+      "Yara Sakr is General Manager for Public Relations and Communications at Community Jameel.",
+    altTextImage: "",
+    filter: "fe9cb4ecfb6b2b3673fb682e3ae1b662",
+  },
+  {
+    id: "61ee828a15a3181af4bde746",
+    name: "Nathaniel Daudrich",
+    photoHiRes:
+      "https://www.dropbox.com/s/21y2e7hbikbvli9/NATHANIEL_DAUDRICH_COMMUNITY_JAMEEL_HIRES.jpg?dl=0",
+    imageUrl:
+      "https://cdn.communityjameel.io/website/collection/team/nathaniel-daudrich/61acb388f7452fde1af9da5e_NATHANIEL_DAUDRICH_CREATIVE_DIGITAL_LEAD_COMMUNITY_JAMEEL.jpg",
+    slug: "nathaniel-daudrich",
+    position: "Head of Product",
+    order: 20,
+    paragraphDescription:
+      '<p id="">Nathaniel Daudrich is the Head of Product of Community Jameel, an independent, global organisation advancing science and learning for communities to thrive. Prior to joining Community Jameel in July 2021, Nathaniel was a Senior Product Manager at Jellyfish, a global digital consultancy, where he led their ecommerce analytics suite focused on Amazon’s global marketplaces. </p><p id="">A product designer and documentary filmmaker by trade, Nathaniel has a more than 10 years experience working with NGOs and UN agencies. In 2013 he co-founded <a href="http://www.trueheroesfilms.org" id="">True Heroes Films</a> in Geneva, Switzerland and worked on extensive projects with the Swiss <a href="https://www.fdfa.admin.ch/eda/en/fdfa/fdfa/organisation-fdfa/state-secretariat/hsd.html" id="">FDFA\'s Human Security Division</a>, <a href="http://www.martinennalsaward.org" id="">Martin Ennals Awards for Human Rights Defenders</a>, the UN’s <a href="http://www.ohchr.org" id="">Office for the High Commissioner for Human Rights</a>, and <a href="http://www.hrw.org" id="">Human Rights Watch</a>, amongst others.</p><p id="">Nathaniel first cut his teeth as a journalist in Kuwait and Egypt in the late 00s after completing his MA in Arabic and French from the University of Edinburgh in 2007. Nathaniel is passionate about the origins of human consciousness and moonlights prototyping analog/digital designs and studying decentralized technology.</p>',
+    metaDescription:
+      "Nathaniel Daudrich is the Head of Product at Community Jameel, a global organisation advancing science to help communities in a rapidly changing world.",
+    altTextImage: "",
+    filter: "fe9cb4ecfb6b2b3673fb682e3ae1b662",
+  },
+  {
+    id: "61ee828a15a3185123bde747",
+    name: "Cléa Daridan",
+    photoHiRes:
+      "https://www.dropbox.com/s/xnidith7uwenfxl/CLEA_DARIDAN_COMMUNITY_JAMEEL_HIRES.jpg?dl=0",
+    imageUrl:
+      "https://cdn.communityjameel.io/website/collection/team/cla-daridan/61acb396cfb6292c53931cdb_CLEA_DARIDAN_CURATOR_COMMUNITY_JAMEEL.jpg",
+    slug: "clea-daridan",
+    position: "Head of Arts and Culture",
+    order: 3,
+    paragraphDescription:
+      '<p id="">Cléa Daridan is the Head of Arts and Culture at Community Jameel, an independent, global organisation advancing science and learning for communities to thrive. Cléa is also a guest lecturer at the <a href="https://www.ensad.fr/" target="_blank" id="">École Nationale Supérieure des Arts Décoratifs</a> in Paris.</p><p id="">Prior to joining Community Jameel, she was a curator and publisher for numerous cultural institutions such as <a href="https://www.centrepompidou.fr/en/" target="_blank" id="">Centre Georges Pompidou</a>, Le French Design by VIA, <a href="https://intramuros.fr/" target="_blank" id="">Intramuros</a>, and <a href="https://www.samartprojects.org/" target="_blank" id="">SAM Art Projects,</a> and was a resident at <a href="https://www.villamedici.it/en/" target="_blank" id="">Villa Médicis</a>, Académie de France in Rome. Cléa is a regular speaker at international universities and institutions, including Conseil Économique, Social et Environnemental and Parsons School in Paris, UNIGE in Geneva, École Française de Rome, Orient Institut in Beirut, NYU in New York and is the author of numerous international contributions published by the <a href="https://dfk-paris.org/fr/publication/surrealism-north-africa-and-western-asia-3159.html" target="_blank" id="">Deutsches Forum für Kunstgeschischte</a>, Diptyk, Intramuros Éditions, La Tribune de l\'Art and <a href="https://www.lespressesdureel.com/EN/ouvrage.php?id=9302&menu=0" target="_blank" id="">Zamân Books</a>.</p><p id="">She holds a Master\'s degree in art history from the Sorbonne, where she is shortly to submit her PhD thesis as a Centre d’Études Alexandrines affiliate and has also studied at the École du Louvre in the curator class. Cléa is a native French and English speaker, has advanced proficiency in Italian and has knowledge of Arabic and German.</p>',
+    metaDescription:
+      "Cléa Daridan is Head of Arts and Culture at Community Jameel, an independent, global organisation advancing science to help communities thrive ina rapidly changing world.",
+    altTextImage: "",
+    filter: "fe9cb4ecfb6b2b3673fb682e3ae1b662",
+  },
+  {
+    id: "61ee828a15a318170ebde728",
+    name: "Hassan Jameel",
+    nameArabic: "حسن جميل",
+    photoHiRes:
+      "https://www.dropbox.com/s/8w6rpzhjj6v0rue/HASSAN_JAMEEL_COMMUNITY_JAMEEL_HIRES.jpg?dl=0",
+    postionArabic: "نائب رئيس مجلس الإدارة",
+    biographyArabic:
+      '<p id="">حسن جميل هو نائب رئيس مجلس إدارة مجتمع جميل، وهي منظمة عالمية مستقلة تعمل على تطوير العلوم والتعلم من أجل ازدهار المجتمعات.</p><p id="">ومن خلال هذا الدور ، يشارك حسن عن كثب في جهود مجتمع جميل لمواجهة بعض أكبر التحديات التي تواجه البشرية ، بما فيها: <a href="https://www.povertyactionlab.org/" target="_blank" id="">الفقر العالمي</a>؛ <a href="https://jwafs.mit.edu/" target="_blank" id="">المياه والأمن الغذائي</a>؛ <a href="https://jwel.mit.edu/" target="_blank" id="">المستقبل التعليم</a>؛ <a href="https://www.jclinic.mit.edu/" target="_blank" id="">التعلم الآلي في مجال الصحة</a>؛ <a href="https://www.imperial.ac.uk/jameel-institute" target="_blank" id="">نمذجة بيانات المرض</a>؛ <a href="https://jameelobservatory.org/" target="_blank" id="">العمل المبكر ضد الجوع</a>.</p><p id="">يشرف &nbsp;حسن على برامج تعليم اللاجئين في مجتمع جميل ، بما في ذلك مبادرة تحويل تعليم اللاجئين نحو التميز (TREE)، وهو برنامج مشترك بين جمعية إنقاذ الطفل ومعمل عبد اللطيف جميل العالمي للتعليم ، ويهدف إلى معالجة التحديات النفسية والاجتماعية التي يواجهها المعلمون والطلاب في الأردن.</p><p id="">حسن هو نائب رئيس مجلس إدارة <a href="https://www.babjameeljobs.com/" target="_blank" id="">باب رزق جميل</a> وهي مبادرة تهدف لخلق فرص العمل في الشرق الأوسط وشمال أفريقيا، التي ساعدت مئات الآلاف من الرجال والنساء على تحسين حياتهم من خلال &nbsp;مبادرات التوظيف وبرامج التمويل الأصغر وغيرها من المشاريع المبتكرة المصممة خصيصا لتوفير فرص العمل للرجال والنساء في العالم العربي. كما أن حسن هو نائب رئيس مجلس إدارة <a href="https://www.communityjameelsaudi.org/" target="_blank" id="">مؤسسة مجتمع جميل السعودية</a>.</p><p id="">يشغل حسن منصب نائب رئيس ونائب رئيس مجلس إدارة <a href="https://alj.com/en/" target="_blank" id="">عبد اللطيف جميل</a>، حيث يرأس العمليات المحلية، بما في ذلك السيارات والأراضي والعقارات والآلات. يشغل حسن حاليا <a href="https://www.u-tokyo.ac.jp/en/about/hassan-jameel.html" target="_blank" id="">عضوية المجلس الاستشاري العالمي لجامعة طوكيو</a> <a href="https://engineering.mit.edu/about/leadership/deans-advisory-council/" target="_blank" id="">والمجلس الاستشاري للعميد</a> في كلية الهندسة في معهد ماساتشوستس للتكنولوجيا. وهو مستشار <a href="https://comotionla.com/" target="_blank" id="">لشركة CoMotion</a> وعضو مؤسس <a href="https://fbc-gulf.org/en/about/board-of-directors/hassan-jameel" target="_blank" id="">في مجلس الأعمال العائلية الخليجي</a>، الذي يدعم النمو والتطوير في الشركات العائلية في المنطقة.</p><p id="">يحمل حسن بكالوريوس في الاقتصاد الدولي من جامعة صوفيا في طوكيو، اليابان، وحصل على درجة الماجستير في إدارة الأعمال من كلية لندن للأعمال. يتحدث الإنجليزية والعربية واليابانية.</p>',
+    imageUrl:
+      "https://cdn.communityjameel.io/website/collection/team/hassan-jameel/61f928a73659b73b24687adc_HASSAN_JAMEEL_COMMUNITY_JAMEEL.jpg",
+    slug: "hassan-jameel",
+    position: "Vice Chairman",
+    order: 3,
+    paragraphDescription:
+      '<p id="">Hassan Jameel is Vice Chairman of Community Jameel, an independent, global organisation advancing science and learning for communities to thrive.</p><p id="">In this role, Hassan has supported Community Jameel’s efforts to tackle some of humanity’s greatest challenges, including: <a href="https://www.povertyactionlab.org/" target="_blank" id="">global poverty</a>; <a href="https://jwafs.mit.edu/" target="_blank" id="">water and food security</a>; the <a href="https://jwel.mit.edu/" target="_blank" id="">future of education</a>; <a href="https://www.jclinic.mit.edu/" target="_blank" id="">machine learning in health</a>; <a href="https://www.imperial.ac.uk/jameel-institute" target="_blank" id="">data modelling of disease</a>; and <a href="https://jameelobservatory.org/" target="_blank" id="">early action against hunger</a>.</p><p id="">Hassan has a strong personal interest in Community Jameel’s education programmes, including Transforming Refugee Education towards Excellence (TREE) a collaboration between Save the Children and the MIT Abdul Latif Jameel World Education Lab (J-WEL), tackling the psychosocial challenges encountered by teachers and students in Jordan.</p><p id="">Hassan is Vice Chairman of <a href="https://www.babjameeljobs.com/" target="_blank" id="">Bab Rizq Jameel</a>, a job creation initiative in the Middle East and North Africa, that has helped hundreds of thousands of men and women improve their lives through work, with recruitment initiatives, microfinance programmes, and other innovative projects tailored to providing job opportunities for men and women in the Arab world. Hassan is also Vice Chairman of <a href="https://www.communityjameelsaudi.org/" target="_blank" id="">Community Jameel Saudi Arabia</a>. </p><p id="">Hassan is Deputy President and Vice Chairman of <a href="https://alj.com/en/" target="_blank" id="">Abdul Latif Jameel</a>, where he heads domestic operations, including automotive, land and real estate, and machinery. Hassan currently sits on the <a href="https://www.u-tokyo.ac.jp/en/about/hassan-jameel.html" target="_blank" id="">Global Advisory Board for the University of Tokyo</a> and the <a href="https://engineering.mit.edu/about/leadership/deans-advisory-council/" target="_blank" id="">Dean’s Advisory Council</a> in the School of Engineering at the Massachusetts Institute of Technology. He is an advisor to <a href="https://comotionla.com/" target="_blank" id="">CoMotion</a> and a founding member of the <a href="https://fbc-gulf.org/en/about/board-of-directors/hassan-jameel" target="_blank" id="">Family Business Council – Gulf</a>, which supports the growth and development on family businesses in the region. </p><p id="">Hassan holds a Bachelor of Arts in International Economics from Sophia University in Tokyo, Japan, and gained an MBA from the London Business School. He speaks English, Arabic, and Japanese.</p>',
+    metaDescription:
+      "Hassan Jameel is Vice Chairman of Community Jameel, an independent, global organisation advancing science to help communities thrive in a rapidly changing world.",
+    altTextImage: "",
+    filter: "e8c50df05a5d6400ebdebb14e61040fa",
+  },
+  {
+    id: "61ee828a15a31875e4bde72a",
+    name: "Fady Jameel",
+    nameArabic: "تحميل صورة عالية الدقة فادي جميل",
+    photoHiRes:
+      "https://www.dropbox.com/s/mrgle5futydgsce/FADY_JAMEEL_COMMUNITY_JAMEEL_HIRES.jpg?dl=0",
+    postionArabic: "نائب رئيس مجلس الإدارة",
+    biographyArabic:
+      '<p id="">فادي جميل هو نائب رئيس مجلس إدارة مجتمع جميل، وهي منظمة عالمية مستقلة تعمل على تطوير العلوم والتعلم من أجل ازدهار المجتمعات.</p><p id="">وفي هذا الدور، يشارك فادي عن كثب في جهود جماعة جميل للتصدي لبعض أكبر التحديات الإنسانية، بما في ذلك: <a href="https://www.povertyactionlab.org/" target="_blank" id="">الفقر العالمي</a>؛ ومكافحة الفقر <a href="https://jwafs.mit.edu/" target="_blank" id="">المياه والأمن الغذائي</a>؛ <a href="https://jwel.mit.edu/" target="_blank" id="">مستقبل التعليم</a>؛ <a href="https://www.jclinic.mit.edu/" target="_blank" id="">التعلم الآلي في مجال الصحة</a>؛ <a href="https://www.imperial.ac.uk/jameel-institute" target="_blank" id="">نمذجة البيانات للأمراض</a>؛ <a href="https://jameelobservatory.org/" target="_blank" id="">والعمل المبكر ضد الجوع</a>.</p><p id="">فادي هو مؤسس ورئيس مجلس إدارة منظمة <a href="https://artjameel.org/" target="_blank" id="">الفنون</a> والثقافة. إلى جانب شراكات مع متحف فيكتوريا وألبرت في لندن ومتحف متروبوليتان للفنون في نيويورك، يدير آرت جميل مركزين فنيين رئيسيين، <a href="https://hayy.artjameel.org/" target="_blank" id="">هما هاي جميل في جدة</a> ، المملكة العربية السعودية، <a href="https://jameelartscentre.org/" target="_blank" id="">ومركز جميل للفنون</a> في دبي، الإمارات العربية المتحدة. وتعمل هذه المراكز كمنصة لدعم وتعزيز الفن المعاصر وريادة الأعمال الإبداعية في جميع أنحاء المنطقة والعالم. فادي عضو في <a href="https://arts.mit.edu/camit/" target="_blank" id="">مجلس الفنون في معهد ماساتشوستس للتكنولوجيا</a>.</p><p id="">فادي هو نائب رئيس مجلس إدارة <a href="https://www.babjameeljobs.com/" target="_blank" id="">برنامج باب رزق جميل</a>، الحائز على جوائز، الذي ساعد مئات الآلاف من الرجال والنساء في المملكة العربية السعودية على العمل، ونائب رئيس مجلس إدارة <a href="https://www.communityjameelsaudi.org/" target="_blank" id="">الجماعة جميل المملكة العربية السعودية</a>.</p><p id="">فادي هو نائب الرئيس ونائب رئيس مجلس الإدارة، شركة <a href="https://alj.com/en/" target="_blank" id="">عبد اللطيف جميل</a> الدولية، وهي شركة متنوعة مملوكة للعائلة، أسسها جده الراحل عبد اللطيف جميل في عام 1945.</p><p id="">فادي حاصل على بكالوريوس الآداب في العلوم السياسية من جامعة صوفيا في طوكيو، اليابان. يتحدث الإنجليزية والعربية واليابانية.</p>',
+    imageUrl:
+      "https://cdn.communityjameel.io/website/collection/team/fady-jameel/61fc1e7b0043fb466847d090_FADY_JAMEEL_COMMUNITY_JAMEEL.jpg",
+    slug: "fady-jameel",
+    position: "Vice Chairman",
+    order: 2,
+    paragraphDescription:
+      '<p id="">Fady Jameel is Vice Chairman of Community Jameel, an independent, global organisation advancing science and learning for communities to thrive.</p><p id="">In this role, Fady is closely involved in Community Jameel’s efforts to tackle some of humanity’s greatest challenges, including: <a href="https://www.povertyactionlab.org/" target="_blank" id="">global poverty</a>; <a href="https://jwafs.mit.edu/" target="_blank" id="">water and food security</a>; the <a href="https://jwel.mit.edu/" target="_blank" id="">future of education</a>; <a href="https://www.jclinic.mit.edu/" target="_blank" id="">machine learning in health</a>; <a href="https://www.imperial.ac.uk/jameel-institute" target="_blank" id="">data modelling of disease</a>; and <a href="https://jameelobservatory.org/" target="_blank" id="">early action against hunger</a>.</p><p id="">Fady is the Founder and Chairman of <a href="https://artjameel.org/" target="_blank" id="">Art Jameel</a>, the arts and culture organisation. Alongside partnerships with the Victoria &amp; Albert Museum in London and the Metropolitan Museum of Art in New York, Art Jameel runs two major art centres, <a href="https://hayy.artjameel.org/" target="_blank" id="">Hayy Jameel</a> in Jeddah, Saudi Arabia, and the <a href="https://jameelartscentre.org/" target="_blank" id="">Jameel Arts Centre</a> in Dubai, United Arab Emirates. These centres serve as a platform to support and foster contemporary art and creative entrepreneurship across the region and worldwide. Fady is a member of the <a href="https://arts.mit.edu/camit/" target="_blank" id="">Council for the Arts at MIT</a>.</p><p id="">Fady is Vice Chairman of <a href="https://www.babjameeljobs.com/" target="_blank" id="">Bab Rizq Jameel</a>, the award-winning livelihoods programme that has helped hundreds of thousands of men and women in Saudi Arabia to work, and Vice Chairman of <a href="https://www.communityjameelsaudi.org/" target="_blank" id="">Community Jameel Saudi Arabia</a>.</p><p id="">Fady is Deputy President and Vice Chairman, International of <a href="https://alj.com/en/" target="_blank" id="">Abdul Latif Jameel</a>, a family-owned diversified business, founded in 1945 by his grandfather, the late Abdul Latif Jameel.</p><p id="">Fady holds a Bachelor of Arts in Political Science from Sophia University in Tokyo, Japan. He speaks English, Arabic, and Japanese.</p>',
+    metaDescription:
+      "Fady Jameel is Vice Chairman of Community Jameel, an independent, global organisation advancing science to help communities thrive in a rapidly changing world.",
+    altTextImage: "",
+    filter: "e8c50df05a5d6400ebdebb14e61040fa",
+  },
+  {
+    id: "61ee828a15a3186665bde748",
+    name: "Uzma Sulaiman",
+    photoHiRes:
+      "https://www.dropbox.com/s/1o8yt50aoezpbo7/UZMA_SULAIMAN_COMMUNITY_JAMEEL_HIRES.jpg?dl=0",
+    imageUrl:
+      "https://cdn.communityjameel.io/website/collection/team/uzma-sulaiman/620cdf11be6442a155d63972_UZMA_SULAIMAN_ASSOCIATE_DIRECTOR_PARTNERSHIPS_COMMUNITY_JAMEEL.jpg",
+    slug: "uzma-sulaiman",
+    position: "Associate Director",
+    order: 2,
+    paragraphDescription:
+      '<p id="">Uzma Sulaiman is the Associate Director of <a target="_blank" href="https://www.communityjameel.org/" id="">Community Jameel</a>. </p><p id="">Uzma leads Community Jameel’s engagement with the public and private sector, galvanising support and influencing policymakers to ensure scientific breakthroughs contribute to society and policy decisions. She advised the 2025 Nutrition for Growth Summit, hosted by the French government in Paris, as a member of the International Advisory Group.</p><p id="">Uzma has over a decade of experience in the international development field. Prior to joining Community Jameel, Uzma spent six years at <a href="https://www.savethechildren.org/" target="_blank" id="">Save the Children</a>, leading the organisation’s Middle East partnerships team and developing its strategy. While at Save the Children, she helped launch its largest humanitarian training initiative with a consortium of government and philanthropic partners across North America, Europe and the Middle East.</p><p id="">Before joining Save the Children, Uzma led communications for a social enterprise in South Africa that focused on access to education for remote communities. Uzma started her career as a journalist working for <a href="https://www.bbc.com/news/world" target="_blank" id="">BBC World</a> and was instrumental in creating UNESCO’s first World Radio Day, celebrating the power of radio in journalism. </p><p id="">She holds a MA in International Journalism from <a href="https://www.city.ac.uk/" target="_blank" id="">City, University of London</a> and a BA in History and Politics from the <a href="https://www.exeter.ac.uk/" target="_blank" id="">University of Exeter</a>.</p>',
+    metaDescription:
+      "Uzma Sulaiman is Associate Director, Partnerships for Community Jameel, a global organisation advancing science to help communities in a rapidly changing world.",
+    altTextImage: "",
+    filter: "fe9cb4ecfb6b2b3673fb682e3ae1b662",
+  },
+  {
+    id: "61ee828a15a3183c6fbde729",
+    name: "Mohammed Jameel KBE",
+    nameArabic: "محمد جميل",
+    photoHiRes: "",
+    postionArabic: " محمد جميل مؤسس ورئيس مجلس الإدارة",
+    biographyArabic:
+      '<p id="">محمد عبد اللطيف جميل هو مؤسس ورئيس مجلس إدارة مجتمع جميل، وهي منظمة عالمية مستقلة تعمل على تطوير العلوم والتعلم من أجل ازدهار المجتمعات، والتي يواصل السيد جميل من خلالها تقليد خدمة المجتمع الذي أسسه والده الراحل عبد اللطيف جميل.</p><p id="">وقد قاد السيد جميل، وهو خريج معهد ماساتشوستس للتكنولوجيا (MIT)، مجتمع جميل إلى تعاون طويل الأمد وعميق مع <a href="https://www.mit.edu/" target="_blank" id="">معهد ماساتشوستس</a> للتكنولوجيا، مع دعم أربعة مراكز رئيسية: <a href="https://ar.communityjameel.org/programme/jameel-poverty-action-lab" id="">معمل عبد اللطيف جميل لمكافحة الفقر</a> (J-PAL)، الذي وصل استخدامه للتجارب العشوائية الضابطة إلى حياة أكثر من 600 مليون شخص في جميع أنحاء العالم خلال 20 عاما، والذي شارك مؤسسوه <a href="https://ar.communityjameel.org/people/esther-duflo" id="">إستر دوفلو</a> <a href="https://ar.communityjameel.org/people/abhijit-banerjee" id="">وأبهيجيت بانيرجي</a>. جنبا إلى جنب مع <a href="https://ar.communityjameel.org/people/michael-kremer" id="">مايكل</a> كريمر ، التابع لمعمل عبد اللطيف جميل لمكافحة الفقر (J-PAL) منذ فترة طويلة ، فاز بجائزة نوبل للاقتصاد لعام 2019 ؛ <a href="https://ar.communityjameel.org/programme/abdul-latif-jameel-water-and-food-systems-lab" id="">معمل عبد اللطيف جميل للأمن المائي والغذائي</a> العالمي (J-WAFS)، الذي أطلق <a href="https://ar.communityjameel.org/programme/jameel-index" id="">مؤشر جميل</a> لتجارة الأغذية والضعف في عام 2022؛ <a href="https://ar.communityjameel.org/programme/abdul-latif-jameel-world-education-lab" id="">معمل عبد اللطيف جميل العالمي للتعليم</a> (J-WEL)؛ وعيادة <a href="https://ar.communityjameel.org/programme/jameel-clinic" id="">عبد اللطيف جميل للتعلم الآلي في مجال الصحة</a> (عيادة جميل).</p><p id="">كما أنشأ مجتمع جميل بالتعاون مع معهد ماساتشوستس للتكنولوجيا <a href="https://ar.communityjameel.org/programme/jameel-toyota-scholarship" id="">منحة جميل-تويوتا الدراسية</a> للطلاب الجامعيين في الجامعة من بلدان مختارة واللاجئين والنازحين. السيد جميل هو عضو مدى الحياة في مؤسسة معهد ماساتشوستس للتكنولوجيا.</p><p id="">التزاما منها بتحسين الرعاية الصحية للجميع، بالإضافة إلى عيادة جميل في معهد ماساتشوستس للتكنولوجيا، شارك مجتمع جميل في تأسيس معهد <a href="https://ar.communityjameel.org/programme/jameel-institute" id="">عبد اللطيف جميل لتحليل الأمراض والطوارئ</a> (معهد جميل) مع إمبريال كوليدج لندن لمكافحة تهديدات الأمراض في جميع أنحاء العالم، والذي أطلق <a href="https://ar.communityjameel.org/programme/jameel-institute-kenneth-c-griffin-initiative-for-economics-of-pandemic-preparedness" id="">مبادرة معهد جميل - كينيث سي غريفين</a> لاقتصاديات التأهب للأوبئة لمساعدة الحكومات على نمذجة الأثر الاقتصادي والوبائي لاستجابة الصحة العامة لتفشي الأمراض المعدية.</p><p id="">ولتوسيع نطاق الرعاية الصحية التقليدية، أطلق مجتمع جميل <a href="https://ar.communityjameel.org/programme/jameel-arts-health-lab" id="">مختبر جميل للفنون والصحة</a> بالشراكة مع منظمة الصحة العالمية وجامعة نيويورك وCULTURUNNERS لقياس تأثير الفن على الصحة. يمثل المختبر أول مبادرة رئيسية للفنون والصحة من قبل منظمة الصحة العالمية في تاريخها الممتد 75 عاما ويهدف إلى تحسين الصحة العالمية بشكل جذري من خلال البحوث والدعوة المتعلقة بالفنون لدفع تنفيذ السياسات عبر 193 دولة عضو في الأمم المتحدة. أسس والد السيد جميل مستشفى عبد اللطيف جميل في جدة، وهو أول مرفق متخصص غير ربحي لإعادة التأهيل البدني، وهو اليوم مركز للعلاجات المتقدمة.</p><p id="">الغذاء هو قلب المجتمع، والطعام هو قلب مجتمع جميل. بالإضافة إلى معمل عبد اللطيف جميل للأمن المائي والغذائي العالمي (J-WAFS) في معهد ماساتشوستس للتكنولوجيا، أنشأ مجتمع جميل وجامعة إدنبرة ومعهد ماساتشوستس للتكنولوجيا <a href="https://ar.communityjameel.org/programme/jameel-observatory" id="">مرصد جميل</a>، الذي يركز على التكيف مع آثار تغير المناخ على النظم الغذائية. في عام 2021، أطلق مجتمع جميل وجامعة إدنبرة ومنظمة إنقاذ الطفولة والمعهد الدولي لبحوث الثروة الحيوانية التابع للجماعة الاستشارية للبحوث الزراعية الدولية ومعمل عبد اللطيف جميل لمكافحة الفقر <a href="https://jameelobservatory.org/food-security-early-action/" target="_blank" id="">مرصد جميل للعمل المبكر للأمن الغذائي</a> في نيروبي، كينيا. وفي عام 2023، أطلق مجتمع جميل، ومعهد ماساتشوستس للتكنولوجيا، وهيئة البحوث الزراعية-السودان، ومعمل عبد اللطيف جميل لمكافحة الفقر شبكة <a href="http://crewsnet.mit.edu/" target="_blank" id="">نظام الإنذار المبكر لمقاومة تغير المناخ</a> (مرصد جميل-CREWSnet) لتمكين المجتمعات على الخطوط الأمامية لتغير المناخ من الاستعداد للتأثيرات المناخية وتقليل الخسائر.</p><p id="">أطلق مجتمع جميل والكلية الملكية للفنون، الجامعة الأولى للفنون والتصميم في العالم، <a href="https://ar.communityjameel.org/programme/climavore-x-jameel-at-rca" id="">كليمافور x جميل</a> في RCA في عام 2023، وهي مبادرة جديدة بقيادة ألون شوابي ودانيال فرنانديز باسكوال، وهما زميلان باحثان أول في كلية الهندسة المعمارية RCA ومؤسسان مشاركان للفن والممارسة المعمارية المرشحة لجائزة <a href="https://ar.communityjameel.org/post/royal-college-of-art-and-community-jameel-announce-climavore-partnership-with-turner-prize-nominees-cooking-sections" id="">تيرنر أقسام الطبخ</a>. تستخدم الشراكة البحث والتعليم والعمل لإعادة تصور كيفية تناول الطعام بينما يغير النشاط البشري المناخ ، وتهدف إلى تطوير منهجيات جديدة وتعزيز السياسات في جميع أنحاء العالم.</p><p id="">وفي مجال الموسيقى، شارك مجتمع جميل ومؤسسة أندريا بوتشيلي، حيث يشغل السيد جميل عضوية المجلس الاستشاري، في تأسيس <a href="https://ar.communityjameel.org/programme/bocelli-jameel-scholarship" id="">منحة بوتشيلي-جميل</a> الدراسية في الكلية الملكية للموسيقى في لندن لدعم طلاب الأوبرا على أساس الجدارة والحاجة المالية.</p><p id="">التزاما منها بجميع أشكال العلم والتعلم، أطلق مجتمع جميل ومدرسة مؤسسة الملك للفنون التقليدية وصندوق التنمية الثقافية في مصر <a href="https://ar.communityjameel.org/programme/jameel-house-of-traditional-arts-in-cairo" id="">بيت جميل للفنون التراثية في القاهرة في عام</a> 2008. يقدم بيت جميل دبلوما لمدة عامين في الحرف اليدوية والهندسة المقدسة وتقنيات التصميم الأخرى.</p><p id="">بصفته مؤسس ورئيس مجلس إدارة باب رزق جميل، وهي مبادرة لخلق فرص العمل في الشرق الأوسط وشمال أفريقيا، ساعد السيد جميل مئات الآلاف من الرجال والنساء على تحسين حياتهم من خلال العمل، من خلال مبادرات التوظيف وبرامج التمويل الأصغر وغيرها من المشاريع المبتكرة المصممة خصيصا لتوفير فرص عمل للرجال والنساء في العالم العربي. ينعكس دعم عائلة جميل لفرص ريادة الأعمال في المنطقة أيضا في <a href="https://ar.communityjameel.org/programme/jameel-management-centre" id="">مركز عبد اللطيف جميل للدراسات الإدارية في الشرق الأوسط</a>، الذي تأسس بموجب هدية للجامعة الأمريكية في القاهرة في عام 1989، ومسابقة StartSmart التي أطلقها معهد ماساتشوستس للتكنولوجيا (J-WEL).</p><p id="">بصفته راعيا للفنون، يدعم السيد <a href="https://artjameel.org/" target="_blank" id="">جميل فن جميل</a> لتشجيع الفنانين والمجتمعات الإبداعية في جميع أنحاء العالم من خلال برامج في التعلم والفنون والتراث. وتشمل هذه <a href="https://jameelartscentre.org/" target="_blank" id="">مركز جميل للفنون</a> في دبي. معرض جميل <a href="https://www.vam.ac.uk/info/jameel-prize" target="_blank" id="">وجائزة جميل</a> في متحف فيكتوريا وألبرت في لندن؛ <a href="https://artjameel.org/centres/hayy-jeddah/" target="_blank" id="">وحي جميل</a> في جدة.</p><p id="">يشغل السيد جميل أيضا منصب رئيس مجلس الإدارة والرئيس التنفيذي لشركة عبد اللطيف جميل، وهي شركة عائلية دولية متنوعة الأنشطة تأسست عام 1945 على يد والده الراحل <a href="http://www.alj.com/" target="_blank" id="">عبد اللطيف جميل</a>.</p><p id="">وقد حصل السيد جميل على عدد من الأوسمة ، بما في ذلك أعلى جائزة في المملكة العربية السعودية ، وسام الملك عبد العزيز من الدرجة الأولى ، والذي حصل عليه في عام 2008 من جلالة الملك عبد الله تقديرا لمساهمته الشخصية في مبادرات خلق فرص العمل بين الشباب والشابات السعوديين. ووسام الفروسية الفخري (KBE) من جلالة الملكة إليزابيث الثانية لأنشطته الخيرية ودعمه لتطوير الفنون والثقافة.</p>',
+    imageUrl:
+      "https://cdn.communityjameel.io/website/collection/team/mohammed-jameel-kbe/61f928958967ff084cd9bb87_MOHAMMED_JAMEEL_KBE_COMMUNITY_JAMEEL.jpg",
+    slug: "mohammed-jameel",
+    position: "Founder and Chairman",
+    order: 1,
+    paragraphDescription:
+      '<p id="">Mohammed Abdul Latif Jameel KBE is the founder and chairman of Community Jameel, an independent, global organisation advancing science and learning for communities to thrive, through which Mr Jameel continues the tradition of community service established by his father, the late Abdul Latif Jameel.</p><p id="">A <a href="https://www.mit.edu/" target="_blank" id="">Massachusetts Institute of Technology</a> (MIT) alumnus, Mr Jameel has led Community Jameel to a longstanding and deep collaboration with MIT, with support to four major centres: the <a href="/programme/jameel-poverty-action-lab" id="">Abdul Latif Jameel Poverty Action Lab</a> (J-PAL), whose use of randomised control trials has reached the lives of over 600 million people worldwide in 20 years and whose co-founders <a href="/people/esther-duflo" id="">Esther Duflo</a> and <a href="/people/abhijit-banerjee" id="">Abhijit Banerjee</a>, along with longtime J-PAL affiliate <a href="/people/michael-kremer" id="">Michael Kremer</a>, won the 2019 Nobel Prize for Economics; the <a href="/programme/abdul-latif-jameel-water-and-food-systems-lab" id="">Abdul Latif Jameel Water and Food Systems Lab</a> (J-WAFS), which launched the <a href="/programme/jameel-index" id="">Jameel Index</a> for Food Trade and Vulnerability in 2022; the <a href="/programme/abdul-latif-jameel-world-education-lab" id="">Abdul Latif Jameel World Education Lab</a> (J-WEL); and the <a href="/programme/jameel-clinic" id="">Abdul Latif Jameel Clinic for Machine Learning in Health</a> (Jameel Clinic).</p><p id="">With MIT, Community Jameel also established the <a href="/programme/jameel-toyota-scholarship" id="">Jameel-Toyota Scholarship</a> for undergraduate students at the university who are from selected countries and who are refugees and displaced persons. Mr Jameel is an MIT Corporation life member.</p><p id="">Committed to improving healthcare for all, in addition to the Jameel Clinic at MIT, Community Jameel cofounded the <a href="/programme/jameel-institute" id="">Abdul Latif Jameel Institute for Disease and Emergency Analytics</a> (Jameel Institute) with Imperial College London to combat threats from disease worldwide, and which launched the <a href="/programme/jameel-institute-kenneth-c-griffin-initiative-for-economics-of-pandemic-preparedness" id="">Jameel Institute-Kenneth C. Griffin&nbsp;Initiative</a> for the Economics of Pandemic Preparedness to help governments model the economic and epidemiological impact of public health response to outbreaks of infectious diseases. </p><p id="">Broadening the scope of traditional healthcare, Community Jameel launched the <a href="/programme/jameel-arts-health-lab" id="">Jameel Arts &amp; Health Lab</a> in partnership with the World Health Organisation (WHO), New York University and CULTURUNNERS to measure the impact of art on health. The lab marks the first major arts and health initiative by the WHO in its 75-year history and aims to radically improve global health through arts-related research and advocacy to drive policy implementation across 193 UN member states. Mr Jameel’s father established the Abdul Latif Jameel Hospital in Jeddah, the first non-profit specialist facility for physical rehabilitation, and today a centre for advanced therapies.</p><p id="">Food is at the heart of community, and food is at the heart of Community Jameel. In addition to J-WAFS at MIT, Community Jameel, the University of Edinburgh and MIT established the <a href="/programme/jameel-observatory" id="">Jameel Observatory</a>, which focuses on adapting to climate change’s effects on food systems. In 2021, Community Jameel, the University of Edinburgh, Save the Children, the CGIAR International Livestock Research Institute and J-PAL launched the <a href="https://jameelobservatory.org/food-security-early-action/" target="_blank" id="">Jameel Observatory for Food Security Early Action</a> in Nairobi, Kenya; and in 2023, Community Jameel, MIT, BRAC, the Agricultural Research Corporation-Sudan and J-PAL launched the <a href="http://crewsnet.mit.edu/" target="_blank" id="">Jameel Observatory Climate Resilience Early Warning System Network</a> (Jameel Observatory-CREWSnet) to empower communities on the frontlines of climate change to prepare for climate impacts and minimise losses. </p><p id="">Community Jameel and the Royal College of Art (RCA), the world’s number one art and design university, launched <a href="/programme/climavore-x-jameel-at-rca" id="">CLIMAVORE x Jameel at RCA</a> in 2023, a new initiative led by Alon Schwabe and Daniel Fernández Pascual, senior research fellows in the RCA school of architecture and co-founders of the Turner prize-nominated art and architectural practice <a href="/post/royal-college-of-art-and-community-jameel-announce-climavore-partnership-with-turner-prize-nominees-cooking-sections" id="">Cooking Sections</a>. The partnership uses research, education and action to reimagine how we eat as human activity changes the climate, and aims to develop new methodologies and enhance policies around the globe.</p><p id="">In music, Community Jameel and the Andrea Bocelli Foundation, where Mr Jameel is a member of the advisory board, cofounded the <a href="/programme/bocelli-jameel-scholarship" id="">Bocelli-Jameel Scholarship</a> at the Royal College of Music in London to support students of opera on the basis of merit and financial need.</p><p id="">Committed to all forms of science and learning, Community Jameel, The King’s Foundation School of Traditional Arts and the Cultural Development Fund in Egypt launched the <a href="/programme/jameel-house-of-traditional-arts-in-cairo" id="">Jameel House of Traditional Arts in Cairo</a> in 2008. The Jameel House offers a two-year diploma in crafts, sacred geometry and other design techniques.</p><p id="">As founder and chairman of Bab Rizq Jameel, a job creation initiative in the Middle East and North Africa, Mr Jameel has helped hundreds of thousands of men and women improve their lives through work, with recruitment initiatives, microfinance programmes, and other innovative projects tailored to providing job opportunities for men and women in the Arab world. The Jameel family’s support for entrepreneurship opportunities in the region is also reflected in the <a href="/programme/jameel-management-centre" id="">Abdul Latif Jameel Centre for Middle East Management Studies</a>, established by a gift to the American University in Cairo in 1989, and the StartSmart competition launched by MIT J-WEL.</p><p id="">As a patron of the arts, Mr Jameel supports <a href="https://artjameel.org/" target="_blank" id="">Art Jameel</a> to promote artists and creative communities around the world with programmes in learning, the arts and heritage. These include the <a href="https://jameelartscentre.org/" target="_blank" id="">Jameel Arts Centre</a> in Dubai; the <a href="https://www.vam.ac.uk/collections/islamic-middle-east" target="_blank" id="">Jameel Gallery</a> and the <a href="https://www.vam.ac.uk/info/jameel-prize" target="_blank" id="">Jameel Prize</a> at the Victoria and Albert Museum in London; and <a href="https://artjameel.org/centres/hayy-jeddah/" target="_blank" id="">Hayy Jameel</a> in Jeddah.</p><p id="">Mr Jameel is also the chairman and chief executive officer of <a href="http://www.alj.com/" target="_blank" id="">Abdul Latif Jameel</a>, an international, family-owned and diversified business, founded in 1945 by his father, the late Abdul Latif Jameel.</p><p id="">Mr Jameel has been recognised with a number of honours, including the highest award in Saudi Arabia, the King Abdul Aziz Medal of the First Order, which he received in 2008 from HM King Abdullah in recognition of his personal contribution to job creation initiatives amongst young Saudi men and women; and an honorary knighthood (KBE) from HM Queen Elizabeth II for his philanthropic activities and support for the development of arts and culture.</p>',
+    metaDescription:
+      "Mohammed Abdul Latif Jameel KBE is the Founder and Chairman of Community Jameel, through which Mr Jameel continues the tradition of community service established by his father.",
+    altTextImage: "",
+    filter: "e8c50df05a5d6400ebdebb14e61040fa",
+  },
+  {
+    id: "61ee828a15a3181278bde749",
+    name: "Amna Fatani",
+    photoHiRes: "",
+    imageUrl:
+      "https://cdn.communityjameel.io/website/collection/team/amna-fatani/61acb3b790025a55de07b01f_AMNA_FATANI_ASSOCIATE_DIRECTOR_STRATEGY_COMMUNITY_JAMEEL.jpg",
+    slug: "amna-fatani",
+    position: "Former Associate Director, Strategy (2018 - 2022)",
+    order: 1,
+    paragraphDescription:
+      '<p id="">From 2018 to 2022, Amna Fatani was the Associate Director of Strategy for <a href="https://www.communityjameel.org/en" id="">Community Jameel</a>, an independent, global organisation advancing science and learning for communities to thrive. Amna oversaw the development of a wide variety of projects, in the areas of education, health, climate, and evidence, working with the <a href="https://www.mit.edu/" id="">Massachusetts Institute of Technology</a>, <a href="https://www.imperial.ac.uk/" id="">Imperial College London</a> and other strategic partners. With over a decade of experience in the international development field, Amna led the organisation\'s work in curating social programmes that are designed for impact and driven by local voices and needs. She also managed the Community Jameel internship programme.</p><p id="">Amna\'s expertise is in development economics and management consulting with hands-on experience in research, impact evaluations and strategy development. Prior to joining Community Jameel, Amna worked at <a href="https://www.mckinsey.com/" id="">McKinsey &amp; Company</a>, where she developed expertise in Economic Development, Labour Markets and Education. She also worked with the <a href="https://www.worldbank.org/en/home" id="">World Bank</a>, <a href="https://www.savethechildren.org/" id="">Save the Children US</a> and the Saudi Ministry of Labour (since merged into the <a href="https://hrsd.gov.sa/en" id="">Ministry of Human Resource and Social Development</a>). In 2010, she co-founded an education organisation with a primary focus on building curricula and delivering educational programmes to youth, reaching over 2,000 young people in Saudi Arabia. She also consulted with a non-profit organisation in Mexico, where she delivered strategic insights and on-the-ground training workshops to their staff and beneficiaries.</p><p id="">She holds a Bachelor of Science in Business Management from <a href="https://www.kau.edu.sa/home_english.aspx" id="">King Abdulaziz University</a>, and a Master\'s degree in international development from the <a href="https://sfs.georgetown.edu/" id="">School of Foreign Service</a> at Georgetown University. Amna has advanced proficiency in English and Arabic, and conversational Spanish.</p><p id="">‍</p>',
+    metaDescription:
+      "From 2018 to 2022, Amna Fatani was the Associate Director of Strategy for Community Jameel, a global organisation advancing science to help communities in a rapidly changing world.",
+    altTextImage: "",
+    filter: "46583d5fdb2735afcf445f3f9f725e45",
+  },
+  {
+    id: "61ee828a15a3186899bde74a",
+    name: "George Richards",
+    nameArabic: "جورج ريتشاردز",
+    photoHiRes:
+      "https://www.dropbox.com/s/a1nky4r3lhe1gqv/GEORGE_RICHARDS_COMMUNITY_JAMEEL_PHOTO_HIRES.jpg?dl=0",
+    postionArabic: "مدير",
+    biographyArabic:
+      '<p id="">ملتزم بتعزيز السياسات المبنية على العلم لأمن الإنسان، فهو مستشار للمبادرات البحثية في كلية إمبريال في لندن ومدرسة باريس للاقتصاد، وعضو مؤسس في المجلس الاستشاري <a href="https://futureresilienceforum.com/" target="_blank" id="">لمنتدى المرونة المستقبلية</a>.</p><p id="">كقائد مرموق في حماية التراث الثقافي، بما في ذلك في مناطق النزاع، شغل جورج منصب المقرر الخاص للتراث الثقافي لحكومة إقليم كردستان في العراق وهو مقيم متخصص لصندوق حماية الثقافة التابع للمجلس البريطاني. وقد قاد بعثات ميدانية لتوثيق التراث الثقافي المهدد نيابة عن المكتبة البريطانية والمعهد البريطاني لدراسة العراق.</p><p id="">تخرج جورج بمرتبة الشرف الأولى في اللغة العربية والفارسية من جامعة إدنبرة في عام 2003. كمحامٍ مؤهل، مارس القانون في شركة فريشفيلدز بروكهاوس ديرينغر حتى عام 2015. وهو وصي <a href="https://www.kings-foundation.org/" target="_blank">لمؤسسة الملك</a>، وزميل في الجمعية الملكية الجغرافية وزميل في جمعية آثار اسكتلندا.</p><p id="">تسلق جورج إلى قمة جبل سودا، ثاني أعلى قمة في شبه الجزيرة العربية.</p>',
+    imageUrl:
+      "https://cdn.communityjameel.io/website/collection/team/george-richards/61acb3c12905b55ca69a5af2_GEORGE_RICHARDS_DIRECTOR_COMMUNITY_JAMEEL.jpg",
+    slug: "george-richards",
+    position: "Director",
+    order: 1,
+    paragraphDescription:
+      '<p id="">George Richards is the Director of Community Jameel.</p><p id="">Committed to advancing science-informed policy for human security, he is an advisor to research initiatives at Imperial College London and the Paris School of Economics.</p><p id="">An established leader on cultural heritage protection, including in conflict zones, George served as the Special Rapporteur for Cultural Heritage to the Kurdistan Regional Government in Iraq and is a specialist assessor for the British Council\'s Cultural Protection Fund. He has led field expeditions to document endangered cultural heritage on behalf of the British Library and the British Institute for the Study of Iraq. </p><p id="">George graduated with a First in Arabic and Persian from the University of Edinburgh in 2003. A qualified solicitor, he practised law at Freshfields Bruckhaus Deringer until 2015. He is a fellow of <a href="https://www.kings-foundation.org/" target="_blank" id="">The King\'s Foundation</a> (where he previously served two terms as a trustee), a fellow of the Royal Geographical Society and a fellow of the Society of Antiquaries of Scotland.</p><p id="">George has climbed to the summit of Jabal Sawda, the second-highest peak on the Arabian peninsula.</p>',
+    metaDescription:
+      "George Richards is the Director of Community Jameel, an independent, global organisation advancing science and learning for communities to thrive.",
+    altTextImage: "",
+    filter: "fe9cb4ecfb6b2b3673fb682e3ae1b662",
+  },
+];

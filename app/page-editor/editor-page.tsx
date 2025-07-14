@@ -1,5 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation'
 import { BlockType, DroppedItem } from './type';
 import {
   closestCenter,
@@ -44,7 +45,7 @@ import ContentSearchSelectors from './content-search-selectors';
 import { PageForm } from './form/page-form';
 import BlockEditorV2 from '@/tip-tap/components/BlockEditor/BlockEditorV2';
 import { useCollaboration } from '@/tip-tap/hooks/useCollaboration';
-import { useSearchParams } from 'next/navigation';
+
 import { ImageDataForm } from '@/components/image/image-data-form';
 import { TextDataForm } from '@/validators/text-validator/components/textDataForm';
 import TestOnlySidebar from '@/components/sidebar/sitemap-sidebar/sitemap-sidebar';
