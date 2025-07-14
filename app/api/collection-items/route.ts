@@ -50,13 +50,31 @@ export async function GET(req: NextRequest) {
 // POST - Create a new collection item
 export async function POST(req: NextRequest) {
   try {
-    const { type, status, slug, title, data } = await req.json();
+    const body = await req.json();
+    console.log('📥 API POST Request Body:', JSON.stringify(body, null, 2));
+
+    const { type, status, slug, title, data } = body;
+
+    console.log('🔍 Field Validation:', {
+      type: { value: type, valid: !!type },
+      status: { value: status, valid: !!status },
+      slug: { value: slug, valid: !!slug },
+      title: { value: title, valid: !!title }
+    });
 
     if (!type || !status || !slug || !title) {
+      const missingFields = [];
+      if (!type) missingFields.push('type');
+      if (!status) missingFields.push('status');
+      if (!slug) missingFields.push('slug');
+      if (!title) missingFields.push('title');
+
+      console.error('❌ Missing required fields:', missingFields);
       return NextResponse.json(
         {
           success: false,
-          error: 'Missing required fields: type, status, slug, title'
+          error: `Missing required fields: ${missingFields.join(', ')}`,
+          received: { type, status, slug, title }
         },
         { status: 400 }
       );
@@ -71,9 +89,10 @@ export async function POST(req: NextRequest) {
     );
     client.release();
 
+    console.log('✅ Successfully created collection item:', rows[0]);
     return NextResponse.json({ success: true, collectionItem: rows[0] });
   } catch (error) {
-    console.error('Error creating collection item:', error);
+    console.error('💥 Error creating collection item:', error);
     return NextResponse.json(
       { success: false, error: 'Failed to create collection item' },
       { status: 500 }

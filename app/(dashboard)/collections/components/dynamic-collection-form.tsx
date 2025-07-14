@@ -82,6 +82,9 @@ const DynamicCollectionForm: React.FC<DynamicCollectionFormProps> = ({
     setIsLoading(true);
     setSubmissionStatus({ type: null, message: '' });
 
+    // Debug: Log the form data being processed
+    console.log('📝 Form Data Received:', JSON.stringify(formData, null, 2));
+
     try {
       // Use pending status if set, otherwise use form data status
       const finalStatus = pendingStatus || formData.status || 'draft';
@@ -92,12 +95,18 @@ const DynamicCollectionForm: React.FC<DynamicCollectionFormProps> = ({
         slug: formData.slug,
         status: finalStatus,
         type: collection.id as CollectionType,
-        data: formData // Store all form data in the data field
+        data: {
+          ...formData, // Include all form data
+          title: formData.title, // Ensure title is in data object
+          slug: formData.slug // Ensure slug is in data object
+        }
       };
 
       if (item?.id) {
         apiData.id = item.id;
       }
+
+      console.log('🔄 Transformed API Data:', JSON.stringify(apiData, null, 2));
 
       await onSubmit(apiData);
 
