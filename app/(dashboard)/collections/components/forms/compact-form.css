@@ -1,0 +1,126 @@
+/* Compact Form Styles - Extra Small Font Sizes */
+
+/* Apply tiny fonts to all form-related elements */
+.compact-form label,
+.compact-form input,
+.compact-form select,
+.compact-form textarea,
+.compact-form button,
+.compact-form .text-sm,
+.compact-form .text-base {
+  font-size: 8px !important;
+  line-height: 1.2 !important;
+}
+
+/* Adjust form field heights */
+.compact-form input,
+.compact-form select {
+  height: 20px !important;
+  padding: 2px 4px !important;
+}
+
+/* Compact textarea */
+.compact-form textarea {
+  padding: 2px 4px !important;
+  min-height: 40px !important;
+}
+
+/* Compact buttons */
+.compact-form button {
+  font-size: 8px !important;
+  padding: 2px 6px !important;
+  height: auto !important;
+  min-height: 18px !important;
+}
+
+/* Form field spacing */
+.compact-form .space-y-6 > * + * {
+  margin-top: 8px !important;
+}
+
+.compact-form .space-y-4 > * + * {
+  margin-top: 4px !important;
+}
+
+.compact-form .space-y-2 > * + * {
+  margin-top: 2px !important;
+}
+
+/* Grid gaps */
+.compact-form .gap-6 {
+  gap: 4px !important;
+}
+
+.compact-form .gap-4 {
+  gap: 2px !important;
+}
+
+.compact-form .gap-2 {
+  gap: 1px !important;
+}
+
+/* Rich text editor adjustments */
+.compact-form .ProseMirror {
+  font-size: 8px !important;
+  line-height: 1.3 !important;
+  padding: 4px !important;
+}
+
+/* Badge and status elements */
+.compact-form .badge {
+  font-size: 6px !important;
+  padding: 1px 3px !important;
+}
+
+/* Form sections */
+.compact-form h3 {
+  font-size: 10px !important;
+  font-weight: 500 !important;
+  margin-bottom: 2px !important;
+}
+
+.compact-form h4 {
+  font-size: 9px !important;
+  font-weight: 500 !important;
+}
+
+/* Switch field adjustments */
+.compact-form .switch {
+  width: 20px !important;
+  height: 12px !important;
+}
+
+.compact-form .switch-thumb {
+  width: 8px !important;
+  height: 8px !important;
+}
+
+/* Reference field and multi-select adjustments */
+.compact-form .multi-select-item {
+  font-size: 7px !important;
+  padding: 1px 3px !important;
+}
+
+/* Image upload preview adjustments */
+.compact-form .image-preview {
+  width: 40px !important;
+  height: 40px !important;
+}
+
+/* Scrollbar styling for the form container */
+.compact-form-container::-webkit-scrollbar {
+  width: 4px;
+}
+
+.compact-form-container::-webkit-scrollbar-track {
+  background: #f7fafc;
+}
+
+.compact-form-container::-webkit-scrollbar-thumb {
+  background: #cbd5e0;
+  border-radius: 2px;
+}
+
+.compact-form-container::-webkit-scrollbar-thumb:hover {
+  background: #a0aec0;
+}

@@ -1,0 +1,31 @@
+[
+  {
+    "id": "team-member-1",
+    "fieldData": {
+      "name": "Dr. Sarah Johnson",
+      "slug": "sarah-johnson",
+      "role": "Senior Research Director",
+      "bio": "Dr. Johnson leads our climate research initiatives with over 15 years of experience in environmental science.",
+      "image_url": "https://uploads-ssl.webflow.com/64f89e3c68b6b2c3d5e8f9a1/65a2b3c4d5e6f7g8h9i0j1k2_sarah-johnson.jpg"
+    }
+  },
+  {
+    "id": "team-member-2", 
+    "fieldData": {
+      "name": "Prof. Ahmed Al-Rashid",
+      "slug": "ahmed-al-rashid",
+      "role": "Director of Innovation",
+      "bio": "Professor Al-Rashid oversees technology transfer and innovation programs across the Middle East.",
+      "image_url": "https://uploads-ssl.webflow.com/64f89e3c68b6b2c3d5e8f9a1/65a2b3c4d5e6f7g8h9i0j1k3_ahmed-al-rashid.png"
+    }
+  },
+  {
+    "id": "team-member-3",
+    "fieldData": {
+      "name": "Maria Rodriguez",
+      "role": "Community Outreach Manager", 
+      "bio": "Maria coordinates community engagement programs and partnerships.",
+      "image_url": "https://uploads-ssl.webflow.com/64f89e3c68b6b2c3d5e8f9a1/65a2b3c4d5e6f7g8h9i0j1k4_maria-rodriguez.webp"
+    }
+  }
+]

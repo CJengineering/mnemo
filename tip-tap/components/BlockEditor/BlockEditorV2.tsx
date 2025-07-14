@@ -91,9 +91,20 @@ export const BlockEditorV2 = ({
   useEffect(() => {
     const fetchProgrammes = async () => {
       try {
-        const res = await fetch('/api/programmes');
+        const res = await fetch(
+          'https://mnemo-app-e4f6j5kdsq-ew.a.run.app/api/collection-items?type=programme'
+        );
         if (!res.ok) throw new Error('Failed to fetch programmes.');
-        const { programmes } = await res.json();
+        const json = await res.json();
+        // Transform collection items to match expected programme format
+        const programmes =
+          json.collectionItems?.map((item: any) => ({
+            id: item.id,
+            title: item.title,
+            slug: item.slug,
+            status: item.status,
+            ...item.data
+          })) || [];
         setProgrammes(programmes);
       } catch (error) {
         console.error('Error fetching programmes:', error);

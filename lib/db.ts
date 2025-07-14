@@ -33,6 +33,22 @@ export const contentStatusEnum = pgEnum('content_status', [
   'published',
   'archived'
 ]);
+export const collectionItemTypeEnum = pgEnum('collection_item_type', [
+  'event',
+  'post',
+  'programme',
+  'news',
+  'team',
+  'innovation',
+  'award',
+  'publication',
+  'prize',
+  'partner'
+]);
+export const collectionItemStatusEnum = pgEnum('collection_item_status', [
+  'published',
+  'draft'
+]);
 
 export const products = pgTable('products', {
   id: serial('id').primaryKey(),
@@ -98,11 +114,11 @@ export const contentDataChunkRelation = pgTable('content_data_chunk_relation', {
 export const page = pgTable('page', {
   id: serial('id').primaryKey(),
   slug: text('slug').notNull().unique(), // URL-friendly string like "programme/events"
-  data: jsonb('data').default({}),       // flexible object (e.g., title, layout info)
+  data: jsonb('data').default({}), // flexible object (e.g., title, layout info)
   dataHtml: jsonb('data_html').default({}), // contains "rawHtml" and maybe more
-  dataSeo: jsonb('data_seo').default({}),   // SEO metadata like title/desc/og:image
+  dataSeo: jsonb('data_seo').default({}), // SEO metadata like title/desc/og:image
   createdAt: timestamp('created_at').notNull().defaultNow(),
-  updatedAt: timestamp('updated_at').notNull().defaultNow(),
+  updatedAt: timestamp('updated_at').notNull().defaultNow()
 });
 export const programmeContent = pgTable(
   'programme_content',
@@ -132,6 +148,16 @@ export const programmeDataChunk = pgTable(
     pk: primaryKey({ columns: [table.programmeId, table.dataChunkId] }) // ✅ Correct primary key definition
   })
 );
+export const collectionItem = pgTable('collectionItem', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  type: collectionItemTypeEnum('type').notNull(),
+  status: collectionItemStatusEnum('status').notNull(),
+  slug: text('slug').notNull(),
+  title: text('title').notNull(),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+  data: jsonb('data')
+});
 export async function createDataChunk(
   name: string,
   type: 'text' | 'rich_text' | 'image' | 'video' | 'link',
@@ -151,7 +177,6 @@ export async function createDataChunk(
 
   return newChunk;
 }
-
 
 export async function linkDataChunkToContent(
   contentId: number,
