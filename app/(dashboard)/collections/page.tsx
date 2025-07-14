@@ -24,11 +24,20 @@ export interface APICollectionItem {
     | 'prize'
     | 'partner';
   slug: string;
-  status: 'published' | 'draft';
+  status: 'published' | 'draft'; // UI-friendly status values
   data: any;
   created_at: string;
   updated_at: string;
 }
+
+// Status transformation utilities - Now using direct mapping since backend is fixed
+const transformStatusToAPI = (uiStatus: 'published' | 'draft'): string => {
+  return uiStatus; // Direct mapping: 'published' -> 'published', 'draft' -> 'draft'
+};
+
+const transformStatusFromAPI = (apiStatus: string): 'published' | 'draft' => {
+  return apiStatus === 'published' ? 'published' : 'draft';
+};
 
 export default function Home() {
   const [collections, setCollections] = useState<Collection[]>([]);
@@ -71,7 +80,7 @@ export default function Home() {
             title: item.title,
             description: item.data?.description || '',
             date: item.data?.eventDate || item.data?.datePublished || '',
-            status: item.status
+            status: transformStatusFromAPI(item.status) // Transform API status to UI status
           });
           return acc;
         },
@@ -109,11 +118,79 @@ export default function Home() {
         const response = await fetch(`${API_URL}/${item.id}`);
         if (response.ok) {
           const data = await response.json();
-          setSelectedItem(data.collectionItem);
+          const apiItem = data.collectionItem;
+          // Transform API status to UI status for editing
+          setSelectedItem({
+            ...apiItem,
+            status: transformStatusFromAPI(apiItem.status)
+          });
           setIsCreatingNew(false); // Ensure we're in edit mode
+        } else {
+          console.error('Failed to fetch item details:', response.status);
+          // Fallback to mock data if API call fails
+          const mockApiItem: APICollectionItem = {
+            id: item.id,
+            title: item.title,
+            type: (selectedCollection?.id as any) || 'news',
+            slug: item.title
+              .toLowerCase()
+              .replace(/[^a-z0-9]+/g, '-')
+              .replace(/(^-|-$)/g, ''),
+            status: item.status as 'published' | 'draft',
+            data: {
+              title: item.title,
+              slug: item.title
+                .toLowerCase()
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/(^-|-$)/g, ''),
+              description: item.description,
+              datePublished:
+                item.date || new Date().toISOString().split('T')[0],
+              summary: '',
+              excerpt: '',
+              thumbnail: { url: '', alt: '' },
+              heroImage: { url: '', alt: '' },
+              tags: [],
+              richTextContent: ''
+            },
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          };
+          setSelectedItem(mockApiItem);
+          setIsCreatingNew(false);
         }
       } catch (error) {
         console.error('Error fetching item:', error);
+        // Fallback to mock data on network error
+        const mockApiItem: APICollectionItem = {
+          id: item.id,
+          title: item.title,
+          type: (selectedCollection?.id as any) || 'news',
+          slug: item.title
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/(^-|-$)/g, ''),
+          status: item.status as 'published' | 'draft',
+          data: {
+            title: item.title,
+            slug: item.title
+              .toLowerCase()
+              .replace(/[^a-z0-9]+/g, '-')
+              .replace(/(^-|-$)/g, ''),
+            description: item.description,
+            datePublished: item.date || new Date().toISOString().split('T')[0],
+            summary: '',
+            excerpt: '',
+            thumbnail: { url: '', alt: '' },
+            heroImage: { url: '', alt: '' },
+            tags: [],
+            richTextContent: ''
+          },
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        };
+        setSelectedItem(mockApiItem);
+        setIsCreatingNew(false);
       }
     };
     fetchFullItem();
@@ -130,23 +207,71 @@ export default function Home() {
     const method = isCreatingNew ? 'POST' : 'PUT';
     const endpoint = isCreatingNew ? API_URL : `${API_URL}/${selectedItem?.id}`;
 
+    // Validate required fields
+    if (!formData.title?.trim()) {
+      throw new Error('Title is required');
+    }
+
+    if (!formData.slug?.trim()) {
+      throw new Error('Slug is required');
+    }
+
+    // Debug: Log the raw formData structure
+    console.log(
+      '🔍 Raw formData received in handleSubmitItem:',
+      JSON.stringify(formData, null, 2)
+    );
+
+    // Transform UI status to API status before sending
+    const apiStatus = transformStatusToAPI(formData.status || 'draft');
+
+    // The formData is already in the correct API format from dynamic-collection-form
+    const payload = {
+      type: formData.type || selectedCollection.id,
+      status: apiStatus, // Use transformed status
+      slug: formData.slug.trim(),
+      title: formData.title.trim(),
+      data: formData.data
+    };
+
+    console.log('🚀 Submitting to API:', {
+      method,
+      endpoint,
+      payload: JSON.stringify(payload, null, 2)
+    });
+
+    console.log('🔎 Payload validation check:', {
+      type: payload.type,
+      status: payload.status,
+      slug: payload.slug,
+      title: payload.title,
+      dataExists: !!payload.data,
+      dataKeys: payload.data ? Object.keys(payload.data) : [],
+      titleInData: payload.data?.title,
+      slugInData: payload.data?.slug,
+      statusTransformed: `${formData.status} -> ${apiStatus}`
+    });
+
     try {
       const response = await fetch(endpoint, {
         method,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          type: selectedCollection.id,
-          status: formData.status || 'draft',
-          slug: formData.slug,
-          title: formData.title,
-          data: formData.data
-        })
+        body: JSON.stringify(payload)
       });
+
+      console.log('📡 API Response Status:', response.status);
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || 'Failed to save item.');
+        console.error('❌ API Error Response:', errorData);
+        throw new Error(
+          errorData.message ||
+            `API Error: ${response.status} ${response.statusText}`
+        );
       }
+
+      const responseData = await response.json();
+      console.log('✅ API Success Response:', responseData);
 
       // Refresh data from server
       await fetchData();
@@ -154,6 +279,7 @@ export default function Home() {
       // Return success - the form will handle the success message and redirection
       return Promise.resolve();
     } catch (error: any) {
+      console.error('💥 Submit Item Error:', error);
       // Re-throw the error so the form can handle it
       throw error;
     }

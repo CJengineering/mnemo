@@ -35,7 +35,7 @@ const webflowNewsSchema = z.object({
   summary: z.string().optional(),
   summaryArabic: z.string().optional(),
   excerpt: z.string().optional(),
-  externalLink: z.string().url(),
+  externalLink: z.string().url().optional().or(z.literal('')),
   datePublished: z.string(),
   thumbnail: z
     .object({
@@ -150,6 +150,8 @@ export const WebflowNewsForm = forwardRef<
   }, [form]);
 
   const handleSubmit = async (data: WebflowNewsFormData) => {
+    console.log('📋 News Form Raw Data:', JSON.stringify(data, null, 2));
+
     try {
       await onSubmit(data as IncomingNewsData);
     } catch (error) {
@@ -205,7 +207,6 @@ export const WebflowNewsForm = forwardRef<
                     label="External Link"
                     placeholder="https://example.com/news-article"
                     type="url"
-                    required
                   />
 
                   <WebflowDateField
