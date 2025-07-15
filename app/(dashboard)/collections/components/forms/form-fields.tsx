@@ -24,7 +24,7 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { X, Plus, Upload, Search, Wand2 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { SimpleEditor } from 'app/page-editor/@/components/tiptap-templates/simple/simple-editor';
+import { DarkModeSimpleEditor } from './dark-mode-simple-editor';
 import API from '@/tip-tap/lib/api';
 import {
   Dialog,
@@ -141,7 +141,7 @@ export function RichTextField({
           </FormLabel>
           <FormControl>
             <div style={{ minHeight }} className="border rounded-md">
-              <SimpleEditor
+              <DarkModeSimpleEditor
                 initialContent={field.value || ''}
                 onChange={(content) => {
                   field.onChange(content);
