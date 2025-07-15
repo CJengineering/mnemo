@@ -23,7 +23,7 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { X, Plus, Upload, Link, ExternalLink, Calendar } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
-import { SimpleEditor } from 'app/page-editor/@/components/tiptap-templates/simple/simple-editor';
+import { DarkModeSimpleEditor } from './dark-mode-simple-editor';
 
 // Webflow-style Text Field
 interface WebflowTextFieldProps {
@@ -625,7 +625,7 @@ export function WebflowRichTextField({
               style={{ minHeight }}
               className="border border-gray-600 rounded-lg bg-gray-800 overflow-hidden"
             >
-              <SimpleEditor
+              <DarkModeSimpleEditor
                 initialContent={field.value || ''}
                 onChange={(content) => {
                   field.onChange(content);
