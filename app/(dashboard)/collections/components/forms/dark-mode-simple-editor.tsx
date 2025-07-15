@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { SimpleEditor } from 'app/page-editor/@/components/tiptap-templates/simple/simple-editor';
 
 interface DarkModeSimpleEditorProps {
@@ -16,30 +16,16 @@ export function DarkModeSimpleEditor({
   initialContent,
   onChange
 }: DarkModeSimpleEditorProps) {
-  useEffect(() => {
-    // Force dark mode on the document element when this editor mounts
-    const originalClassList =
-      document.documentElement.classList.contains('dark');
-
-    // Add dark class if not already present
-    if (!originalClassList) {
-      document.documentElement.classList.add('dark');
-    }
-
-    // Cleanup function to restore original state when component unmounts
-    return () => {
-      // Only remove dark class if it wasn't there originally
-      if (!originalClassList) {
-        document.documentElement.classList.remove('dark');
-      }
-    };
-  }, []);
+  // Remove the global document manipulation that was causing the black screen issue
+  // Instead, we'll rely on the local dark class wrapper
 
   return (
-    <div className="dark-mode-editor-wrapper">
-      {/* Force dark mode context for this editor instance */}
-      <div className="dark">
-        <SimpleEditor initialContent={initialContent} onChange={onChange} />
+    <div className="dark-mode-editor-wrapper bg-gray-900">
+      {/* Force dark mode context for this editor instance only */}
+      <div className="dark bg-gray-900 rounded-lg border border-gray-700">
+        <div className="bg-gray-900 text-white">
+          <SimpleEditor initialContent={initialContent} onChange={onChange} />
+        </div>
       </div>
     </div>
   );
