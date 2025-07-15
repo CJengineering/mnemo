@@ -160,10 +160,10 @@ const DynamicCollectionForm: React.FC<DynamicCollectionFormProps> = ({
   const formRef = React.useRef<any>(null);
 
   return (
-    <div className="h-full flex flex-col">
-      {/* Fixed Action Bar */}
-      <div className="flex-shrink-0 w-  bg-gray-900 border-b border-gray-700 px-8 py-2 mx-6 mt-6">
-        <div className="flex items-center justify-between gap-2">
+    <div className="h-full flex flex-col bg-gray-900 overflow-hidden">
+      {/* Fixed Header */}
+      <div className="flex-shrink-0 bg-gray-900 border-b border-gray-700 shadow-lg">
+        <div className="flex items-center justify-between px-6 py-4">
           {/* Left side - Back button + Title */}
           <div className="flex items-center gap-3 min-w-0 flex-1">
             <button
@@ -237,16 +237,18 @@ const DynamicCollectionForm: React.FC<DynamicCollectionFormProps> = ({
         </div>
       </div>
 
-      {/* Scrollable Form Content */}
-      <div className="flex-1 overflow-hidden px-6 pt-4">
-        <CollectionFormRouter
-          ref={formRef}
-          type={collection.id as CollectionType}
-          initialData={getInitialFormData()}
-          onSubmit={handleFormSubmit}
-          onCancel={onCancel}
-          isEditing={isEditing}
-        />
+      {/* Scrollable Form Content Only */}
+      <div className="flex-1 overflow-y-auto bg-gray-900">
+        <div className="px-6 py-6">
+          <CollectionFormRouter
+            ref={formRef}
+            type={collection.id as CollectionType}
+            initialData={getInitialFormData()}
+            onSubmit={handleFormSubmit}
+            onCancel={onCancel}
+            isEditing={isEditing}
+          />
+        </div>
       </div>
     </div>
   );
