@@ -142,6 +142,10 @@ const DynamicCollectionForm: React.FC<DynamicCollectionFormProps> = ({
 
   const handlePublishNow = () => {
     setPendingStatus('published');
+    // Update form status field for visual feedback
+    if (formRef.current?.setStatus) {
+      formRef.current.setStatus('published');
+    }
     // Trigger form submission through the ref
     if (formRef.current) {
       formRef.current.triggerSubmit();
@@ -150,6 +154,10 @@ const DynamicCollectionForm: React.FC<DynamicCollectionFormProps> = ({
 
   const handleSaveDraft = () => {
     setPendingStatus('draft');
+    // Update form status field for visual feedback
+    if (formRef.current?.setStatus) {
+      formRef.current.setStatus('draft');
+    }
     // Trigger form submission through the ref
     if (formRef.current) {
       formRef.current.triggerSubmit();

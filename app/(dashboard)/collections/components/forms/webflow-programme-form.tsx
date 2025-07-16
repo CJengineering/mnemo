@@ -1,6 +1,11 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, {
+  useState,
+  useEffect,
+  forwardRef,
+  useImperativeHandle
+} from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -106,12 +111,15 @@ interface WebflowProgrammeFormProps {
   isEditing?: boolean;
 }
 
-export function WebflowProgrammeForm({
-  initialData,
-  onSubmit,
-  onCancel,
-  isEditing = false
-}: WebflowProgrammeFormProps) {
+export interface WebflowProgrammeFormRef {
+  triggerSubmit: () => void;
+  setStatus: (status: 'draft' | 'published') => void;
+}
+
+export const WebflowProgrammeForm = forwardRef<
+  WebflowProgrammeFormRef,
+  WebflowProgrammeFormProps
+>(({ initialData, onSubmit, onCancel, isEditing = false }, ref) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<WebflowProgrammeFormData>({
@@ -219,6 +227,16 @@ export function WebflowProgrammeForm({
       setIsLoading(false);
     }
   };
+
+  // Expose submit function via ref
+  useImperativeHandle(ref, () => ({
+    triggerSubmit: () => {
+      form.handleSubmit(handleSubmit)();
+    },
+    setStatus: (status: 'draft' | 'published') => {
+      form.setValue('status', status);
+    }
+  }));
 
   const statusOptions = [
     { value: 'draft', label: 'Draft' },
@@ -564,4 +582,6 @@ export function WebflowProgrammeForm({
       </Form>
     </div>
   );
-}
+});
+
+WebflowProgrammeForm.displayName = 'WebflowProgrammeForm';

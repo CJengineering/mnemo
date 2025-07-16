@@ -73,6 +73,7 @@ interface WebflowNewsFormProps {
 
 export interface WebflowNewsFormRef {
   triggerSubmit: () => void;
+  setStatus: (status: 'draft' | 'published') => void;
 }
 
 export const WebflowNewsForm = forwardRef<
@@ -106,6 +107,9 @@ export const WebflowNewsForm = forwardRef<
   useImperativeHandle(ref, () => ({
     triggerSubmit: () => {
       form.handleSubmit(handleSubmit)();
+    },
+    setStatus: (status: 'draft' | 'published') => {
+      form.setValue('status', status);
     }
   }));
 

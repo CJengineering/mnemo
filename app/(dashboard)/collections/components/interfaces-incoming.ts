@@ -16,7 +16,7 @@ export interface IncomingEventData {
   title: string;
   description?: string;
   slug: string;
-  status?: "published" | "draft";
+  status?: 'published' | 'draft';
 
   // Event specific fields
   arabicTitle?: string;
@@ -61,7 +61,7 @@ export interface IncomingProgrammeData {
   title: string;
   description?: string;
   slug: string;
-  status?: "published" | "draft";
+  status?: 'published' | 'draft';
 
   // Programme specific fields
   nameArabic?: string;
@@ -114,7 +114,7 @@ export interface IncomingNewsData {
   title: string;
   description?: string;
   slug: string;
-  status?: "published" | "draft";
+  status?: 'published' | 'draft';
 
   // News specific fields
   arabicTitle?: string;
@@ -153,7 +153,7 @@ export interface IncomingPostData {
   title: string;
   description?: string;
   slug: string;
-  status?: "published" | "draft";
+  status?: 'published' | 'draft';
 
   // Post specific fields
   arabicTitle?: string;
@@ -208,7 +208,7 @@ export interface IncomingSourceData {
   title: string;
   description?: string;
   slug: string;
-  status?: "published" | "draft";
+  status?: 'published' | 'draft';
 
   // Source specific fields
   nameArabic?: string;
@@ -220,16 +220,57 @@ export interface IncomingSourceData {
   logoNative?: IncomingImageField;
 }
 
+// Incoming Team Data from Frontend Form
+export interface IncomingTeamData {
+  title: string; // maps to name
+  slug: string;
+  status?: 'published' | 'draft';
+
+  // Personal information
+  name: string;
+  nameArabic?: string;
+  position?: string;
+  positionArabic?: string;
+
+  // Images
+  photo: IncomingImageField; // required
+  photoHires?: string; // URL
+  altTextImage?: string;
+  altTextImageArabic?: string;
+
+  // Biography
+  paragraphDescription: string; // required
+  biographyArabic?: string;
+
+  // Meta information
+  metaDescription?: string;
+  metaDescriptionArabic?: string;
+
+  // Categorization
+  filter?:
+    | 'Leadership'
+    | 'Team'
+    | 'Advisory Committee'
+    | 'Alumnus'
+    | 'COP27 Youth Delegate';
+  order: number; // required
+
+  // Settings
+  newsOnOff?: boolean;
+  tags?: IncomingReferenceItem[];
+}
+
 // Union type for all incoming data types
 export type IncomingCollectionItemData =
   | IncomingEventData
   | IncomingProgrammeData
   | IncomingNewsData
   | IncomingPostData
-  | IncomingSourceData;
+  | IncomingSourceData
+  | IncomingTeamData;
 
 // Type discriminator for the frontend to specify which type they're sending
 export interface IncomingCollectionItem {
-  type: "event" | "programme" | "news" | "post" | "source";
+  type: 'event' | 'programme' | 'news' | 'post' | 'source' | 'team';
   data: IncomingCollectionItemData;
 }

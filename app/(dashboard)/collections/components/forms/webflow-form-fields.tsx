@@ -33,7 +33,7 @@ interface WebflowTextFieldProps {
   placeholder?: string;
   required?: boolean;
   helperText?: string;
-  type?: 'text' | 'email' | 'url' | 'password';
+  type?: 'text' | 'email' | 'url' | 'password' | 'number';
 }
 
 export function WebflowTextField({
