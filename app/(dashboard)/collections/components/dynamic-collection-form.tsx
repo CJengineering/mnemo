@@ -66,16 +66,22 @@ const DynamicCollectionForm: React.FC<DynamicCollectionFormProps> = ({
 
   // Convert API item data to form data
   const getInitialFormData = (): Partial<IncomingCollectionItemData> => {
-    if (!item?.data) return {};
+    if (!item?.data) {
+      return {};
+    }
 
-    // The item.data should already be in the correct format
-    // but we might need to transform some fields
-    return {
+    // The API returns data in a nested structure where the actual form fields
+    // are inside the 'data' property. We need to flatten this and add top-level fields
+    const formData = {
+      // Top-level API fields
       title: item.title,
       slug: item.slug,
       status: item.status,
+      // Spread all the nested data fields
       ...item.data
     };
+
+    return formData;
   };
 
   const handleFormSubmit = async (formData: IncomingCollectionItemData) => {

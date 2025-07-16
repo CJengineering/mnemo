@@ -116,9 +116,7 @@ export const WebflowTeamForm = forwardRef<
     setStatus: (status: 'draft' | 'published') => {
       form.setValue('status', status);
     }
-  }));
-
-  // Reset form when initialData changes (when switching between items)
+  })); // Reset form when initialData changes (when switching between items)
   useEffect(() => {
     const newValues = {
       title: initialData?.name || '',

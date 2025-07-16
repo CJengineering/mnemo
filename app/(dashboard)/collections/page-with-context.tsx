@@ -1,15 +1,12 @@
 'use client';
 
-import {
-  CollectionsProvider,
-  useCollections
-} from './context/collections-context';
+import { useCollections } from './context/collections-context';
 import { CollectionItem } from './lib/types';
 import CollectionsList from './components/collection-list';
 import ItemsList from './components/items-list';
 import DynamicCollectionForm from './components/dynamic-collection-form';
 
-function CollectionsContent() {
+export default function Home() {
   const {
     state: {
       collections,
@@ -25,8 +22,7 @@ function CollectionsContent() {
     setCreatingNew,
     createItem,
     updateItem,
-    clearError,
-    fetchItemById
+    clearError
   } = useCollections();
 
   const handleCollectionSelect = (collection: any) => {
@@ -34,42 +30,37 @@ function CollectionsContent() {
   };
 
   const handleItemSelect = async (item: CollectionItem) => {
-    try {
-      // Fetch the complete API data for this item
-      const fullItem = await fetchItemById(item.id);
-      selectItem(fullItem);
-    } catch (error) {
-      console.error('Failed to fetch item details:', error);
-      // Fallback to basic data conversion if fetch fails
-      const apiItem = {
-        id: item.id,
+    // For now, convert the CollectionItem to APICollectionItem format
+    // In the context version, we can store full item data to avoid this conversion
+    const apiItem = {
+      id: item.id,
+      title: item.title,
+      type: selectedCollection?.id as any,
+      slug: item.title
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)/g, ''),
+      status: item.status as 'published' | 'draft',
+      data: {
         title: item.title,
-        type: selectedCollection?.id as any,
         slug: item.title
           .toLowerCase()
           .replace(/[^a-z0-9]+/g, '-')
           .replace(/(^-|-$)/g, ''),
-        status: item.status as 'published' | 'draft',
-        data: {
-          title: item.title,
-          slug: item.title
-            .toLowerCase()
-            .replace(/[^a-z0-9]+/g, '-')
-            .replace(/(^-|-$)/g, ''),
-          description: item.description,
-          datePublished: item.date || new Date().toISOString().split('T')[0],
-          summary: '',
-          excerpt: '',
-          thumbnail: { url: '', alt: '' },
-          heroImage: { url: '', alt: '' },
-          tags: [],
-          richTextContent: ''
-        },
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
-      };
-      selectItem(apiItem);
-    }
+        description: item.description,
+        datePublished: item.date || new Date().toISOString().split('T')[0],
+        summary: '',
+        excerpt: '',
+        thumbnail: { url: '', alt: '' },
+        heroImage: { url: '', alt: '' },
+        tags: [],
+        richTextContent: ''
+      },
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    };
+
+    selectItem(apiItem);
   };
 
   const handleCreateNew = () => {
@@ -106,17 +97,17 @@ function CollectionsContent() {
 
   if (isLoading) {
     return (
-      <div className="flex h-screen w-full items-center justify-center bg-gray-900">
-        <div className="text-white text-xl">Loading collections...</div>
+      <div className="flex h-screen w-full items-center justify-center">
+        <div className="text-lg">Loading collections...</div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="flex h-screen w-full items-center justify-center text-red-500 bg-gray-900">
+      <div className="flex h-screen w-full items-center justify-center text-red-500">
         <div className="text-center">
-          <div className="text-xl mb-4">Error: {error}</div>
+          <div className="text-lg mb-2">Error: {error}</div>
           <button
             onClick={clearError}
             className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
@@ -162,7 +153,7 @@ function CollectionsContent() {
                     {/* Items list - Scrollable only */}
                     <div className="flex-1 overflow-y-auto">
                       <div className="space-y-1 p-2">
-                        {selectedCollection.items.map((item: any) => (
+                        {selectedCollection.items.map((item) => (
                           <button
                             key={item.id}
                             className={`w-full text-left p-3 rounded-lg transition-colors ${
@@ -216,13 +207,5 @@ function CollectionsContent() {
         )}
       </div>
     </div>
-  );
-}
-
-export default function CollectionsPage() {
-  return (
-    <CollectionsProvider>
-      <CollectionsContent />
-    </CollectionsProvider>
   );
 }
