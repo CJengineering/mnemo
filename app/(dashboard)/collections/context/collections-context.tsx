@@ -126,9 +126,17 @@ function collectionsReducer(
       return { ...state, error: action.payload };
 
     case 'SET_COLLECTIONS':
+      const newCollections = action.payload;
+      // If there was a previously selected collection, find the updated version
+      const updatedSelectedCollection = state.selectedCollection
+        ? newCollections.find((c) => c.id === state.selectedCollection?.id) ||
+          null
+        : null;
+
       return {
         ...state,
-        collections: action.payload,
+        collections: newCollections,
+        selectedCollection: updatedSelectedCollection,
         lastFetch: Date.now(),
         isLoading: false,
         error: null
@@ -178,9 +186,17 @@ function collectionsReducer(
         return collection;
       });
 
+      // Update selectedCollection if it matches the collection being updated
+      const updatedSelectedCollection =
+        state.selectedCollection?.id === collectionType
+          ? collections.find((c) => c.id === collectionType) ||
+            state.selectedCollection
+          : state.selectedCollection;
+
       return {
         ...state,
         collections,
+        selectedCollection: updatedSelectedCollection,
         selectedItem: item,
         isCreatingNew: false
       };
@@ -203,9 +219,16 @@ function collectionsReducer(
         )
       }));
 
+      // Update selectedCollection to point to the fresh collection object
+      const updatedSelectedCollection = state.selectedCollection
+        ? collections.find((c) => c.id === state.selectedCollection?.id) ||
+          state.selectedCollection
+        : state.selectedCollection;
+
       return {
         ...state,
         collections,
+        selectedCollection: updatedSelectedCollection,
         selectedItem: updatedItem
       };
     }
@@ -217,9 +240,16 @@ function collectionsReducer(
         items: collection.items.filter((item) => item.id !== itemId)
       }));
 
+      // Update selectedCollection to point to the fresh collection object
+      const updatedSelectedCollection = state.selectedCollection
+        ? collections.find((c) => c.id === state.selectedCollection?.id) ||
+          state.selectedCollection
+        : state.selectedCollection;
+
       return {
         ...state,
         collections,
+        selectedCollection: updatedSelectedCollection,
         selectedItem:
           state.selectedItem?.id === itemId ? null : state.selectedItem
       };
@@ -421,21 +451,27 @@ export function CollectionsProvider({
         }
 
         const responseData = await response.json();
+        // The API returns the created item nested under 'collectionItem'
+        const createdItemData = responseData.collectionItem;
         const newItem: APICollectionItem = {
-          id: responseData.id,
-          title: payload.title,
-          type: payload.type as any,
-          slug: payload.slug,
-          status: transformStatusFromAPI(apiStatus),
-          data: payload.data,
-          created_at: responseData.created_at || new Date().toISOString(),
-          updated_at: responseData.updated_at || new Date().toISOString()
+          id: createdItemData.id,
+          title: createdItemData.title,
+          type: createdItemData.type,
+          slug: createdItemData.slug,
+          status: transformStatusFromAPI(createdItemData.status),
+          data: createdItemData.data,
+          created_at: createdItemData.created_at,
+          updated_at: createdItemData.updated_at
         };
 
         dispatch({
           type: 'ADD_ITEM',
           payload: { collectionType, item: newItem }
         });
+
+        // Refresh collections to ensure UI is in sync with server
+        await fetchCollections();
+
         return newItem;
       } catch (error: any) {
         console.error('Create item error:', error);
@@ -445,7 +481,7 @@ export function CollectionsProvider({
         dispatch({ type: 'SET_SUBMITTING', payload: false });
       }
     },
-    []
+    [fetchCollections]
   );
 
   // Update item
@@ -488,20 +524,25 @@ export function CollectionsProvider({
         }
 
         const responseData = await response.json();
+        // The API returns the updated item nested under 'collectionItem'
+        const updatedItemData = responseData.collectionItem;
         const updatedItem: APICollectionItem = {
           id,
-          title: payload.title || '',
-          type: (payload.type || state.selectedItem?.type) as any,
-          slug: payload.slug || '',
-          status: transformStatusFromAPI(apiStatus),
-          data: payload.data,
-          created_at:
-            state.selectedItem?.created_at || new Date().toISOString(),
-          updated_at: responseData.updated_at || new Date().toISOString()
+          title: updatedItemData.title,
+          type: updatedItemData.type,
+          slug: updatedItemData.slug,
+          status: transformStatusFromAPI(updatedItemData.status),
+          data: updatedItemData.data,
+          created_at: updatedItemData.created_at,
+          updated_at: updatedItemData.updated_at
         };
 
         dispatch({ type: 'UPDATE_ITEM', payload: updatedItem });
         dispatch({ type: 'REVERT_OPTIMISTIC', payload: id });
+
+        // Refresh collections to ensure UI is in sync with server
+        await fetchCollections();
+
         return updatedItem;
       } catch (error: any) {
         console.error('Update item error:', error);
@@ -512,32 +553,38 @@ export function CollectionsProvider({
         dispatch({ type: 'SET_SUBMITTING', payload: false });
       }
     },
-    [state.selectedItem]
+    [state.selectedItem, fetchCollections]
   );
 
   // Delete item
-  const deleteItem = useCallback(async (id: string): Promise<void> => {
-    dispatch({ type: 'SET_SUBMITTING', payload: true });
-    dispatch({ type: 'SET_ERROR', payload: null });
+  const deleteItem = useCallback(
+    async (id: string): Promise<void> => {
+      dispatch({ type: 'SET_SUBMITTING', payload: true });
+      dispatch({ type: 'SET_ERROR', payload: null });
 
-    try {
-      const response = await fetch(`${API_URL}/${id}`, {
-        method: 'DELETE'
-      });
+      try {
+        const response = await fetch(`${API_URL}/${id}`, {
+          method: 'DELETE'
+        });
 
-      if (!response.ok) {
-        throw new Error(`Failed to delete item: ${response.status}`);
+        if (!response.ok) {
+          throw new Error(`Failed to delete item: ${response.status}`);
+        }
+
+        dispatch({ type: 'DELETE_ITEM', payload: id });
+
+        // Refresh collections to ensure UI is in sync with server
+        await fetchCollections();
+      } catch (error: any) {
+        console.error('Delete item error:', error);
+        dispatch({ type: 'SET_ERROR', payload: error.message });
+        throw error;
+      } finally {
+        dispatch({ type: 'SET_SUBMITTING', payload: false });
       }
-
-      dispatch({ type: 'DELETE_ITEM', payload: id });
-    } catch (error: any) {
-      console.error('Delete item error:', error);
-      dispatch({ type: 'SET_ERROR', payload: error.message });
-      throw error;
-    } finally {
-      dispatch({ type: 'SET_SUBMITTING', payload: false });
-    }
-  }, []);
+    },
+    [fetchCollections]
+  );
 
   // Fetch item by ID
   const fetchItemById = useCallback(
@@ -591,16 +638,17 @@ export function CollectionsProvider({
     fetchCollections();
   }, [fetchCollections]);
 
-  // Auto-refresh every 5 minutes
+  // Auto-refresh every 5 minutes - FIXED: Remove dependency on state.lastFetch to prevent recreation
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (state.lastFetch && Date.now() - state.lastFetch > 5 * 60 * 1000) {
+    const interval = setInterval(
+      () => {
         fetchCollections();
-      }
-    }, 60 * 1000); // Check every minute
+      },
+      5 * 60 * 1000
+    ); // Check and refresh every 5 minutes
 
     return () => clearInterval(interval);
-  }, [fetchCollections, state.lastFetch]);
+  }, [fetchCollections]); // Only depend on fetchCollections, not state.lastFetch
 
   const contextValue: CollectionsContextType = {
     state,
