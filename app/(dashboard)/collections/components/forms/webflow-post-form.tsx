@@ -1,6 +1,11 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, {
+  useState,
+  useEffect,
+  forwardRef,
+  useImperativeHandle
+} from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -75,12 +80,15 @@ interface WebflowPostFormProps {
   isEditing?: boolean;
 }
 
-export function WebflowPostForm({
-  initialData,
-  onSubmit,
-  onCancel,
-  isEditing = false
-}: WebflowPostFormProps) {
+export interface WebflowPostFormRef {
+  triggerSubmit: () => void;
+  setStatus: (status: 'draft' | 'published') => void;
+}
+
+export const WebflowPostForm = forwardRef<
+  WebflowPostFormRef,
+  WebflowPostFormProps
+>(({ initialData, onSubmit, onCancel, isEditing = false }, ref) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<WebflowPostFormData>({
@@ -176,6 +184,16 @@ export function WebflowPostForm({
       setIsLoading(false);
     }
   };
+
+  // Expose submit function via ref
+  useImperativeHandle(ref, () => ({
+    triggerSubmit: () => {
+      form.handleSubmit(handleSubmit)();
+    },
+    setStatus: (status: 'draft' | 'published') => {
+      form.setValue('status', status);
+    }
+  }));
 
   const statusOptions = [
     { value: 'draft', label: 'Draft' },
@@ -455,4 +473,6 @@ export function WebflowPostForm({
       </Form>
     </div>
   );
-}
+});
+
+WebflowPostForm.displayName = 'WebflowPostForm';
