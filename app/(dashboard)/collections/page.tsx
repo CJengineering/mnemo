@@ -29,6 +29,17 @@ function CollectionsContent() {
     fetchItemById
   } = useCollections();
 
+  // Debug: Log the current state
+  console.log('🔍 Collections Debug:', {
+    collections,
+    selectedCollection,
+    selectedItem,
+    isCreatingNew,
+    isLoading,
+    error,
+    collectionsLength: collections?.length || 0
+  });
+
   const handleCollectionSelect = (collection: any) => {
     selectCollection(collection);
   };
@@ -77,17 +88,34 @@ function CollectionsContent() {
   };
 
   const handleSubmitItem = async (formData: any) => {
-    if (!selectedCollection) return;
+    console.log('🎯 handleSubmitItem called with:', {
+      formData,
+      selectedCollection,
+      isCreatingNew,
+      selectedItem
+    });
+
+    if (!selectedCollection) {
+      console.error('❌ No selected collection');
+      return;
+    }
 
     try {
       if (isCreatingNew) {
-        await createItem(selectedCollection.id, formData);
+        console.log('🆕 Creating new item...');
+        const result = await createItem(selectedCollection.id, formData);
+        console.log('✅ Create item result:', result);
       } else if (selectedItem) {
-        await updateItem(selectedItem.id, formData);
+        console.log('✏️ Updating existing item...');
+        const result = await updateItem(selectedItem.id, formData);
+        console.log('✅ Update item result:', result);
       }
 
-      // Context automatically handles UI updates - no manual refresh needed!
+      console.log(
+        '🔄 Context automatically handles UI updates - no manual refresh needed!'
+      );
     } catch (error) {
+      console.error('❌ handleSubmitItem error:', error);
       // Error is handled by context, just re-throw for form error handling
       throw error;
     }
@@ -102,6 +130,15 @@ function CollectionsContent() {
     selectCollection(null);
     selectItem(null);
     setCreatingNew(false);
+  };
+
+  const handleBackToItems = () => {
+    console.log('🔙 handleBackToItems called - going back to items list');
+    // Go back to items list but keep collection selected
+    selectItem(null);
+    setCreatingNew(false);
+    // Collection remains selected so user sees the items list
+    console.log('🔙 handleBackToItems completed - should now show items list');
   };
 
   if (isLoading) {
@@ -193,7 +230,7 @@ function CollectionsContent() {
                     isEditing={!isCreatingNew}
                     onSubmit={handleSubmitItem}
                     onCancel={handleCancelForm}
-                    onBackToCollections={handleBackToCollections}
+                    onBackToCollections={handleBackToItems}
                   />
                 </div>
               </>

@@ -55,6 +55,7 @@ const DynamicCollectionForm: React.FC<DynamicCollectionFormProps> = ({
   isEditing = false
 }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [isRedirecting, setIsRedirecting] = useState(false);
   const [submissionStatus, setSubmissionStatus] = useState<{
     type: 'success' | 'error' | null;
     message: string;
@@ -85,6 +86,7 @@ const DynamicCollectionForm: React.FC<DynamicCollectionFormProps> = ({
   };
 
   const handleFormSubmit = async (formData: IncomingCollectionItemData) => {
+    console.log('🚀 Form submission started');
     setIsLoading(true);
     setSubmissionStatus({ type: null, message: '' });
 
@@ -94,6 +96,7 @@ const DynamicCollectionForm: React.FC<DynamicCollectionFormProps> = ({
     try {
       // Use pending status if set, otherwise use form data status
       const finalStatus = pendingStatus || formData.status || 'draft';
+      console.log('📌 Final status:', finalStatus);
 
       // Transform form data to API format
       const apiData: Partial<APICollectionItem> = {
@@ -114,23 +117,43 @@ const DynamicCollectionForm: React.FC<DynamicCollectionFormProps> = ({
 
       console.log('🔄 Transformed API Data:', JSON.stringify(apiData, null, 2));
 
+      console.log('📡 Calling onSubmit...');
       await onSubmit(apiData);
+      console.log('✅ onSubmit completed successfully!');
 
-      // Show success message
+      // Show success message with better feedback
       const statusText =
         finalStatus === 'published' ? 'published' : 'saved as draft';
+      const actionText = isEditing ? 'updated' : 'created';
+      const successMessage = `✅ Successfully ${actionText} and ${statusText}! Redirecting...`;
+
+      console.log('🎉 Setting success message:', successMessage);
       setSubmissionStatus({
         type: 'success',
-        message: `${collection.name.slice(0, -1)} ${statusText} successfully!`
+        message: successMessage
       });
 
       // Clear pending status
       setPendingStatus(null);
 
-      // Redirect after 2 seconds
+      // Redirect after 3 seconds to give user time to see success message
+      console.log('⏰ Starting redirect timer...');
+      setIsRedirecting(true);
       setTimeout(() => {
-        onCancel(); // This will close the modal and return to the list
-      }, 2000);
+        console.log('🔄 Executing redirect...');
+        // Clear the success message before redirecting
+        setSubmissionStatus({ type: null, message: '' });
+
+        if (onBackToCollections) {
+          console.log('📍 Using onBackToCollections callback');
+          onBackToCollections(); // Navigate back to items view with fresh data
+        } else {
+          console.log('📍 Using onCancel fallback');
+          onCancel(); // Fallback
+        }
+        setIsRedirecting(false);
+        console.log('✅ Redirect completed');
+      }, 3000);
     } catch (error) {
       console.error('Form submission error:', error);
       setSubmissionStatus({
@@ -143,6 +166,7 @@ const DynamicCollectionForm: React.FC<DynamicCollectionFormProps> = ({
       setPendingStatus(null);
     } finally {
       setIsLoading(false);
+      setIsRedirecting(false);
     }
   };
 
@@ -174,7 +198,27 @@ const DynamicCollectionForm: React.FC<DynamicCollectionFormProps> = ({
   const formRef = React.useRef<any>(null);
 
   return (
-    <div className="h-full flex flex-col bg-gray-900 overflow-hidden">
+    <div className="h-full flex flex-col bg-gray-900 overflow-hidden relative">
+      {/* Toast-style Success/Error Notification - Fixed position, more prominent */}
+      {submissionStatus.type && (
+        <div className="fixed top-4 right-4 z-50 max-w-md">
+          <div
+            className={`flex items-center gap-3 px-4 py-3 rounded-lg shadow-lg border-2 text-sm font-medium transform transition-all duration-300 ${
+              submissionStatus.type === 'success'
+                ? 'bg-green-800 text-green-100 border-green-600 shadow-green-900/20'
+                : 'bg-red-800 text-red-100 border-red-600 shadow-red-900/20'
+            }`}
+          >
+            {submissionStatus.type === 'success' ? (
+              <Check className="h-5 w-5 flex-shrink-0" />
+            ) : (
+              <AlertCircle className="h-5 w-5 flex-shrink-0" />
+            )}
+            <span className="flex-1">{submissionStatus.message}</span>
+          </div>
+        </div>
+      )}
+
       {/* Fixed Header */}
       <div className="flex-shrink-0 bg-gray-900 border-b border-gray-700 shadow-lg">
         <div className="flex items-center justify-between px-6 py-4">
@@ -213,18 +257,18 @@ const DynamicCollectionForm: React.FC<DynamicCollectionFormProps> = ({
 
             {submissionStatus.type && (
               <div
-                className={`hidden sm:flex items-center gap-2 px-2 py-1 rounded-full text-xs flex-shrink-0 ${
+                className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm flex-shrink-0 min-w-0 ${
                   submissionStatus.type === 'success'
-                    ? 'bg-green-900/60 text-green-300 border border-green-500/30'
-                    : 'bg-red-900/60 text-red-300 border border-red-500/30'
+                    ? 'bg-green-900/80 text-green-200 border border-green-500/50'
+                    : 'bg-red-900/80 text-red-200 border border-red-500/50'
                 }`}
               >
                 {submissionStatus.type === 'success' ? (
-                  <Check className="h-3 w-3" />
+                  <Check className="h-4 w-4 flex-shrink-0" />
                 ) : (
-                  <AlertCircle className="h-3 w-3" />
+                  <AlertCircle className="h-4 w-4 flex-shrink-0" />
                 )}
-                <span>{submissionStatus.message}</span>
+                <span className="truncate">{submissionStatus.message}</span>
               </div>
             )}
           </div>
@@ -234,18 +278,38 @@ const DynamicCollectionForm: React.FC<DynamicCollectionFormProps> = ({
             <Button
               type="button"
               onClick={handleSaveDraft}
-              disabled={isLoading}
-              className="bg-gray-700 hover:bg-gray-600 text-white text-sm px-3 py-1.5 h-auto"
+              disabled={isLoading || isRedirecting}
+              className={`text-white text-sm px-3 py-1.5 h-auto transition-all ${
+                isLoading
+                  ? 'bg-blue-600 hover:bg-blue-600'
+                  : 'bg-gray-700 hover:bg-gray-600'
+              }`}
             >
-              {isLoading ? 'Saving...' : 'Save Draft'}
+              {isLoading && pendingStatus === 'draft'
+                ? '✅ Saving Draft...'
+                : isRedirecting
+                  ? '🔄 Redirecting...'
+                  : 'Save Draft'}
             </Button>
             <Button
               type="button"
               onClick={handlePublishNow}
-              disabled={isLoading}
-              className="bg-blue-600 hover:bg-blue-700 text-white text-sm px-3 py-1.5 h-auto"
+              disabled={isLoading || isRedirecting}
+              className={`text-white text-sm px-3 py-1.5 h-auto transition-all ${
+                isLoading
+                  ? 'bg-green-600 hover:bg-green-600'
+                  : 'bg-blue-600 hover:bg-blue-700'
+              }`}
             >
-              {isLoading ? 'Publishing...' : isEditing ? 'Update' : 'Publish'}
+              {isLoading && pendingStatus === 'published'
+                ? '✅ Publishing...'
+                : isLoading
+                  ? '✅ Saving...'
+                  : isRedirecting
+                    ? '🔄 Redirecting...'
+                    : isEditing
+                      ? 'Update'
+                      : 'Publish'}
             </Button>
           </div>
         </div>
