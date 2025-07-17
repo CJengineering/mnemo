@@ -159,26 +159,20 @@ export const WebflowPostForm = forwardRef<
     form.reset(newValues);
   }, [initialData, form]);
 
-  // Track if user manually edited slug
-  const [slugManuallyEdited, setSlugManuallyEdited] = useState(false);
-  const [isUpdatingSlugProgrammatically, setIsUpdatingSlugProgrammatically] =
-    useState(false);
-
-  // Manual slug generation function
-  const handleGenerateSlug = () => {
-    const currentTitle = form.getValues('title');
-    if (currentTitle) {
-      const newSlug = generateSlug(currentTitle);
-      console.log('🎯 Manual slug generation:', {
-        input: currentTitle,
-        output: newSlug
-      });
-      form.setValue('slug', newSlug);
-      setSlugManuallyEdited(true);
-    }
-  };
-
-  // Remove automatic slug generation - using manual generation instead
+  // Auto-generate slug from title
+  useEffect(() => {
+    const subscription = form.watch((value, { name }) => {
+      if (name === 'title' && value.title && !form.getValues('slug')) {
+        const timer = setTimeout(() => {
+          if (value.title) {
+            form.setValue('slug', generateSlug(value.title));
+          }
+        }, 500);
+        return () => clearTimeout(timer);
+      }
+    });
+    return subscription.unsubscribe;
+  }, [form]);
 
   const handleSubmit = async (data: WebflowPostFormData) => {
     setIsLoading(true);
@@ -228,53 +222,12 @@ export const WebflowPostForm = forwardRef<
                     required
                   />
 
-                  {/* Enhanced Slug Field with Generate Button */}
-                  <div className="space-y-3">
-                    <WebflowSlugField
-                      control={form.control}
-                      name="slug"
-                      label="Slug"
-                      required
-                    />
-
-                    <div className="flex items-center gap-3">
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        onClick={handleGenerateSlug}
-                        className="bg-blue-600 border-blue-600 text-white hover:bg-blue-700 hover:border-blue-700"
-                        disabled={!form.watch('title')}
-                      >
-                        <svg
-                          className="w-4 h-4 mr-2"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M13 10V3L4 14h7v7l9-11h-7z"
-                          />
-                        </svg>
-                        Generate Slug from Title
-                      </Button>
-
-                      {form.watch('title') && !form.watch('slug') && (
-                        <span className="text-xs text-yellow-400">
-                          💡 Click "Generate Slug" to create URL-friendly slug
-                        </span>
-                      )}
-
-                      {form.watch('slug') && (
-                        <span className="text-xs text-green-400">
-                          ✅ Slug ready
-                        </span>
-                      )}
-                    </div>
-                  </div>
+                  <WebflowSlugField
+                    control={form.control}
+                    name="slug"
+                    label="Slug"
+                    required
+                  />
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <WebflowSelectField

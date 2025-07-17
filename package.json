@@ -6,7 +6,9 @@
     "start": "next start",
     "test": "jest",
     "drizzle:push": "drizzle-kit push",
-    "drizzle:generate": "drizzle-kit generate"
+    "drizzle:generate": "drizzle-kit generate",
+    "seed:teams": "node scripts/seed-teams.js",
+    "seed:teams:preview": "node scripts/seed-teams.js --preview"
   },
   "dependencies": {
     "@cj-tech/shared-blocks": "^1.0.1",

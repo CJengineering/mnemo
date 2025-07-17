@@ -88,37 +88,29 @@ function CollectionsContent() {
   };
 
   const handleSubmitItem = async (formData: any) => {
-    console.log('🎯 handleSubmitItem called with:', {
-      formData,
-      selectedCollection,
-      isCreatingNew,
-      selectedItem
-    });
-
+    console.log('🎯 handleSubmitItem called with:', { formData, selectedCollection, isCreatingNew, selectedItem });
+    
     if (!selectedCollection) {
       console.error('❌ No selected collection');
-      throw new Error('No collection selected');
+      return;
     }
 
     try {
-      let result;
       if (isCreatingNew) {
         console.log('🆕 Creating new item...');
-        result = await createItem(selectedCollection.id, formData);
+        const result = await createItem(selectedCollection.id, formData);
         console.log('✅ Create item result:', result);
       } else if (selectedItem) {
         console.log('✏️ Updating existing item...');
-        result = await updateItem(selectedItem.id, formData);
+        const result = await updateItem(selectedItem.id, formData);
         console.log('✅ Update item result:', result);
-      } else {
-        throw new Error('No item selected for editing');
       }
 
-      console.log('🔄 Context has updated data, operation successful!');
-      return result; // Return the result for the form to handle
+      console.log('🔄 Context automatically handles UI updates - no manual refresh needed!');
     } catch (error) {
       console.error('❌ handleSubmitItem error:', error);
-      throw error; // Re-throw so form can catch and show error
+      // Error is handled by context, just re-throw for form error handling
+      throw error;
     }
   };
 
@@ -134,12 +126,10 @@ function CollectionsContent() {
   };
 
   const handleBackToItems = () => {
-    console.log('🔙 handleBackToItems called - going back to items list');
     // Go back to items list but keep collection selected
     selectItem(null);
     setCreatingNew(false);
     // Collection remains selected so user sees the items list
-    console.log('🔙 handleBackToItems completed - should now show items list');
   };
 
   if (isLoading) {
