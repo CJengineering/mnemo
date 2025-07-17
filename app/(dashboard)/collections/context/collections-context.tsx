@@ -469,8 +469,8 @@ export function CollectionsProvider({
           payload: { collectionType, item: newItem }
         });
 
-        // Refresh collections to ensure UI is in sync with server
-        await fetchCollections();
+        // Note: Removed automatic fetchCollections() for smoother UX
+        // The optimistic update above is sufficient, and form will handle redirect timing
 
         return newItem;
       } catch (error: any) {
@@ -540,8 +540,8 @@ export function CollectionsProvider({
         dispatch({ type: 'UPDATE_ITEM', payload: updatedItem });
         dispatch({ type: 'REVERT_OPTIMISTIC', payload: id });
 
-        // Refresh collections to ensure UI is in sync with server
-        await fetchCollections();
+        // Note: Removed automatic fetchCollections() for smoother UX
+        // The UPDATE_ITEM dispatch above is sufficient, and form will handle redirect timing
 
         return updatedItem;
       } catch (error: any) {
@@ -573,8 +573,8 @@ export function CollectionsProvider({
 
         dispatch({ type: 'DELETE_ITEM', payload: id });
 
-        // Refresh collections to ensure UI is in sync with server
-        await fetchCollections();
+        // Note: Removed automatic fetchCollections() for consistency
+        // The DELETE_ITEM dispatch above is sufficient for immediate UI updates
       } catch (error: any) {
         console.error('Delete item error:', error);
         dispatch({ type: 'SET_ERROR', payload: error.message });
