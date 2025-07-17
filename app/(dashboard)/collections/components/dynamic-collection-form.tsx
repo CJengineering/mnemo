@@ -40,7 +40,9 @@ const getIconForType = (type: CollectionType) => {
 interface DynamicCollectionFormProps {
   collection: Collection;
   item?: APICollectionItem | null;
-  onSubmit: (data: Partial<APICollectionItem>) => Promise<void>;
+  onSubmit: (
+    data: Partial<APICollectionItem>
+  ) => Promise<APICollectionItem | void>;
   onCancel: () => void;
   onBackToCollections?: () => void;
   isEditing?: boolean;
@@ -117,15 +119,15 @@ const DynamicCollectionForm: React.FC<DynamicCollectionFormProps> = ({
 
       console.log('🔄 Transformed API Data:', JSON.stringify(apiData, null, 2));
 
-      console.log('📡 Calling onSubmit...');
+      console.log('📡 Calling onSubmit and waiting for response...');
       await onSubmit(apiData);
-      console.log('✅ onSubmit completed successfully!');
+      console.log('✅ API call completed successfully!');
 
-      // Show success message with better feedback
+      // Show success message only after API confirms success
       const statusText =
         finalStatus === 'published' ? 'published' : 'saved as draft';
       const actionText = isEditing ? 'updated' : 'created';
-      const successMessage = `✅ Successfully ${actionText} and ${statusText}! Redirecting...`;
+      const successMessage = `✅ Successfully ${actionText} and ${statusText}!`;
 
       console.log('🎉 Setting success message:', successMessage);
       setSubmissionStatus({
@@ -136,14 +138,11 @@ const DynamicCollectionForm: React.FC<DynamicCollectionFormProps> = ({
       // Clear pending status
       setPendingStatus(null);
 
-      // Redirect after 3 seconds to give user time to see success message
+      // Redirect after 1.5 seconds to allow user to see success message
       console.log('⏰ Starting redirect timer...');
       setIsRedirecting(true);
       setTimeout(() => {
         console.log('🔄 Executing redirect...');
-        // Clear the success message before redirecting
-        setSubmissionStatus({ type: null, message: '' });
-
         if (onBackToCollections) {
           console.log('📍 Using onBackToCollections callback');
           onBackToCollections(); // Navigate back to items view with fresh data
@@ -153,9 +152,9 @@ const DynamicCollectionForm: React.FC<DynamicCollectionFormProps> = ({
         }
         setIsRedirecting(false);
         console.log('✅ Redirect completed');
-      }, 3000);
+      }, 1500);
     } catch (error) {
-      console.error('Form submission error:', error);
+      console.error('❌ Form submission error:', error);
       setSubmissionStatus({
         type: 'error',
         message:
@@ -166,7 +165,6 @@ const DynamicCollectionForm: React.FC<DynamicCollectionFormProps> = ({
       setPendingStatus(null);
     } finally {
       setIsLoading(false);
-      setIsRedirecting(false);
     }
   };
 

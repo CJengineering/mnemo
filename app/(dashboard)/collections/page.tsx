@@ -97,27 +97,28 @@ function CollectionsContent() {
 
     if (!selectedCollection) {
       console.error('❌ No selected collection');
-      return;
+      throw new Error('No collection selected');
     }
 
     try {
+      let result;
       if (isCreatingNew) {
         console.log('🆕 Creating new item...');
-        const result = await createItem(selectedCollection.id, formData);
+        result = await createItem(selectedCollection.id, formData);
         console.log('✅ Create item result:', result);
       } else if (selectedItem) {
         console.log('✏️ Updating existing item...');
-        const result = await updateItem(selectedItem.id, formData);
+        result = await updateItem(selectedItem.id, formData);
         console.log('✅ Update item result:', result);
+      } else {
+        throw new Error('No item selected for editing');
       }
 
-      console.log(
-        '🔄 Context automatically handles UI updates - no manual refresh needed!'
-      );
+      console.log('🔄 Context has updated data, operation successful!');
+      return result; // Return the result for the form to handle
     } catch (error) {
       console.error('❌ handleSubmitItem error:', error);
-      // Error is handled by context, just re-throw for form error handling
-      throw error;
+      throw error; // Re-throw so form can catch and show error
     }
   };
 
