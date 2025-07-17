@@ -141,64 +141,15 @@ export const WebflowTeamForm = forwardRef<
     };
 
     form.reset(newValues);
-    // Reset slug editing state when switching items
-    setSlugManuallyEdited(false);
   }, [initialData, form]);
-
-  // Track if user manually edited slug
-  const [slugManuallyEdited, setSlugManuallyEdited] = useState(false);
-  const [isUpdatingSlugProgrammatically, setIsUpdatingSlugProgrammatically] =
-    useState(false);
 
   // Manual slug generation function
   const handleGenerateSlug = () => {
     const currentName = form.getValues('name');
     if (currentName) {
-      const newSlug = generateSlug(currentName);
-      console.log('🎯 Manual slug generation:', {
-        input: currentName,
-        output: newSlug
-      });
-      form.setValue('slug', newSlug);
-      // Mark as manually edited since user explicitly generated it
-      setSlugManuallyEdited(true);
+      form.setValue('slug', generateSlug(currentName));
     }
   };
-
-  // Remove automatic slug generation - we'll use manual generation instead
-  // useEffect(() => {
-  //   const subscription = form.watch((value, { name: fieldName }) => {
-  //     console.log('🔍 Team Form Watch:', { fieldName, value: value.name, slug: value.slug, slugManuallyEdited, isUpdatingSlugProgrammatically });
-
-  //     if (
-  //       fieldName === 'name' &&
-  //       value.name &&
-  //       !slugManuallyEdited
-  //     ) {
-  //       const timer = setTimeout(() => {
-  //         if (value.name) {
-  //           const newSlug = generateSlug(value.name);
-  //           console.log('🎯 Generating slug programmatically:', { input: value.name, output: newSlug });
-  //           setIsUpdatingSlugProgrammatically(true);
-  //           form.setValue('slug', newSlug);
-  //           // Reset the flag after a short delay to allow the change to propagate
-  //           setTimeout(() => setIsUpdatingSlugProgrammatically(false), 50);
-  //         }
-  //       }, 300);
-  //       return () => clearTimeout(timer);
-  //     }
-
-  //     // Track manual slug edits (but ignore programmatic updates)
-  //     if (fieldName === 'slug' && !isUpdatingSlugProgrammatically) {
-  //       console.log('✏️ User manually edited slug - stopping auto-generation', {
-  //         slugValue: value.slug,
-  //         isUpdatingSlugProgrammatically
-  //       });
-  //       setSlugManuallyEdited(true);
-  //     }
-  //   });
-  //   return subscription.unsubscribe;
-  // }, [form, slugManuallyEdited, isUpdatingSlugProgrammatically]);
 
   // Sync title with name field (one-way to avoid circular dependency)
   useEffect(() => {
@@ -255,7 +206,6 @@ export const WebflowTeamForm = forwardRef<
                     required
                   />
 
-                  {/* Enhanced Slug Field with Generate Button */}
                   <div className="space-y-3">
                     <WebflowSlugField
                       control={form.control}
@@ -263,39 +213,23 @@ export const WebflowTeamForm = forwardRef<
                       label="Slug"
                       required
                     />
-
                     <div className="flex items-center gap-3">
                       <Button
                         type="button"
-                        variant="outline"
+                        variant="default"
                         size="sm"
                         onClick={handleGenerateSlug}
-                        className="bg-blue-600 border-blue-600 text-white hover:bg-blue-700 hover:border-blue-700"
                         disabled={!form.watch('name')}
+                        className="text-xs bg-blue-600 hover:bg-blue-700 text-white border-blue-600"
                       >
-                        <svg
-                          className="w-4 h-4 mr-2"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M13 10V3L4 14h7v7l9-11h-7z"
-                          />
-                        </svg>
                         Generate Slug from Name
                       </Button>
-
                       {form.watch('name') && !form.watch('slug') && (
                         <span className="text-xs text-yellow-400">
-                          💡 Click "Generate Slug" to create URL-friendly slug
+                          💡 Enter a name to generate slug
                         </span>
                       )}
-
-                      {form.watch('slug') && (
+                      {form.watch('name') && form.watch('slug') && (
                         <span className="text-xs text-green-400">
                           ✅ Slug ready
                         </span>

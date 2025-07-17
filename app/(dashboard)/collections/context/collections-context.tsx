@@ -126,17 +126,9 @@ function collectionsReducer(
       return { ...state, error: action.payload };
 
     case 'SET_COLLECTIONS':
-      const newCollections = action.payload;
-      // If there was a previously selected collection, find the updated version
-      const updatedSelectedCollection = state.selectedCollection
-        ? newCollections.find((c) => c.id === state.selectedCollection?.id) ||
-          null
-        : null;
-
       return {
         ...state,
-        collections: newCollections,
-        selectedCollection: updatedSelectedCollection,
+        collections: action.payload,
         lastFetch: Date.now(),
         isLoading: false,
         error: null
@@ -186,17 +178,9 @@ function collectionsReducer(
         return collection;
       });
 
-      // Update selectedCollection if it matches the collection being updated
-      const updatedSelectedCollection =
-        state.selectedCollection?.id === collectionType
-          ? collections.find((c) => c.id === collectionType) ||
-            state.selectedCollection
-          : state.selectedCollection;
-
       return {
         ...state,
         collections,
-        selectedCollection: updatedSelectedCollection,
         selectedItem: item,
         isCreatingNew: false
       };
@@ -219,16 +203,9 @@ function collectionsReducer(
         )
       }));
 
-      // Update selectedCollection to point to the fresh collection object
-      const updatedSelectedCollection = state.selectedCollection
-        ? collections.find((c) => c.id === state.selectedCollection?.id) ||
-          state.selectedCollection
-        : state.selectedCollection;
-
       return {
         ...state,
         collections,
-        selectedCollection: updatedSelectedCollection,
         selectedItem: updatedItem
       };
     }
@@ -240,16 +217,9 @@ function collectionsReducer(
         items: collection.items.filter((item) => item.id !== itemId)
       }));
 
-      // Update selectedCollection to point to the fresh collection object
-      const updatedSelectedCollection = state.selectedCollection
-        ? collections.find((c) => c.id === state.selectedCollection?.id) ||
-          state.selectedCollection
-        : state.selectedCollection;
-
       return {
         ...state,
         collections,
-        selectedCollection: updatedSelectedCollection,
         selectedItem:
           state.selectedItem?.id === itemId ? null : state.selectedItem
       };
@@ -469,8 +439,8 @@ export function CollectionsProvider({
           payload: { collectionType, item: newItem }
         });
 
-        // Note: Removed automatic fetchCollections() for smoother UX
-        // The optimistic update above is sufficient, and form will handle redirect timing
+        // Refresh collections to ensure UI is in sync with server
+        await fetchCollections();
 
         return newItem;
       } catch (error: any) {
@@ -540,8 +510,8 @@ export function CollectionsProvider({
         dispatch({ type: 'UPDATE_ITEM', payload: updatedItem });
         dispatch({ type: 'REVERT_OPTIMISTIC', payload: id });
 
-        // Note: Removed automatic fetchCollections() for smoother UX
-        // The UPDATE_ITEM dispatch above is sufficient, and form will handle redirect timing
+        // Refresh collections to ensure UI is in sync with server
+        await fetchCollections();
 
         return updatedItem;
       } catch (error: any) {
@@ -573,8 +543,8 @@ export function CollectionsProvider({
 
         dispatch({ type: 'DELETE_ITEM', payload: id });
 
-        // Note: Removed automatic fetchCollections() for consistency
-        // The DELETE_ITEM dispatch above is sufficient for immediate UI updates
+        // Refresh collections to ensure UI is in sync with server
+        await fetchCollections();
       } catch (error: any) {
         console.error('Delete item error:', error);
         dispatch({ type: 'SET_ERROR', payload: error.message });
