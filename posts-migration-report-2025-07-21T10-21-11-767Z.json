@@ -1,0 +1,149 @@
+[
+  {
+    "post": {
+      "id": "686270e505d9e67ccb2bc5bf",
+      "name": "Summer craft workshops to delight Al-Darb Al-Ahmar children and families",
+      "slug": "summer-craft-workshops-to-delight-al-darb-al-ahmar-children-and-families",
+      "webflowId": "686270e505d9e67ccb2bc5bf"
+    },
+    "images": [
+      {
+        "type": "thumbnail",
+        "index": null,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/68627105b8a4d3269bf00e80_BAYTYAKANSUMMERSHOOL_2025_TN.jpg",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/summer-craft-workshops-to-delight-al-darb-al-ahmar-children-and-families/thumbnail.jpg",
+        "gcsPath": "website/collection/posts/summer-craft-workshops-to-delight-al-darb-al-ahmar-children-and-families/thumbnail.jpg",
+        "fileSize": 60962
+      },
+      {
+        "type": "mainImage",
+        "index": null,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/68627108e0d7963c3200f65f_BAYTYAKANSUMMERSHOOL_2025_HERO.jpg",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/summer-craft-workshops-to-delight-al-darb-al-ahmar-children-and-families/mainImage.jpg",
+        "gcsPath": "website/collection/posts/summer-craft-workshops-to-delight-al-darb-al-ahmar-children-and-families/mainImage.jpg",
+        "fileSize": 111836
+      },
+      {
+        "type": "openGraphImage",
+        "index": null,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/6862710b456032795f73a450_BAYTYAKANSUMMERSHOOL_2025_OG.jpg",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/summer-craft-workshops-to-delight-al-darb-al-ahmar-children-and-families/openGraphImage.jpg",
+        "gcsPath": "website/collection/posts/summer-craft-workshops-to-delight-al-darb-al-ahmar-children-and-families/openGraphImage.jpg",
+        "fileSize": 82249
+      }
+    ],
+    "mnemo": {
+      "success": false,
+      "error": "HTTP 500: {\"success\":false,\"error\":\"duplicate key value violates unique constraint \\\"collection_item_slug_unique\\\"\"}..."
+    },
+    "summary": {
+      "totalImages": 3,
+      "successfulImages": 3,
+      "dryRunImages": 0,
+      "failedImages": 0,
+      "skippedImages": 0,
+      "mnemoCreated": false
+    }
+  },
+  {
+    "post": {
+      "id": "6870e7527eb371f27aec0e61",
+      "name": "Underwater video systems empower a new generation of ocean champions in Monaco",
+      "slug": "underwater-video-systems-empower-a-new-generation-of-ocean-champions-in-monaco",
+      "webflowId": "6870e7527eb371f27aec0e61"
+    },
+    "images": [
+      {
+        "type": "thumbnail",
+        "index": null,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/6870fd9e419ece22b512d226_AME_BRUVS_THUMB.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/underwater-video-systems-empower-a-new-generation-of-ocean-champions-in-monaco/thumbnail.webp",
+        "gcsPath": "website/collection/posts/underwater-video-systems-empower-a-new-generation-of-ocean-champions-in-monaco/thumbnail.webp",
+        "fileSize": 22482
+      },
+      {
+        "type": "mainImage",
+        "index": null,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/6870fd8de02ec9c153fbdf1e_AME_BRUVS_HERO.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/underwater-video-systems-empower-a-new-generation-of-ocean-champions-in-monaco/mainImage.webp",
+        "gcsPath": "website/collection/posts/underwater-video-systems-empower-a-new-generation-of-ocean-champions-in-monaco/mainImage.webp",
+        "fileSize": 47720
+      },
+      {
+        "type": "openGraphImage",
+        "index": null,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/6870fd951f79d8611195e14f_AME_BRUVS_OG.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/underwater-video-systems-empower-a-new-generation-of-ocean-champions-in-monaco/openGraphImage.webp",
+        "gcsPath": "website/collection/posts/underwater-video-systems-empower-a-new-generation-of-ocean-champions-in-monaco/openGraphImage.webp",
+        "fileSize": 38312
+      }
+    ],
+    "mnemo": {
+      "success": false,
+      "error": "HTTP 500: {\"success\":false,\"error\":\"duplicate key value violates unique constraint \\\"collection_item_slug_unique\\\"\"}..."
+    },
+    "summary": {
+      "totalImages": 3,
+      "successfulImages": 3,
+      "dryRunImages": 0,
+      "failedImages": 0,
+      "skippedImages": 0,
+      "mnemoCreated": false
+    }
+  },
+  {
+    "post": {
+      "id": "686b69c87111cae2985c825f",
+      "name": "J-PAL MENA celebrates five years of transforming policymaking in the Middle East and North Africa",
+      "slug": "j-pal-mena-marks-5th-anniversary",
+      "webflowId": "686b69c87111cae2985c825f"
+    },
+    "images": [
+      {
+        "type": "thumbnail",
+        "index": null,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/686bdf08263dce9600c562e1_J-PAL_MENA_5TH_THUMB.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/j-pal-mena-marks-5th-anniversary/thumbnail.webp",
+        "gcsPath": "website/collection/posts/j-pal-mena-marks-5th-anniversary/thumbnail.webp",
+        "fileSize": 69120
+      },
+      {
+        "type": "mainImage",
+        "index": null,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/686bdf0c4d1341d4ccda0858_J-PAL_MENA_5TH_HERO.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/j-pal-mena-marks-5th-anniversary/mainImage.webp",
+        "gcsPath": "website/collection/posts/j-pal-mena-marks-5th-anniversary/mainImage.webp",
+        "fileSize": 142452
+      },
+      {
+        "type": "openGraphImage",
+        "index": null,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/686bdf0ae96208e218b896b0_J-PAL_MENA_5TH_OG.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/j-pal-mena-marks-5th-anniversary/openGraphImage.webp",
+        "gcsPath": "website/collection/posts/j-pal-mena-marks-5th-anniversary/openGraphImage.webp",
+        "fileSize": 93398
+      }
+    ],
+    "mnemo": {
+      "success": false,
+      "error": "HTTP 500: {\"success\":false,\"error\":\"duplicate key value violates unique constraint \\\"collection_item_slug_unique\\\"\"}..."
+    },
+    "summary": {
+      "totalImages": 3,
+      "successfulImages": 3,
+      "dryRunImages": 0,
+      "failedImages": 0,
+      "skippedImages": 0,
+      "mnemoCreated": false
+    }
+  }
+]

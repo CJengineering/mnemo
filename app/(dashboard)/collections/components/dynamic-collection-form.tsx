@@ -42,6 +42,7 @@ interface DynamicCollectionFormProps {
   item?: APICollectionItem | null;
   onSubmit: (data: Partial<APICollectionItem>) => Promise<void>;
   onCancel: () => void;
+  onDelete?: () => Promise<void>;
   onBackToCollections?: () => void;
   isEditing?: boolean;
 }
@@ -51,6 +52,7 @@ const DynamicCollectionForm: React.FC<DynamicCollectionFormProps> = ({
   item,
   onSubmit,
   onCancel,
+  onDelete,
   onBackToCollections,
   isEditing = false
 }) => {
@@ -282,6 +284,7 @@ const DynamicCollectionForm: React.FC<DynamicCollectionFormProps> = ({
             initialData={getInitialFormData()}
             onSubmit={handleFormSubmit}
             onCancel={onCancel}
+            onDelete={onDelete}
             isEditing={isEditing}
           />
         </div>

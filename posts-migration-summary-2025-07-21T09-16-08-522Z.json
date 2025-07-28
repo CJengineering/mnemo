@@ -1,0 +1,15 @@
+{
+  "timestamp": "2025-07-21T09:16:08.524Z",
+  "mode": "live",
+  "testLimit": 1,
+  "totals": {
+    "posts": 1,
+    "successfulPosts": 1,
+    "failedPosts": 0,
+    "totalImages": 3,
+    "successfulImages": 3,
+    "dryRunImages": 0,
+    "failedImages": 0,
+    "skippedImages": 0
+  }
+}

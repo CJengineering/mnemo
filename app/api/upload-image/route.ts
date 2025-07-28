@@ -61,6 +61,7 @@ export async function POST(req: Request) {
     const file = formData.get('file') as File;
     const fileName = formData.get('fileName') as string;
     const folder = formData.get('folder') as string | null; // Optional folder
+    const preserveFormat = formData.get('preserveFormat') as string | null; // New flag for preserving original format
 
     if (!file || !fileName) {
       return new Response(
@@ -72,14 +73,23 @@ export async function POST(req: Request) {
       );
     }
 
-    console.log(`🟢 Processing file: ${fileName}`);
+    console.log(
+      `🟢 Processing file: ${fileName}, preserveFormat: ${preserveFormat}`
+    );
 
     // Convert to buffer
     const fileBuffer = Buffer.from(await file.arrayBuffer());
 
     // Generate file paths with sanitized filename
     const timestamp = Date.now();
-    const folderPath = folder ? `${folder}/` : ''; // Use folder if provided
+    let folderPath = '';
+
+    // Create proper folder structure for programmes
+    if (folder && preserveFormat === 'true') {
+      folderPath = `website/programmes/${folder}/`;
+    } else if (folder) {
+      folderPath = `${folder}/`;
+    }
 
     // Sanitize filename: remove spaces, special chars, convert to lowercase
     const sanitizedFileName = fileName
@@ -87,27 +97,45 @@ export async function POST(req: Request) {
       .replace(/[^a-zA-Z0-9.-]/g, '') // Remove special characters except dots and hyphens
       .toLowerCase(); // Convert to lowercase
 
-    const originalFileName = `${folderPath}${timestamp}-${sanitizedFileName}`;
-    const webpFileName = `${folderPath}${timestamp}-${sanitizedFileName.replace(/\.[^/.]+$/, '')}.webp`;
+    // If preserveFormat is true, keep original format and name
+    if (preserveFormat === 'true') {
+      const originalFileName = `${folderPath}${sanitizedFileName}`;
 
-    // Compress and convert to WebP
-    const webpBuffer = await compressToWebP(fileBuffer);
+      console.log(`🟢 Uploading original file to: ${originalFileName}`);
+      const originalUrl = await uploadToBucket(
+        fileBuffer,
+        originalFileName,
+        file.type
+      );
 
-    // Upload original and WebP files
-    console.log('🟢 Uploading original file...');
-    await uploadToBucket(fileBuffer, originalFileName, file.type);
+      return new Response(JSON.stringify({ url: originalUrl }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    } else {
+      // Legacy behavior: convert to WebP
+      const originalFileName = `${folderPath}${timestamp}-${sanitizedFileName}`;
+      const webpFileName = `${folderPath}${timestamp}-${sanitizedFileName.replace(/\.[^/.]+$/, '')}.webp`;
 
-    console.log('🟢 Uploading WebP file...');
-    const webpUrl = await uploadToBucket(
-      webpBuffer,
-      webpFileName,
-      'image/webp'
-    );
+      // Compress and convert to WebP
+      const webpBuffer = await compressToWebP(fileBuffer);
 
-    return new Response(JSON.stringify({ url: webpUrl }), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' }
-    });
+      // Upload original and WebP files
+      console.log('🟢 Uploading original file...');
+      await uploadToBucket(fileBuffer, originalFileName, file.type);
+
+      console.log('🟢 Uploading WebP file...');
+      const webpUrl = await uploadToBucket(
+        webpBuffer,
+        webpFileName,
+        'image/webp'
+      );
+
+      return new Response(JSON.stringify({ url: webpUrl }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
   } catch (error) {
     console.error('🔴 Unexpected server error:', error);
     return new Response(JSON.stringify({ error: 'Upload failed' }), {

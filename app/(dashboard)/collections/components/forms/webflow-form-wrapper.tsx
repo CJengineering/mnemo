@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Link, ExternalLink, Check, AlertCircle } from 'lucide-react';
+import { Link, ExternalLink, Check, AlertCircle, Trash2 } from 'lucide-react';
 
 interface BaseFormData {
   title: string;
@@ -29,6 +29,7 @@ export interface WebflowFormWrapperProps<T extends BaseFormData> {
     status: 'published' | 'draft'
   ) => Promise<SubmissionResult>;
   onCancel: () => void;
+  onDelete?: () => Promise<void>;
   isEditing?: boolean;
   isLoading?: boolean;
   collectionName?: string;
@@ -39,6 +40,7 @@ export function WebflowFormWrapper<T extends BaseFormData>({
   form,
   onSubmit,
   onCancel,
+  onDelete,
   isEditing = false,
   isLoading = false,
   collectionName = 'Item'
@@ -48,6 +50,7 @@ export function WebflowFormWrapper<T extends BaseFormData>({
     message: string;
   }>({ type: null, message: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const handleSubmit = async (data: T, status: 'published' | 'draft') => {
     setIsSubmitting(true);
@@ -86,10 +89,32 @@ export function WebflowFormWrapper<T extends BaseFormData>({
     }
   };
 
+  const handleDelete = async () => {
+    if (!onDelete) return;
+
+    try {
+      setIsSubmitting(true);
+      await onDelete();
+      setShowDeleteConfirm(false);
+    } catch (error) {
+      console.error('Delete error:', error);
+      // Error will be handled by parent component
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const formData = form.watch();
   const currentTitle = formData?.title || '';
   const currentSlug = formData?.slug || '';
   const baseUrl = 'https://communityjamel.org';
+
+  // Debug logging for delete button visibility
+  console.log('🔍 WebflowFormWrapper Debug:', {
+    onDelete: !!onDelete,
+    isEditing,
+    showButton: !!(onDelete && isEditing)
+  });
 
   return (
     <div className="space-y-6">
@@ -128,6 +153,18 @@ export function WebflowFormWrapper<T extends BaseFormData>({
             >
               Cancel
             </Button>
+            {onDelete && isEditing && (
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setShowDeleteConfirm(true)}
+                disabled={isSubmitting}
+                className="bg-red-800 border-red-600 text-red-300 hover:bg-red-700"
+              >
+                <Trash2 className="h-4 w-4 mr-2" />
+                Delete
+              </Button>
+            )}
             <Button
               type="button"
               onClick={() =>
@@ -207,6 +244,39 @@ export function WebflowFormWrapper<T extends BaseFormData>({
           </div>
         </form>
       </Form>
+
+      {/* Delete Confirmation Dialog */}
+      {showDeleteConfirm && (
+        <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center">
+          <div className="bg-gray-800 border border-gray-600 p-6 rounded-md w-full max-w-md mx-4">
+            <h2 className="text-lg font-semibold mb-2 text-white">
+              Confirm Deletion
+            </h2>
+            <p className="text-sm text-gray-300 mb-4">
+              Are you sure you want to delete this{' '}
+              {collectionName.toLowerCase()}? This action cannot be undone.
+            </p>
+            <div className="flex justify-end gap-2">
+              <Button
+                variant="outline"
+                onClick={() => setShowDeleteConfirm(false)}
+                disabled={isSubmitting}
+                className="bg-gray-700 border-gray-600 text-gray-300 hover:bg-gray-600"
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="destructive"
+                onClick={handleDelete}
+                disabled={isSubmitting}
+                className="bg-red-600 hover:bg-red-700 text-white"
+              >
+                {isSubmitting ? 'Deleting...' : 'Delete'}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,0 +1,257 @@
+[
+  {
+    "post": {
+      "id": "e470869d-b473-4f59-91e3-5409baf38553",
+      "name": "Summer craft workshops to delight Al-Darb Al-Ahmar children and families",
+      "slug": "summer-craft-workshops-to-delight-al-darb-al-ahmar-children-and-families",
+      "originalSlug": "summer-craft-workshops-to-delight-al-darb-al-ahmar-children-and-families"
+    },
+    "images": [
+      {
+        "type": "thumbnail",
+        "index": null,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/68627105b8a4d3269bf00e80_BAYTYAKANSUMMERSHOOL_2025_TN.jpg",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/summer-craft-workshops-to-delight-al-darb-al-ahmar-children-and-families/thumbnail.jpg",
+        "gcsPath": "website/collection/posts/summer-craft-workshops-to-delight-al-darb-al-ahmar-children-and-families/thumbnail.jpg",
+        "fileSize": 60962
+      },
+      {
+        "type": "mainImage",
+        "index": null,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/68627108e0d7963c3200f65f_BAYTYAKANSUMMERSHOOL_2025_HERO.jpg",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/summer-craft-workshops-to-delight-al-darb-al-ahmar-children-and-families/mainImage.jpg",
+        "gcsPath": "website/collection/posts/summer-craft-workshops-to-delight-al-darb-al-ahmar-children-and-families/mainImage.jpg",
+        "fileSize": 111836
+      },
+      {
+        "type": "openGraphImage",
+        "index": null,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/6862710b456032795f73a450_BAYTYAKANSUMMERSHOOL_2025_OG.jpg",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/summer-craft-workshops-to-delight-al-darb-al-ahmar-children-and-families/openGraphImage.jpg",
+        "gcsPath": "website/collection/posts/summer-craft-workshops-to-delight-al-darb-al-ahmar-children-and-families/openGraphImage.jpg",
+        "fileSize": 82249
+      }
+    ],
+    "mnemo": {
+      "success": false,
+      "error": "HTTP 500: {\"success\":false,\"error\":\"duplicate key value violates unique constraint \\\"collection_item_slug_unique\\\"\"}..."
+    },
+    "summary": {
+      "totalImages": 3,
+      "successfulImages": 3,
+      "dryRunImages": 0,
+      "failedImages": 0,
+      "skippedImages": 0,
+      "mnemoCreated": false
+    }
+  },
+  {
+    "post": {
+      "id": "e7ecbb08-dbb0-4fac-81b4-c0224f8a6def",
+      "name": "Underwater video systems empower a new generation of ocean champions in Monaco",
+      "slug": "underwater-video-systems-empower-a-new-generation-of-ocean-champions-in-monaco",
+      "originalSlug": "underwater-video-systems-empower-a-new-generation-of-ocean-champions-in-monaco"
+    },
+    "images": [
+      {
+        "type": "thumbnail",
+        "index": null,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/6870fd9e419ece22b512d226_AME_BRUVS_THUMB.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/underwater-video-systems-empower-a-new-generation-of-ocean-champions-in-monaco/thumbnail.webp",
+        "gcsPath": "website/collection/posts/underwater-video-systems-empower-a-new-generation-of-ocean-champions-in-monaco/thumbnail.webp",
+        "fileSize": 22482
+      },
+      {
+        "type": "mainImage",
+        "index": null,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/6870fd8de02ec9c153fbdf1e_AME_BRUVS_HERO.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/underwater-video-systems-empower-a-new-generation-of-ocean-champions-in-monaco/mainImage.webp",
+        "gcsPath": "website/collection/posts/underwater-video-systems-empower-a-new-generation-of-ocean-champions-in-monaco/mainImage.webp",
+        "fileSize": 47720
+      },
+      {
+        "type": "openGraphImage",
+        "index": null,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/6870fd951f79d8611195e14f_AME_BRUVS_OG.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/underwater-video-systems-empower-a-new-generation-of-ocean-champions-in-monaco/openGraphImage.webp",
+        "gcsPath": "website/collection/posts/underwater-video-systems-empower-a-new-generation-of-ocean-champions-in-monaco/openGraphImage.webp",
+        "fileSize": 38312
+      }
+    ],
+    "mnemo": {
+      "success": true,
+      "collectionItem": {
+        "id": "0ca932d7-b4b4-491e-aeb1-08998d62fc56",
+        "title": "Underwater video systems empower a new generation of ocean champions in Monaco",
+        "type": "post",
+        "data": {
+          "people": [
+            {
+              "url": "N/A",
+              "name": "N/A",
+              "slug": "N/A",
+              "arabicName": "N/A"
+            }
+          ],
+          "seoMeta": "A group of year 7 students from École Saint-Charles gained hands-on experience with the BRUVS technology.",
+          "featured": false,
+          "location": "Monaco",
+          "seoTitle": "Underwater video systems empower future ocean champions in Monaco",
+          "mainImage": {
+            "alt": "",
+            "url": "https://cdn.communityjameel.io/website/collection/posts/underwater-video-systems-empower-a-new-generation-of-ocean-champions-in-monaco/mainImage.webp"
+          },
+          "thumbnail": {
+            "alt": "",
+            "url": "https://cdn.communityjameel.io/website/collection/posts/underwater-video-systems-empower-a-new-generation-of-ocean-champions-in-monaco/thumbnail.webp"
+          },
+          "bodyArabic": "N/A",
+          "arabicTitle": "",
+          "innovations": [
+            "N/A"
+          ],
+          "relatedEvent": {
+            "name": "N/A",
+            "slug": "N/A",
+            "arabicName": "N/A"
+          },
+          "datePublished": "11 July 2025",
+          "imageCarousel": [
+            {
+              "alt": "",
+              "url": ""
+            }
+          ],
+          "seoMetaArabic": "N/A",
+          "locationArabic": "N/A",
+          "openGraphImage": "https://cdn.communityjameel.io/website/collection/posts/underwater-video-systems-empower-a-new-generation-of-ocean-champions-in-monaco/openGraphImage.webp",
+          "seoTitleArabic": "N/A",
+          "bulletPointsArabic": "",
+          "bulletPointsEnglish": "",
+          "imageGalleryCreditsArabic": "N/A"
+        },
+        "created_at": "2025-07-21T09:16:57.728Z",
+        "updated_at": "2025-07-21T09:16:57.728Z",
+        "slug": "underwater-video-systems-empower-a-new-generation-of-ocean-champions-in-monaco",
+        "status": "draft"
+      }
+    },
+    "summary": {
+      "totalImages": 3,
+      "successfulImages": 3,
+      "dryRunImages": 0,
+      "failedImages": 0,
+      "skippedImages": 0,
+      "mnemoCreated": true
+    }
+  },
+  {
+    "post": {
+      "id": "860ffb77-74f2-4cbf-b118-95fc69d642a9",
+      "name": "J-PAL MENA celebrates five years of transforming policymaking in the Middle East and North Africa",
+      "slug": "j-pal-mena-marks-5th-anniversary",
+      "originalSlug": "j-pal-mena-marks-5th-anniversary"
+    },
+    "images": [
+      {
+        "type": "thumbnail",
+        "index": null,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/686bdf08263dce9600c562e1_J-PAL_MENA_5TH_THUMB.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/j-pal-mena-marks-5th-anniversary/thumbnail.webp",
+        "gcsPath": "website/collection/posts/j-pal-mena-marks-5th-anniversary/thumbnail.webp",
+        "fileSize": 69120
+      },
+      {
+        "type": "mainImage",
+        "index": null,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/686bdf0c4d1341d4ccda0858_J-PAL_MENA_5TH_HERO.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/j-pal-mena-marks-5th-anniversary/mainImage.webp",
+        "gcsPath": "website/collection/posts/j-pal-mena-marks-5th-anniversary/mainImage.webp",
+        "fileSize": 142452
+      },
+      {
+        "type": "openGraphImage",
+        "index": null,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/686bdf0ae96208e218b896b0_J-PAL_MENA_5TH_OG.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/j-pal-mena-marks-5th-anniversary/openGraphImage.webp",
+        "gcsPath": "website/collection/posts/j-pal-mena-marks-5th-anniversary/openGraphImage.webp",
+        "fileSize": 93398
+      }
+    ],
+    "mnemo": {
+      "success": true,
+      "collectionItem": {
+        "id": "7169d479-4f18-49fb-933e-37f8c1464c4c",
+        "title": "J-PAL MENA celebrates five years of transforming policymaking in the Middle East and North Africa",
+        "type": "post",
+        "data": {
+          "people": [
+            {
+              "url": "N/A",
+              "name": "N/A",
+              "slug": "N/A",
+              "arabicName": "N/A"
+            }
+          ],
+          "seoMeta": "From the Egypt Impact Lab to HAPIE, J-PAL MENA continues to tackle poverty across the region.",
+          "featured": false,
+          "location": "Cairo, Egypt",
+          "seoTitle": "J-PAL MENA marks five years of transforming policymaking in MENA",
+          "mainImage": {
+            "alt": "",
+            "url": "https://cdn.communityjameel.io/website/collection/posts/j-pal-mena-marks-5th-anniversary/mainImage.webp"
+          },
+          "thumbnail": {
+            "alt": "",
+            "url": "https://cdn.communityjameel.io/website/collection/posts/j-pal-mena-marks-5th-anniversary/thumbnail.webp"
+          },
+          "bodyArabic": "N/A",
+          "arabicTitle": "",
+          "innovations": [
+            "N/A"
+          ],
+          "relatedEvent": {
+            "name": "Celebrating five years of J-PAL Middle East and North Africa",
+            "slug": "celebrating-five-years-of-j-pal-middle-east-and-north-africa",
+            "arabicName": ""
+          },
+          "datePublished": "7 July 2025",
+          "imageCarousel": [
+            {
+              "alt": "",
+              "url": ""
+            }
+          ],
+          "seoMetaArabic": "N/A",
+          "locationArabic": "N/A",
+          "openGraphImage": "https://cdn.communityjameel.io/website/collection/posts/j-pal-mena-marks-5th-anniversary/openGraphImage.webp",
+          "seoTitleArabic": "N/A",
+          "bulletPointsArabic": "",
+          "bulletPointsEnglish": "",
+          "imageGalleryCreditsArabic": "N/A"
+        },
+        "created_at": "2025-07-21T09:16:58.014Z",
+        "updated_at": "2025-07-21T09:16:58.014Z",
+        "slug": "j-pal-mena-marks-5th-anniversary",
+        "status": "draft"
+      }
+    },
+    "summary": {
+      "totalImages": 3,
+      "successfulImages": 3,
+      "dryRunImages": 0,
+      "failedImages": 0,
+      "skippedImages": 0,
+      "mnemoCreated": true
+    }
+  }
+]

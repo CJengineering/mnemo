@@ -25,6 +25,7 @@ function CollectionsContent() {
     setCreatingNew,
     createItem,
     updateItem,
+    deleteItem,
     clearError,
     fetchItemById
   } = useCollections();
@@ -88,8 +89,13 @@ function CollectionsContent() {
   };
 
   const handleSubmitItem = async (formData: any) => {
-    console.log('🎯 handleSubmitItem called with:', { formData, selectedCollection, isCreatingNew, selectedItem });
-    
+    console.log('🎯 handleSubmitItem called with:', {
+      formData,
+      selectedCollection,
+      isCreatingNew,
+      selectedItem
+    });
+
     if (!selectedCollection) {
       console.error('❌ No selected collection');
       return;
@@ -106,7 +112,9 @@ function CollectionsContent() {
         console.log('✅ Update item result:', result);
       }
 
-      console.log('🔄 Context automatically handles UI updates - no manual refresh needed!');
+      console.log(
+        '🔄 Context automatically handles UI updates - no manual refresh needed!'
+      );
     } catch (error) {
       console.error('❌ handleSubmitItem error:', error);
       // Error is handled by context, just re-throw for form error handling
@@ -117,6 +125,42 @@ function CollectionsContent() {
   const handleCancelForm = () => {
     setCreatingNew(false);
     selectItem(null);
+  };
+
+  const handleDelete = async () => {
+    if (!selectedItem) {
+      console.error('❌ No selected item to delete');
+      return;
+    }
+
+    try {
+      console.log(
+        '🗑️ Page: Deleting item:',
+        selectedItem.id,
+        selectedItem.title
+      );
+      console.log(
+        '📊 Current selected collection items before delete:',
+        selectedCollection?.items?.length
+      );
+
+      await deleteItem(selectedItem.id);
+      console.log('✅ Page: Item deleted successfully');
+
+      // After successful deletion, go back to items list
+      console.log('🔄 Page: Clearing selected item and going back to list');
+      selectItem(null);
+      setCreatingNew(false);
+
+      console.log(
+        '📊 Current selected collection items after delete:',
+        selectedCollection?.items?.length
+      );
+    } catch (error) {
+      console.error('❌ handleDelete error:', error);
+      // Error is handled by context
+      throw error;
+    }
   };
 
   const handleBackToCollections = () => {
@@ -221,6 +265,7 @@ function CollectionsContent() {
                     isEditing={!isCreatingNew}
                     onSubmit={handleSubmitItem}
                     onCancel={handleCancelForm}
+                    onDelete={handleDelete}
                     onBackToCollections={handleBackToItems}
                   />
                 </div>

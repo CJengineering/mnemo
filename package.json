@@ -98,6 +98,7 @@
     "drizzle-zod": "^0.5.1",
     "extension-kit": "link:@/tip-tap/extensions/extension-kit",
     "extensions": "link:@/tip-tap/extensions",
+    "form-data": "^4.0.4",
     "heroicons": "^2.2.0",
     "i": "^0.3.7",
     "iframe-resizer": "^5.3.3",

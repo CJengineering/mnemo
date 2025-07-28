@@ -178,9 +178,15 @@ function collectionsReducer(
         return collection;
       });
 
+      // Also update selectedCollection if it's the one that got the new item
+      const updatedSelectedCollection = state.selectedCollection
+        ? collections.find((c) => c.id === state.selectedCollection!.id) || null
+        : null;
+
       return {
         ...state,
         collections,
+        selectedCollection: updatedSelectedCollection,
         selectedItem: item,
         isCreatingNew: false
       };
@@ -203,23 +209,64 @@ function collectionsReducer(
         )
       }));
 
+      // Also update selectedCollection if it contains the updated item
+      const updatedSelectedCollection = state.selectedCollection
+        ? collections.find((c) => c.id === state.selectedCollection!.id) || null
+        : null;
+
       return {
         ...state,
         collections,
+        selectedCollection: updatedSelectedCollection,
         selectedItem: updatedItem
       };
     }
 
     case 'DELETE_ITEM': {
       const itemId = action.payload;
+      console.log('🔥 DELETE_ITEM reducer: removing item', itemId);
+      console.log(
+        '📊 Current collections before delete:',
+        state.collections.map((c) => ({
+          name: c.name,
+          itemCount: c.items.length,
+          items: c.items.map((i) => ({ id: i.id, title: i.title }))
+        }))
+      );
+
       const collections = state.collections.map((collection) => ({
         ...collection,
         items: collection.items.filter((item) => item.id !== itemId)
       }));
 
+      console.log(
+        '📊 Collections after delete:',
+        collections.map((c) => ({
+          name: c.name,
+          itemCount: c.items.length,
+          items: c.items.map((i) => ({ id: i.id, title: i.title }))
+        }))
+      );
+
+      // Also update selectedCollection if it's the one containing the deleted item
+      const updatedSelectedCollection = state.selectedCollection
+        ? collections.find((c) => c.id === state.selectedCollection!.id) || null
+        : null;
+
+      console.log(
+        '🔄 Updated selectedCollection:',
+        updatedSelectedCollection
+          ? {
+              name: updatedSelectedCollection.name,
+              itemCount: updatedSelectedCollection.items.length
+            }
+          : 'null'
+      );
+
       return {
         ...state,
         collections,
+        selectedCollection: updatedSelectedCollection,
         selectedItem:
           state.selectedItem?.id === itemId ? null : state.selectedItem
       };
@@ -529,10 +576,12 @@ export function CollectionsProvider({
   // Delete item
   const deleteItem = useCallback(
     async (id: string): Promise<void> => {
+      console.log('🗑️ Starting delete for item:', id);
       dispatch({ type: 'SET_SUBMITTING', payload: true });
       dispatch({ type: 'SET_ERROR', payload: null });
 
       try {
+        console.log('📡 Sending DELETE request to:', `${API_URL}/${id}`);
         const response = await fetch(`${API_URL}/${id}`, {
           method: 'DELETE'
         });
@@ -541,12 +590,15 @@ export function CollectionsProvider({
           throw new Error(`Failed to delete item: ${response.status}`);
         }
 
+        console.log('✅ DELETE request successful, updating local state...');
         dispatch({ type: 'DELETE_ITEM', payload: id });
 
+        console.log('🔄 Refreshing collections from server...');
         // Refresh collections to ensure UI is in sync with server
         await fetchCollections();
+        console.log('✅ Collections refreshed after delete');
       } catch (error: any) {
-        console.error('Delete item error:', error);
+        console.error('❌ Delete item error:', error);
         dispatch({ type: 'SET_ERROR', payload: error.message });
         throw error;
       } finally {

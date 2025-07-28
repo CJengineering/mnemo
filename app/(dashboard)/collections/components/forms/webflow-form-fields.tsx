@@ -204,7 +204,7 @@ export function WebflowSelectField({
             {label}
             {required && <span className="text-red-500">*</span>}
           </FormLabel>
-          <Select onValueChange={field.onChange} defaultValue={field.value}>
+          <Select onValueChange={field.onChange} value={field.value}>
             <FormControl>
               <SelectTrigger className="bg-gray-800 border-gray-600 text-white h-12">
                 <SelectValue placeholder={placeholder} />
@@ -626,6 +626,7 @@ export function WebflowRichTextField({
               className="border border-gray-600 rounded-lg bg-gray-800 overflow-hidden"
             >
               <DarkModeSimpleEditor
+                key={`${name}-${field.value?.length || 0}`}
                 initialContent={field.value || ''}
                 onChange={(content) => {
                   field.onChange(content);

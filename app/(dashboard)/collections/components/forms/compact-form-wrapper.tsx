@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { UseFormReturn } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
-import { Save, X, Wand2, Eye } from 'lucide-react';
+import { Save, X, Wand2, Eye, Trash2 } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { CompactStatusView } from './compact-status-view';
 import { BaseFormData } from './base-form';
@@ -15,6 +15,7 @@ export interface CompactFormWrapperProps<T extends BaseFormData> {
   form: UseFormReturn<T>;
   onSubmit: (data: T) => Promise<void>;
   onCancel: () => void;
+  onDelete?: () => Promise<void>;
   isEditing?: boolean;
   isLoading?: boolean;
   onAIGenerate?: () => void;
@@ -28,6 +29,7 @@ export function CompactFormWrapper<T extends BaseFormData>({
   form,
   onSubmit,
   onCancel,
+  onDelete,
   isEditing = false,
   isLoading = false,
   onAIGenerate,
@@ -36,6 +38,14 @@ export function CompactFormWrapper<T extends BaseFormData>({
   itemId
 }: CompactFormWrapperProps<T>) {
   const [isFormVisible, setIsFormVisible] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+
+  // Debug logging for delete button visibility
+  console.log('🔍 CompactFormWrapper Debug:', {
+    onDelete: !!onDelete,
+    isEditing,
+    showButton: !!(onDelete && isEditing)
+  });
 
   const handleSubmit = async (data: T) => {
     try {
@@ -55,6 +65,19 @@ export function CompactFormWrapper<T extends BaseFormData>({
     onCancel();
   };
 
+  const handleDelete = async () => {
+    if (!onDelete) return;
+
+    try {
+      await onDelete();
+      setShowDeleteConfirm(false);
+      setIsFormVisible(false);
+    } catch (error) {
+      console.error('Delete error:', error);
+      // Error will be handled by parent component
+    }
+  };
+
   // Get current form values for status view
   const currentValues = form.getValues();
 
@@ -69,6 +92,7 @@ export function CompactFormWrapper<T extends BaseFormData>({
         publishDate={(currentValues as any).publishDate}
         onEdit={handleEdit}
         onPreview={onPreview}
+        onDelete={onDelete ? () => setShowDeleteConfirm(true) : undefined}
       />
     );
   }
@@ -81,6 +105,19 @@ export function CompactFormWrapper<T extends BaseFormData>({
           {isEditing ? 'Edit' : 'Create'} Item
         </h2>
         <div className="flex items-center gap-1">
+          {onDelete && isEditing && (
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => setShowDeleteConfirm(true)}
+              disabled={isLoading}
+              className="h-6 px-2 text-[8px] text-red-600 border-red-300 hover:bg-red-50"
+            >
+              <Trash2 className="h-2 w-2 mr-1" />
+              Delete
+            </Button>
+          )}
           {onAIGenerate && (
             <Button
               type="button"
@@ -153,6 +190,36 @@ export function CompactFormWrapper<T extends BaseFormData>({
           </div>
         </form>
       </Form>
+
+      {/* Delete Confirmation Dialog */}
+      {showDeleteConfirm && (
+        <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center">
+          <div className="bg-white p-6 rounded-md w-full max-w-md mx-4">
+            <h2 className="text-lg font-semibold mb-2">Confirm Deletion</h2>
+            <p className="text-sm text-gray-600 mb-4">
+              Are you sure you want to delete this item? This action cannot be
+              undone.
+            </p>
+            <div className="flex justify-end gap-2">
+              <Button
+                variant="outline"
+                onClick={() => setShowDeleteConfirm(false)}
+                className="text-sm"
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="destructive"
+                onClick={handleDelete}
+                disabled={isLoading}
+                className="text-sm"
+              >
+                {isLoading ? 'Deleting...' : 'Delete'}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

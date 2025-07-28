@@ -1,0 +1,15 @@
+{
+  "timestamp": "2025-07-21T10:15:51.951Z",
+  "mode": "dry-run",
+  "testLimit": 1,
+  "totals": {
+    "posts": 1,
+    "successfulPosts": 1,
+    "failedPosts": 0,
+    "totalImages": 3,
+    "successfulImages": 0,
+    "dryRunImages": 3,
+    "failedImages": 0,
+    "skippedImages": 0
+  }
+}

@@ -1,0 +1,44 @@
+[
+  {
+    "post": {
+      "id": "686270e505d9e67ccb2bc5bf",
+      "name": "Summer craft workshops to delight Al-Darb Al-Ahmar children and families",
+      "slug": "summer-craft-workshops-to-delight-al-darb-al-ahmar-children-and-families",
+      "webflowId": "686270e505d9e67ccb2bc5bf"
+    },
+    "images": [],
+    "mnemo": {
+      "success": false,
+      "error": "Slug already exists"
+    },
+    "summary": {
+      "totalImages": 0,
+      "successfulImages": 0,
+      "dryRunImages": 0,
+      "failedImages": 0,
+      "skippedImages": 0,
+      "mnemoCreated": false
+    }
+  },
+  {
+    "post": {
+      "id": "6870e7527eb371f27aec0e61",
+      "name": "Underwater video systems empower a new generation of ocean champions in Monaco",
+      "slug": "underwater-video-systems-empower-a-new-generation-of-ocean-champions-in-monaco",
+      "webflowId": "6870e7527eb371f27aec0e61"
+    },
+    "images": [],
+    "mnemo": {
+      "success": false,
+      "error": "Slug already exists"
+    },
+    "summary": {
+      "totalImages": 0,
+      "successfulImages": 0,
+      "dryRunImages": 0,
+      "failedImages": 0,
+      "skippedImages": 0,
+      "mnemoCreated": false
+    }
+  }
+]

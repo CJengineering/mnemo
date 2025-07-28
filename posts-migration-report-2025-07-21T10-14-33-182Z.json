@@ -1,0 +1,41 @@
+[
+  {
+    "post": {
+      "id": "686b61d194cec7569bbebe58",
+      "name": "Celebrating five years of J-PAL Middle East and North Africa",
+      "slug": "celebrating-five-years-of-j-pal-middle-east-and-north-africa",
+      "webflowId": "686b61d194cec7569bbebe58"
+    },
+    "images": [
+      {
+        "type": "thumbnail",
+        "index": null,
+        "status": "dry-run",
+        "reason": "Dry run mode",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/686b6760e5d8c524aff35f5c_JPALMENA_5Years_THUMB.jpg",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/celebrating-five-years-of-j-pal-middle-east-and-north-africa/thumbnail.jpg"
+      },
+      {
+        "type": "openGraphImage",
+        "index": null,
+        "status": "dry-run",
+        "reason": "Dry run mode",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/686b675d17d329bcec858b56_JPALMENA_5Years_OG.jpg",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/celebrating-five-years-of-j-pal-middle-east-and-north-africa/openGraphImage.jpg"
+      }
+    ],
+    "mnemo": {
+      "success": true,
+      "id": "dry-run-id",
+      "message": "Dry run mode"
+    },
+    "summary": {
+      "totalImages": 2,
+      "successfulImages": 0,
+      "dryRunImages": 2,
+      "failedImages": 0,
+      "skippedImages": 0,
+      "mnemoCreated": true
+    }
+  }
+]
