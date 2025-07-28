@@ -26,8 +26,7 @@ export interface APICollectionItem {
   slug: string;
   status: 'published' | 'draft'; // UI-friendly status values
   data: any;
-  created_at: string;
-  updated_at: string;
+
 }
 
 // Status transformation utilities - Now using direct mapping since backend is fixed
@@ -185,8 +184,7 @@ export default function Home() {
               tags: [],
               richTextContent: ''
             },
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString()
+        
           };
           setSelectedItem(mockApiItem);
           setIsCreatingNew(false);
@@ -218,8 +216,7 @@ export default function Home() {
             tags: [],
             richTextContent: ''
           },
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
+        
         };
         setSelectedItem(mockApiItem);
         setIsCreatingNew(false);

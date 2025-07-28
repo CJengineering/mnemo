@@ -25,6 +25,8 @@ export default function GoogleBucketExplorer() {
   const [error, setError] = useState<string | null>(null);
   const [currentPath, setCurrentPath] = useState<string>('');
   const [pathHistory, setPathHistory] = useState<string[]>(['']);
+  const [uploading, setUploading] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState<string | null>(null);
 
   const fetchFiles = async (prefix: string = '') => {
     try {
@@ -75,6 +77,104 @@ export default function GoogleBucketExplorer() {
   const navigateToRoot = () => {
     setPathHistory(['']);
     fetchFiles('');
+  };
+
+  const handleFileUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    try {
+      setUploading(true);
+      setError(null);
+
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('prefix', currentPath);
+
+      console.log(`📤 Uploading ${file.name} to folder: "${currentPath}"`);
+
+      const response = await fetch('/api/bucket/upload', {
+        method: 'POST',
+        body: formData
+      });
+
+      if (!response.ok) {
+        throw new Error(`Upload failed: ${response.status}`);
+      }
+
+      const result = await response.json();
+
+      if (!result.success) {
+        throw new Error(result.error || 'Upload failed');
+      }
+
+      console.log('✅ File uploaded successfully:', result.file);
+
+      // Refresh the current folder to show the new file
+      await fetchFiles(currentPath);
+
+      // Clear the input
+      event.target.value = '';
+    } catch (err) {
+      console.error('🔴 Upload error:', err);
+      setError(err instanceof Error ? err.message : 'Upload failed');
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleDelete = async (file: BucketFile) => {
+    const itemType = file.isFolder ? 'folder' : 'file';
+    const itemName = getDisplayName(file);
+
+    // Show confirmation alert
+    const confirmed = window.confirm(
+      `⚠️ Are you sure you want to delete this ${itemType}?\n\n"${itemName}"\n\n${
+        file.isFolder
+          ? 'This will delete ALL files inside this folder. This action cannot be undone!'
+          : 'This action cannot be undone!'
+      }`
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    try {
+      setDeleteLoading(file.name);
+      setError(null);
+
+      console.log(`🗑️ Deleting ${itemType}: ${file.name}`);
+
+      const response = await fetch(
+        `/api/bucket/delete?path=${encodeURIComponent(file.name)}`,
+        {
+          method: 'DELETE'
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`Delete failed: ${response.status}`);
+      }
+
+      const result = await response.json();
+
+      if (!result.success) {
+        throw new Error(result.error || 'Delete failed');
+      }
+
+      console.log(`✅ ${itemType} deleted successfully:`, result);
+
+      // Refresh the current folder to remove the deleted item
+      await fetchFiles(currentPath);
+    } catch (err) {
+      console.error('🔴 Delete error:', err);
+      setError(err instanceof Error ? err.message : 'Delete failed');
+    } finally {
+      setDeleteLoading(null);
+    }
   };
 
   const formatFileSize = (bytes?: number): string => {
@@ -194,6 +294,40 @@ export default function GoogleBucketExplorer() {
           >
             🔄 Refresh
           </button>
+
+          {/* Upload Button */}
+          <div className="relative">
+            <input
+              type="file"
+              id="file-upload"
+              className="hidden"
+              onChange={handleFileUpload}
+              disabled={uploading}
+            />
+            <label
+              htmlFor="file-upload"
+              className={`px-3 py-1 text-sm rounded cursor-pointer transition-colors ${
+                uploading
+                  ? 'bg-gray-400 text-gray-600 cursor-not-allowed'
+                  : 'bg-green-600 text-white hover:bg-green-700'
+              }`}
+            >
+              {uploading ? '⏳ Uploading...' : '📤 Upload File'}
+            </label>
+          </div>
+        </div>
+
+        {/* Current Path Info */}
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4">
+          <p className="text-sm text-blue-800">
+            <span className="font-semibold">📁 Current folder:</span>{' '}
+            <span className="font-mono bg-blue-100 px-2 py-1 rounded">
+              {currentPath || '/'}
+            </span>
+          </p>
+          <p className="text-xs text-blue-600 mt-1">
+            Files uploaded here will be saved to this folder
+          </p>
         </div>
 
         <p className="text-gray-600">
@@ -274,10 +408,42 @@ export default function GoogleBucketExplorer() {
                     >
                       Copy URL
                     </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDelete(file);
+                      }}
+                      disabled={deleteLoading === file.name}
+                      className={`px-3 py-1 text-sm rounded transition-colors ${
+                        deleteLoading === file.name
+                          ? 'bg-gray-400 text-gray-600 cursor-not-allowed'
+                          : 'bg-red-600 text-white hover:bg-red-700'
+                      }`}
+                    >
+                      {deleteLoading === file.name ? '⏳' : '🗑️'} Delete
+                    </button>
                   </div>
                 )}
 
-                {file.isFolder && <span className="text-gray-400 ml-4">→</span>}
+                {file.isFolder && (
+                  <div className="flex items-center space-x-2 ml-4">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDelete(file);
+                      }}
+                      disabled={deleteLoading === file.name}
+                      className={`px-3 py-1 text-sm rounded transition-colors ${
+                        deleteLoading === file.name
+                          ? 'bg-gray-400 text-gray-600 cursor-not-allowed'
+                          : 'bg-red-600 text-white hover:bg-red-700'
+                      }`}
+                    >
+                      {deleteLoading === file.name ? '⏳' : '🗑️'} Delete
+                    </button>
+                    <span className="text-gray-400">→</span>
+                  </div>
+                )}
               </div>
             </div>
           ))}

@@ -1,0 +1,19 @@
+{
+  "timestamp": "2025-07-23T16:13:19.287Z",
+  "summary": {
+    "totalProcessed": 158,
+    "totalUpdated": 149,
+    "totalSkipped": 6,
+    "totalFailed": 3,
+    "totalImages": 446,
+    "duration": 446
+  },
+  "config": {
+    "GOOGLE_CLOUD_PROJECT_ID": "cj-tech-381914",
+    "BUCKET_NAME": "mnemo",
+    "CDN_BASE_URL": "https://cdn.communityjameel.io",
+    "CONCURRENCY_LIMIT": 3,
+    "TIMEOUT": 45000,
+    "MNEMO_API_BASE": "https://mnemo-app-e4f6j5kdsq-ew.a.run.app/api"
+  }
+}

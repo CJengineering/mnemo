@@ -4,7 +4,7 @@ import React from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Edit, Eye } from 'lucide-react';
+import { Edit, Eye, Trash2 } from 'lucide-react';
 
 interface CompactStatusViewProps {
   title: string;
@@ -14,6 +14,7 @@ interface CompactStatusViewProps {
   publishDate?: string;
   onEdit: () => void;
   onPreview?: () => void;
+  onDelete?: () => void;
 }
 
 export function CompactStatusView({
@@ -23,7 +24,8 @@ export function CompactStatusView({
   itemId,
   publishDate,
   onEdit,
-  onPreview
+  onPreview,
+  onDelete
 }: CompactStatusViewProps) {
   return (
     <Card className="w-full">
@@ -84,6 +86,16 @@ export function CompactStatusView({
             >
               <Edit className="h-3 w-3" />
             </Button>
+            {onDelete && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={onDelete}
+                className="h-6 w-6 p-0 text-red-500 hover:text-red-700 hover:bg-red-50"
+              >
+                <Trash2 className="h-3 w-3" />
+              </Button>
+            )}
           </div>
         </div>
       </CardContent>

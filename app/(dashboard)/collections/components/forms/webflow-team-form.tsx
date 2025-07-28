@@ -11,6 +11,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Form } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
+import { Trash2 } from 'lucide-react';
 import {
   WebflowTextField,
   WebflowSlugField,
@@ -71,6 +72,7 @@ interface WebflowTeamFormProps {
   initialData?: Partial<IncomingTeamData>;
   onSubmit: (data: IncomingTeamData) => Promise<void>;
   onCancel: () => void;
+  onDelete?: () => Promise<void>;
   isEditing?: boolean;
 }
 
@@ -82,7 +84,7 @@ export interface WebflowTeamFormRef {
 export const WebflowTeamForm = forwardRef<
   WebflowTeamFormRef,
   WebflowTeamFormProps
->(({ initialData, onSubmit, onCancel, isEditing = false }, ref) => {
+>(({ initialData, onSubmit, onCancel, onDelete, isEditing = false }, ref) => {
   const form = useForm<WebflowTeamFormData>({
     resolver: zodResolver(webflowTeamSchema),
     defaultValues: {
@@ -186,6 +188,49 @@ export const WebflowTeamForm = forwardRef<
 
   return (
     <div className="h-full flex flex-col bg-gray-900">
+      {/* Action Bar with Delete Button */}
+      <div className="sticky top-0 z-10 bg-gray-900 border-b border-gray-700 p-4 -mx-6 -mt-6 mb-6">
+        <div className="flex items-center justify-between">
+          <h3 className="text-lg font-medium text-white">
+            {isEditing ? 'Edit' : 'Create'} Team Member
+          </h3>
+          <div className="flex items-center gap-3">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={onCancel}
+              className="bg-gray-800 border-gray-600 text-gray-300 hover:bg-gray-700"
+            >
+              Cancel
+            </Button>
+            {onDelete && isEditing && (
+              <Button
+                type="button"
+                variant="outline"
+                onClick={onDelete}
+                className="bg-red-800 border-red-600 text-red-300 hover:bg-red-700"
+              >
+                <Trash2 className="h-4 w-4 mr-2" />
+                Delete
+              </Button>
+            )}
+            <Button
+              type="button"
+              onClick={() => form.setValue('status', 'draft')}
+              className="bg-gray-700 hover:bg-gray-600 text-white"
+            >
+              Save Draft
+            </Button>
+            <Button
+              type="submit"
+              className="bg-blue-600 hover:bg-blue-700 text-white"
+            >
+              Publish
+            </Button>
+          </div>
+        </div>
+      </div>
+
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}

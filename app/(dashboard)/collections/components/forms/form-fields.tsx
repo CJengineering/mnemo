@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Control, useWatch } from 'react-hook-form';
 import {
@@ -48,6 +48,12 @@ function ImagePreview({
 }: ImagePreviewProps) {
   const [useNextImage, setUseNextImage] = useState(true);
   const [hasError, setHasError] = useState(false);
+
+  // Reset state when URL changes to ensure immediate update
+  useEffect(() => {
+    setUseNextImage(true);
+    setHasError(false);
+  }, [url]);
 
   const handleError = () => {
     if (useNextImage) {
@@ -262,6 +268,7 @@ export function MultiImageField({
                     <Card key={index} className="overflow-hidden">
                       <div className="relative">
                         <ImagePreview
+                          key={`${image.url}-${index}`} // Force re-render when URL changes
                           url={image.url}
                           alt={image.alt || `Image ${index + 1}`}
                           className="w-full h-32 object-cover"
@@ -755,6 +762,7 @@ export function ImageField({
                   <div className="text-sm font-medium mb-2">Preview:</div>
                   <div className="space-y-2">
                     <ImagePreview
+                      key={field.value.url} // Force re-render when URL changes
                       url={field.value.url}
                       alt={field.value.alt || 'Uploaded preview'}
                     />

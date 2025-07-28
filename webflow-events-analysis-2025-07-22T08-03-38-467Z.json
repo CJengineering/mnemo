@@ -1,0 +1,565 @@
+{
+  "timestamp": "2025-07-22T08:03:38.475Z",
+  "collectionId": "6225fe8b1f52b40001a99d66",
+  "totalEvents": 5,
+  "totalFields": 27,
+  "fields": [
+    "address",
+    "city",
+    "end-date",
+    "event-date",
+    "featured",
+    "hero-image",
+    "hero-image-caption",
+    "image-gallery",
+    "in-the-media-on-off",
+    "more-details-on-off",
+    "name",
+    "news-on-off",
+    "open-graph-image",
+    "organisers",
+    "partners",
+    "programme-label",
+    "push-to-gr",
+    "related-people-rich-text",
+    "related-programme-s",
+    "seo-meta-description",
+    "seo-title",
+    "short-description-2",
+    "slug",
+    "thumbnail",
+    "time",
+    "trailer-livestream-highlights-video-link",
+    "video-as-hero-on-off"
+  ],
+  "fieldTypes": {
+    "push-to-gr": [
+      "boolean"
+    ],
+    "video-as-hero-on-off": [
+      "boolean"
+    ],
+    "featured": [
+      "boolean"
+    ],
+    "news-on-off": [
+      "boolean"
+    ],
+    "more-details-on-off": [
+      "boolean"
+    ],
+    "in-the-media-on-off": [
+      "boolean"
+    ],
+    "name": [
+      "string"
+    ],
+    "slug": [
+      "string"
+    ],
+    "programme-label": [
+      "string"
+    ],
+    "related-programme-s": [
+      "array"
+    ],
+    "seo-meta-description": [
+      "string"
+    ],
+    "seo-title": [
+      "string"
+    ],
+    "related-people-rich-text": [
+      "string"
+    ],
+    "organisers": [
+      "array"
+    ],
+    "partners": [
+      "array"
+    ],
+    "event-date": [
+      "string"
+    ],
+    "city": [
+      "string"
+    ],
+    "time": [
+      "string"
+    ],
+    "address": [
+      "string"
+    ],
+    "short-description-2": [
+      "string"
+    ],
+    "hero-image": [
+      "object"
+    ],
+    "open-graph-image": [
+      "object"
+    ],
+    "hero-image-caption": [
+      "string"
+    ],
+    "thumbnail": [
+      "object"
+    ],
+    "end-date": [
+      "string"
+    ],
+    "image-gallery": [
+      "array"
+    ],
+    "trailer-livestream-highlights-video-link": [
+      "object"
+    ]
+  },
+  "fieldExamples": {
+    "push-to-gr": false,
+    "video-as-hero-on-off": false,
+    "featured": false,
+    "news-on-off": false,
+    "more-details-on-off": false,
+    "in-the-media-on-off": false,
+    "name": "Celebrating five years of J-PAL Middle East and North Africa",
+    "slug": "celebrating-five-years-of-j-pal-middle-east-and-north-africa",
+    "programme-label": "61ee828a15a318c663bde6fb",
+    "related-programme-s": "[\n  \"61ee828a15a318c663bde6fb\",\n  \"627e379dd27c0445d4f75ac4\"\n]",
+    "seo-meta-description": "J-PAL MENA marks 5 years of tackling poverty with a special event at the American University in Cair...",
+    "seo-title": "Celebrating 5 years of J-PAL MENA",
+    "related-people-rich-text": "<ul><li><strong>Abhijit Banerjee</strong>, co-founder and director, J-PAL</li><li><strong>Abdelrahma...",
+    "organisers": "[\n  \"67c555e9a557bf092585897d\"\n]",
+    "partners": "[\n  \"622635a1f1001a5c3e69f925\"\n]",
+    "event-date": "2025-07-07T00:00:00.000Z",
+    "city": "Cairo",
+    "time": "12h30–18h30",
+    "address": "American University of Cairo",
+    "short-description-2": "<p id=\"\">The Abdul Latif Jameel Poverty Action Lab Middle East and North Africa (J-PAL MENA) marks i...",
+    "hero-image": "{\n  \"fileId\": \"686b675b2c7d0f5245d6104d\",\n  \"url\": \"https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/686b675b2c7d0f5245d6104d_JPALMENA_5Years_HERO.jpg\",\n  \"alt\": null\n}",
+    "open-graph-image": "{\n  \"fileId\": \"686b675d17d329bcec858b56\",\n  \"url\": \"https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/686b675d17d329bcec858b56_JPALMENA_5Years_OG.jpg\",\n  \"alt\": null\n}",
+    "hero-image-caption": "J-PAL MENA 5th anniversary",
+    "thumbnail": "{\n  \"fileId\": \"686b6760e5d8c524aff35f5c\",\n  \"url\": \"https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/686b6760e5d8c524aff35f5c_JPALMENA_5Years_THUMB.jpg\",\n  \"alt\": null\n}",
+    "end-date": "2025-06-20T00:00:00.000Z",
+    "image-gallery": "[\n  {\n    \"fileId\": \"685c31534c9f78cc3720420a\",\n    \"url\": \"https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c31534c9f78cc3720420a_4-_DSF8076%20copy.webp\",\n    \"alt\": null\n  },\n  {\n    \"fileId\": \"685c3153a332fef7aa36af50\",\n    \"url\": \"https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c3153a332fef7aa36af50_13-_DSF8515%20copy.webp\",\n    \"alt\": null\n  },\n  {\n    \"fileId\": \"685c3153a332fef7aa36af4d\",\n    \"url\": \"https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c3153a332fef7aa36af4d_15-DSCF8257%20copy.webp\",\n    \"alt\": null\n  },\n  {\n    \"fileId\": \"685c3153dbe6cefb17335fbb\",\n    \"url\": \"https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c3153dbe6cefb17335fbb_17-_DSF8616%20copy.webp\",\n    \"alt\": null\n  },\n  {\n    \"fileId\": \"685c315319d496a2580942c0\",\n    \"url\": \"https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c315319d496a2580942c0_23-DSCF9714%20copy.webp\",\n    \"alt\": null\n  },\n  {\n    \"fileId\": \"685c3153606eeb2ea2c1e863\",\n    \"url\": \"https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c3153606eeb2ea2c1e863_32-DSCF8662%20copy.webp\",\n    \"alt\": null\n  },\n  {\n    \"fileId\": \"685c3153a80137c0d779e390\",\n    \"url\": \"https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c3153a80137c0d779e390_39-DSCF8505%20copy.webp\",\n    \"alt\": null\n  },\n  {\n    \"fileId\": \"685c315311113d0f8aad579a\",\n    \"url\": \"https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c315311113d0f8aad579a_39-DSCF9894%20copy.webp\",\n    \"alt\": null\n  },\n  {\n    \"fileId\": \"685c3153614788be127d93c0\",\n    \"url\": \"https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c3153614788be127d93c0_51-DSCF0051%20copy.webp\",\n    \"alt\": null\n  },\n  {\n    \"fileId\": \"685c3153526ffd279133b404\",\n    \"url\": \"https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c3153526ffd279133b404_56-DSCF8960%20copy.webp\",\n    \"alt\": null\n  },\n  {\n    \"fileId\": \"685c3153dbe6cefb17335fbe\",\n    \"url\": \"https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c3153dbe6cefb17335fbe_58-DSCF8971%20copy.webp\",\n    \"alt\": null\n  },\n  {\n    \"fileId\": \"685c315395f558804e2dd109\",\n    \"url\": \"https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c315395f558804e2dd109_61-DSCF0188%20copy.webp\",\n    \"alt\": null\n  }\n]",
+    "trailer-livestream-highlights-video-link": "{\n  \"url\": \"https://www.youtube.com/watch?v=i9ckXhjsbQs\",\n  \"metadata\": {\n    \"width\": 854,\n    \"height\": 480,\n    \"html\": \"<iframe class=\\\"embedly-embed\\\" src=\\\"//cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2Fi9ckXhjsbQs%3Ffeature%3Doembed&display_name=YouTube&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3Di9ckXhjsbQs&image=https%3A%2F%2Fi.ytimg.com%2Fvi%2Fi9ckXhjsbQs%2Fhqdefault.jpg&type=text%2Fhtml&schema=youtube\\\" width=\\\"854\\\" height=\\\"480\\\" scrolling=\\\"no\\\" title=\\\"YouTube embed\\\" frameborder=\\\"0\\\" allow=\\\"autoplay; fullscreen; encrypted-media; picture-in-picture;\\\" allowfullscreen=\\\"true\\\"></iframe>\",\n    \"aspectRatio\": 0,\n    \"title\": \"Jameel Index | Measuring food trade and vulnerability\",\n    \"provider_name\": \"YouTube\",\n    \"type\": \"video\",\n    \"thumbnail_url\": \"https://i.ytimg.com/vi/i9ckXhjsbQs/hqdefault.jpg\",\n    \"description\": \"The Jameel Index measures over 160 countries' exposure to global food security vulnerability, dependence on global trade and regional threats impacting the trade of food goods. Major food importing countries, like Algeria and Botswana, and small island states, like Cabo Verde, are highly vulnerable, according to the index.\",\n    \"author_name\": \"Community Jameel\"\n  }\n}"
+  },
+  "sampleEvents": [
+    {
+      "id": "686b61d194cec7569bbebe58",
+      "cmsLocaleId": null,
+      "lastPublished": "2025-07-07T07:20:15.872Z",
+      "lastUpdated": "2025-07-07T07:20:15.872Z",
+      "createdOn": "2025-07-07T05:57:37.350Z",
+      "isArchived": false,
+      "isDraft": false,
+      "fieldData": {
+        "push-to-gr": false,
+        "video-as-hero-on-off": false,
+        "featured": false,
+        "news-on-off": false,
+        "more-details-on-off": false,
+        "in-the-media-on-off": false,
+        "name": "Celebrating five years of J-PAL Middle East and North Africa",
+        "slug": "celebrating-five-years-of-j-pal-middle-east-and-north-africa",
+        "programme-label": "61ee828a15a318c663bde6fb",
+        "related-programme-s": [
+          "61ee828a15a318c663bde6fb",
+          "627e379dd27c0445d4f75ac4"
+        ],
+        "seo-meta-description": "J-PAL MENA marks 5 years of tackling poverty with a special event at the American University in Cairo.",
+        "seo-title": "Celebrating 5 years of J-PAL MENA",
+        "related-people-rich-text": "<ul><li><strong>Abhijit Banerjee</strong>, co-founder and director, J-PAL</li><li><strong>Abdelrahman Nagy</strong>, lead evaluation specialist, 3ie</li><li><strong>Adam Osman</strong>, co-scientific director, J-PAL MENA</li><li><strong>Ahmad Dallal</strong>, president, AUC</li><li><strong>Ahmed Elsayed</strong>, executive director, J-PAL MENA</li><li><strong>Alison Fahey</strong>, global director of partnerships and strategic initiatives, J-PAL</li><li><strong>Bruno Crépon</strong>, co-scientific director, J-PAL MENA</li><li><strong>George Richards</strong>, director, Community Jameel</li><li><strong>Her Excellency Rania Al-Mashat</strong>, minister of planning, economic development and international cooperation</li><li><strong>Laila Hosni</strong>, executive director, Sawiris Foundation for Social Development</li><li><strong>Margaret Sarofim</strong>, deputy minister of social solidarity</li><li><strong>Medhat Massoud</strong>, former director-general of the human &amp; community development development department, Micro, Small and Medium Enterprises Development Agency</li><li><strong>Noha Magdy</strong>, MENA scholars fellow, J-PAL MENA </li><li><strong>Mohannad Abouelrouse</strong>, founder and CEO, Life from Water Foundation </li><li><strong>Reham Rizk</strong>, director, Egypt Impact Lab </li><li><strong>Iqbal Dhaliwal</strong>, global executive director, J-PAL </li><li><strong>Samer Atallah</strong>, associate dean for graduate studies and research, AUC Onsi Sawiris School of Business</li></ul>",
+        "organisers": [
+          "67c555e9a557bf092585897d"
+        ],
+        "partners": [
+          "622635a1f1001a5c3e69f925"
+        ],
+        "event-date": "2025-07-07T00:00:00.000Z",
+        "city": "Cairo",
+        "time": "12h30–18h30",
+        "address": "American University of Cairo",
+        "short-description-2": "<p id=\"\">The Abdul Latif Jameel Poverty Action Lab Middle East and North Africa (J-PAL MENA) marks its fifth anniversary with a special event hosted at The American University in Cairo (AUC). </p><p id=\"\">Featuring keynote remarks by Professor Abhijit Banerjee, J-PAL co-founder and Nobel laureate, the event brings together policymakers, researchers and implementers to reflect on key milestones, share impact stories and insights from J-PAL initiatives and discuss the future of evidence-based policy-making.</p><p id=\"\">The event will be livestreamed on <a href=\"https://www.youtube.com/@J-PAL\" id=\"\">J-PAL’s YouTube channel</a>.</p>",
+        "hero-image": {
+          "fileId": "686b675b2c7d0f5245d6104d",
+          "url": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/686b675b2c7d0f5245d6104d_JPALMENA_5Years_HERO.jpg",
+          "alt": null
+        },
+        "open-graph-image": {
+          "fileId": "686b675d17d329bcec858b56",
+          "url": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/686b675d17d329bcec858b56_JPALMENA_5Years_OG.jpg",
+          "alt": null
+        },
+        "hero-image-caption": "J-PAL MENA 5th anniversary",
+        "thumbnail": {
+          "fileId": "686b6760e5d8c524aff35f5c",
+          "url": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/686b6760e5d8c524aff35f5c_JPALMENA_5Years_THUMB.jpg",
+          "alt": null
+        }
+      }
+    },
+    {
+      "id": "685c32b4f5160692f74ec938",
+      "cmsLocaleId": null,
+      "lastPublished": "2025-06-26T13:24:41.004Z",
+      "lastUpdated": "2025-06-26T05:06:21.832Z",
+      "createdOn": "2025-06-25T17:32:36.013Z",
+      "isArchived": false,
+      "isDraft": false,
+      "fieldData": {
+        "push-to-gr": false,
+        "video-as-hero-on-off": false,
+        "featured": false,
+        "news-on-off": false,
+        "more-details-on-off": false,
+        "in-the-media-on-off": false,
+        "name": "Mainstreaming climate action in Indian cities",
+        "slug": "mainstreaming-climate-action-in-indian-cities",
+        "programme-label": "651e71ae60bc5fd735493c6e",
+        "related-programme-s": [
+          "651e71ae60bc5fd735493c6e"
+        ],
+        "city": "Chennai",
+        "end-date": "2025-06-20T00:00:00.000Z",
+        "event-date": "2025-06-18T00:00:00.000Z",
+        "short-description-2": "<p id=\"\">The <a href=\"/programmes/jameel-c40-urban-planning-climate-labs\" id=\"\">Jameel C40 Urban Planning Climate Labs</a> are hosting a <strong id=\"\">national convening on mainstreaming climate action in Indian cities</strong> on 18-20 June 2025 in Chennai, India. </p><p id=\"\">The three-day event brings together city leaders, technical experts and climate practitioners to advance collaborative, practical approaches to urban climate action.</p><p id=\"\">Many Indian cities, including Ahmedabad, Bengaluru, Chennai, Delhi and Mumbai, are already showing strong climate leadership with inclusive, science-based <strong id=\"\">climate action plans</strong>. </p><p id=\"\">As they shift from planning to implementation, the primary challenge now is making climate action part of everyday city systems and embedding it into how cities plan, budget and govern.</p><p id=\"\">Policymakers, practitioners and experts explore how to make climate action a core part of city operations, helping to accelerate the move toward low-carbon, resilient, and inclusive urban futures.</p><p id=\"\">The first two days consist of closed-door technical sessions, which focus on peer learning, problem-solving and strategic planning. </p><p id=\"\">The Jameel C40 Cohort of City Practitioners will be included in those two days, expanding representation to Delhi and Amman.</p><p id=\"\">The final day opens to a wider public audience for discussions on climate budgeting, urban governance and integrated planning, during which the Jameel C40 Urban Planning Climate Labs showcase Chennai’s most recent climate change risk assessment (CCRA). </p><p id=\"\">Carried out in partnership with the Urban Management Centre, the CCRA will help shape the next phase of the Labs' efforts, marking a move from assessment to concrete, climate-smart strategies for Chennai’s future.</p>",
+        "image-gallery": [
+          {
+            "fileId": "685c31534c9f78cc3720420a",
+            "url": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c31534c9f78cc3720420a_4-_DSF8076%20copy.webp",
+            "alt": null
+          },
+          {
+            "fileId": "685c3153a332fef7aa36af50",
+            "url": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c3153a332fef7aa36af50_13-_DSF8515%20copy.webp",
+            "alt": null
+          },
+          {
+            "fileId": "685c3153a332fef7aa36af4d",
+            "url": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c3153a332fef7aa36af4d_15-DSCF8257%20copy.webp",
+            "alt": null
+          },
+          {
+            "fileId": "685c3153dbe6cefb17335fbb",
+            "url": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c3153dbe6cefb17335fbb_17-_DSF8616%20copy.webp",
+            "alt": null
+          },
+          {
+            "fileId": "685c315319d496a2580942c0",
+            "url": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c315319d496a2580942c0_23-DSCF9714%20copy.webp",
+            "alt": null
+          },
+          {
+            "fileId": "685c3153606eeb2ea2c1e863",
+            "url": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c3153606eeb2ea2c1e863_32-DSCF8662%20copy.webp",
+            "alt": null
+          },
+          {
+            "fileId": "685c3153a80137c0d779e390",
+            "url": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c3153a80137c0d779e390_39-DSCF8505%20copy.webp",
+            "alt": null
+          },
+          {
+            "fileId": "685c315311113d0f8aad579a",
+            "url": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c315311113d0f8aad579a_39-DSCF9894%20copy.webp",
+            "alt": null
+          },
+          {
+            "fileId": "685c3153614788be127d93c0",
+            "url": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c3153614788be127d93c0_51-DSCF0051%20copy.webp",
+            "alt": null
+          },
+          {
+            "fileId": "685c3153526ffd279133b404",
+            "url": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c3153526ffd279133b404_56-DSCF8960%20copy.webp",
+            "alt": null
+          },
+          {
+            "fileId": "685c3153dbe6cefb17335fbe",
+            "url": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c3153dbe6cefb17335fbe_58-DSCF8971%20copy.webp",
+            "alt": null
+          },
+          {
+            "fileId": "685c315395f558804e2dd109",
+            "url": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c315395f558804e2dd109_61-DSCF0188%20copy.webp",
+            "alt": null
+          }
+        ],
+        "hero-image": {
+          "fileId": "685c349cd5cf135b91ccf9ea",
+          "url": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c349cd5cf135b91ccf9ea_CHENNAI_C40_CONFERENCE_HERO%20copy.webp",
+          "alt": null
+        },
+        "open-graph-image": {
+          "fileId": "685c34b22ca69f09aec3ce74",
+          "url": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c34b22ca69f09aec3ce74_CHENNAI_C40_CONFERENCE_OG.webp",
+          "alt": null
+        },
+        "thumbnail": {
+          "fileId": "685c34b92fb5fae447b79dc0",
+          "url": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c34b92fb5fae447b79dc0_CHENNAI_C40_CONFERENCE_THUMB.webp",
+          "alt": null
+        },
+        "seo-title": "Mainstreaming climate action in Indian cities",
+        "seo-meta-description": "The Jameel C40 Urban Planning Climate Labs host a national convening for city leaders from across India.",
+        "address": "Chennai, India"
+      }
+    },
+    {
+      "id": "685c21dc37decd9edd2e8f81",
+      "cmsLocaleId": null,
+      "lastPublished": "2025-06-26T16:01:28.889Z",
+      "lastUpdated": "2025-06-26T16:01:28.889Z",
+      "createdOn": "2025-06-25T16:20:44.847Z",
+      "isArchived": false,
+      "isDraft": false,
+      "fieldData": {
+        "push-to-gr": false,
+        "video-as-hero-on-off": false,
+        "featured": false,
+        "news-on-off": false,
+        "more-details-on-off": false,
+        "in-the-media-on-off": false,
+        "name": "London Climate Action Week: Accelerating climate through urban planning",
+        "slug": "london-climate-action-week-accelerating-climate-through-urban-planning",
+        "programme-label": "651e71ae60bc5fd735493c6e",
+        "related-programme-s": [
+          "651e71ae60bc5fd735493c6e"
+        ],
+        "seo-meta-description": "The Jameel C40 Urban Planning Climate Labs showcase urban planning's crucial role in addressing the climate crisis",
+        "seo-title": "London Climate Action Week features urban planning",
+        "city": "London",
+        "event-date": "2025-06-25T00:00:00.000Z",
+        "short-description-2": "<p id=\"\">On the sidelines of London Climate Action Week, Community Jameel and C40 Cities – co-founders of the Jameel C40 labs – joined with global design and architecture firm Gensler to host an event titled <strong id=\"\">Accelerating climate action through urban planning</strong>.</p><p id=\"\">Bringing together leaders across urban design, policy and implementation, the session explored how cities can use planning as a powerful lever to deliver nature-positive and socially inclusive outcomes.</p><p id=\"\">The event features:</p><ul id=\"\"><li id=\"\">Tainà de Paula, secretary for environment and climate, Rio de Janeiro</li><li>Njenga Muchekehu, advisor to the governor of Nairobi</li><li id=\"\">Signe Kongebro, global director, future resilient design, Ramboll</li><li id=\"\">Adam Freed, principal, Bloomberg Associates</li><li id=\"\">Hélène Chartier, director of urban planning and design, C40 Cities (moderator)</li><li id=\"\">Felipe Moggio Bessolo and Mario de los Santos Branca – Brazilian Youth speakers on the road to COP30</li><li id=\"\">Lucy Rochford, arts and culture programmes officer, Community Jameel</li></ul>",
+        "address": "Gensler, London",
+        "hero-image": {
+          "fileId": "685c3863243542de16956fe6",
+          "url": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c3863243542de16956fe6_LONDON_C40_CONFERENCE_HERO.webp",
+          "alt": null
+        },
+        "open-graph-image": {
+          "fileId": "685c385e1e3a90e86ff07dca",
+          "url": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c385e1e3a90e86ff07dca_LONDON_C40_CONFERENCE_OG.webp",
+          "alt": null
+        },
+        "thumbnail": {
+          "fileId": "685c3859c4ccbb9c0cda6e18",
+          "url": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c3859c4ccbb9c0cda6e18_LONDON_C40_CONFERENCE_THUMB.webp",
+          "alt": null
+        },
+        "time": "16h30–18h30",
+        "image-gallery": [
+          {
+            "fileId": "685d49cdf5e399aa5ab487fa",
+            "url": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685d49cdf5e399aa5ab487fa_DSC00039%20copy.webp",
+            "alt": null
+          },
+          {
+            "fileId": "685d49cd550e3c39fe267b33",
+            "url": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685d49cd550e3c39fe267b33_DSC00133%20copy.webp",
+            "alt": null
+          },
+          {
+            "fileId": "685d49ce8631fa1ce796736b",
+            "url": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685d49ce8631fa1ce796736b_DSC00141%20copy.webp",
+            "alt": null
+          },
+          {
+            "fileId": "685d49cddd0f219f7b4387b7",
+            "url": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685d49cddd0f219f7b4387b7_DSC00028%20copy.webp",
+            "alt": null
+          },
+          {
+            "fileId": "685d49cd923424cc52b198c3",
+            "url": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685d49cd923424cc52b198c3_DSC00063%20copy.webp",
+            "alt": null
+          },
+          {
+            "fileId": "685d49cd0cc893242c00d71f",
+            "url": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685d49cd0cc893242c00d71f_DSC00062%20copy.webp",
+            "alt": null
+          },
+          {
+            "fileId": "685d49cf3edfc2dcd46d9c23",
+            "url": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685d49cf3edfc2dcd46d9c23_DSC00033%20copy.webp",
+            "alt": null
+          },
+          {
+            "fileId": "685d49cd1691ddfc6a25f8d6",
+            "url": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685d49cd1691ddfc6a25f8d6_DSC00052%20copy.webp",
+            "alt": null
+          },
+          {
+            "fileId": "685d49cd767a317ab33b52f5",
+            "url": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685d49cd767a317ab33b52f5_DSC00086%20copy.webp",
+            "alt": null
+          },
+          {
+            "fileId": "685d49cd0cc893242c00d729",
+            "url": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685d49cd0cc893242c00d729_DSC00107%20copy.webp",
+            "alt": null
+          },
+          {
+            "fileId": "685d49cd61fcb470efda83f3",
+            "url": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685d49cd61fcb470efda83f3_DSC00110%20copy.webp",
+            "alt": null
+          },
+          {
+            "fileId": "685d49cd3a9146f9deeeadf0",
+            "url": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685d49cd3a9146f9deeeadf0_DSC00114%20copy.webp",
+            "alt": null
+          },
+          {
+            "fileId": "685d49ce7c28180b5c159414",
+            "url": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685d49ce7c28180b5c159414_DSC00117%20copy.webp",
+            "alt": null
+          },
+          {
+            "fileId": "685d49cd8eb6a03680c145dd",
+            "url": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685d49cd8eb6a03680c145dd_DSC00118%20copy.webp",
+            "alt": null
+          },
+          {
+            "fileId": "685d49cd65638d19a795c15c",
+            "url": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685d49cd65638d19a795c15c_DSC00127%20copy.webp",
+            "alt": null
+          },
+          {
+            "fileId": "685d49cd6fce409825868e79",
+            "url": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685d49cd6fce409825868e79_DSC00009%20copy.webp",
+            "alt": null
+          },
+          {
+            "fileId": "685d49cd90958587ff5587fc",
+            "url": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685d49cd90958587ff5587fc_DSC00132%20copy.webp",
+            "alt": null
+          }
+        ]
+      }
+    },
+    {
+      "id": "6857dc6bb544c5dc141f3911",
+      "cmsLocaleId": null,
+      "lastPublished": "2025-07-01T13:20:52.833Z",
+      "lastUpdated": "2025-07-01T13:20:52.833Z",
+      "createdOn": "2025-06-22T10:35:23.333Z",
+      "isArchived": false,
+      "isDraft": false,
+      "fieldData": {
+        "end-date": "2025-09-07T00:00:00.000Z",
+        "event-date": "2025-06-01T00:00:00.000Z",
+        "push-to-gr": false,
+        "video-as-hero-on-off": false,
+        "featured": false,
+        "news-on-off": false,
+        "more-details-on-off": false,
+        "in-the-media-on-off": false,
+        "seo-meta-description": "Summer workshops teach families from Al-Darb Al-Ahmar to use traditional crafts to make backgammon sets.",
+        "seo-title": "Jameel House in Cairo workshops at Bayt Yakan",
+        "city": "Cairo",
+        "name": "Jameel House in Cairo workshops at the 2025 Bayt Yakan summer school",
+        "short-description-2": "<p id=\"\">The 2025 Bayt Yakan summer school features a programme of <strong id=\"\">workshops in traditional crafts</strong> for families from Al-Darb Al-Ahmar, delivered by alumni from the <a href=\"/programmes/jameel-house-of-traditional-arts-in-cairo\" id=\"\"><strong id=\"\">Jameel House of Traditional Arts in Cairo</strong></a>.</p><p id=\"\">Seven alumni of the Jameel House in Cairo – <strong>Reham Wahba</strong>, <strong>Sara El Sayed</strong>, <strong>Amal Mostafa</strong>, <strong>Ibrahim Waheed</strong>, <strong>Alya Gamal</strong>, <strong>Areej Niazi</strong> and <strong>Hoda Haro</strong> – lead the programme, which also includes a visit to the National Museum of Egyptian Civilisation.</p><p id=\"\">Participants will explore traditional craftsmanship by producing handmade backgammon sets rooted in Cairo’s design heritage, having developed skills in geometric design, Arabic calligraphy, brass inlay, wood veneer and stencil printing. </p><p id=\"\">The programme aims to engage children and their families in creative activity and raise awareness of the area's local architectural and craft heritage.</p><p id=\"\">An exhibition and closing ceremony will be held on the 7 September 2025 following the end of the programme. </p>",
+        "address": "Cairo, Egypt",
+        "related-programme-s": [
+          "63440d3f2d8448b7438fc75d"
+        ],
+        "programme-label": "63440d3f2d8448b7438fc75d",
+        "organisers": [
+          "65a7ee6dbb00e14f640e6d09",
+          "622635a1f1001a5c3e69f925"
+        ],
+        "open-graph-image": {
+          "fileId": "6862707e66a137d706731f0a",
+          "url": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/6862707e66a137d706731f0a_BAYT_YAKAN_SUMMER_SCHOOL_2025_OG_UPDATED.jpg",
+          "alt": null
+        },
+        "thumbnail": {
+          "fileId": "6857db6f972dfa690aee843d",
+          "url": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/6857db6f972dfa690aee843d_Jameel_Index_Launch_Oxford_THUMB.jpg",
+          "alt": null
+        },
+        "slug": "the-jameel-house-2025-summer-school-in-collaboration-with-bayt-yakan",
+        "hero-image": {
+          "fileId": "686270766b0865d4a382227e",
+          "url": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/686270766b0865d4a382227e_BAYT_YAKAN_SUMMER_SCHOOL_2025_HERO_UPDATED.jpg",
+          "alt": null
+        },
+        "partners": [
+          "6857ebcab544c5dc14236d36"
+        ]
+      }
+    },
+    {
+      "id": "684bd166d86fe80724343c5d",
+      "cmsLocaleId": null,
+      "lastPublished": "2025-06-22T11:17:15.757Z",
+      "lastUpdated": "2025-06-17T13:32:57.291Z",
+      "createdOn": "2025-06-13T07:21:10.222Z",
+      "isArchived": false,
+      "isDraft": false,
+      "fieldData": {
+        "push-to-gr": false,
+        "video-as-hero-on-off": false,
+        "featured": false,
+        "news-on-off": false,
+        "more-details-on-off": false,
+        "in-the-media-on-off": false,
+        "name": "Jameel Index Forum: Food trade in the current age of uncertainty",
+        "slug": "jameel-index-for-food-trade-and-vulnerability-launch",
+        "programme-label": "62f256210e99ef31bd233d5c",
+        "related-programme-s": [
+          "61ee828a15a3182b72bde63d",
+          "62f256210e99ef31bd233d5c"
+        ],
+        "seo-meta-description": "The Jameel Index helps stakeholders assess countries vulnerability to global food trade schocks.",
+        "seo-title": "Jameel Index Forum at Oxford Martin School",
+        "city": "Oxford",
+        "event-date": "2025-06-17T00:00:00.000Z",
+        "time": "14h00–15h30",
+        "address": "Oxford Martin School, University of Oxford",
+        "related-people-rich-text": "<ul id=\"\"><li id=\"\"><strong id=\"\">Sir Charles Godfray</strong>, director, Oxford Martin School, University of Oxford</li><li id=\"\"><strong id=\"\">Nader Iskandar Diab</strong>, head of programmes, Community Jameel</li><li id=\"\"><strong id=\"\">Kenneth Strzepek</strong>, co-project lead, MIT Abdul Latif Jameel Water and Food Systems Lab</li><li id=\"\"><strong id=\"\">Mihaela Papa</strong>, director of research, MIT Centre for International Studies</li><li id=\"\"><strong id=\"\">Greg Sixt</strong>, director, MIT J-WAFS / FACT Alliance</li><li id=\"\"><strong id=\"\">Linus Mofor</strong>, regional adviser, UNICEF</li><li id=\"\"><strong id=\"\">Paola de Almeida</strong>, food and agriculture portfolio head, Pegasus Capital Advisors</li><li id=\"\"><strong id=\"\">Rehab Osman</strong>, senior lecturer in economics, Oxford Brookes University</li></ul>",
+        "organisers": [
+          "6235f54b3161bd844fa3a8b1",
+          "640ef4408f88dc0b568f608a",
+          "622635a1f1001a5c3e69f925"
+        ],
+        "partners": [
+          "67222365a82c33dad179728c",
+          "672223febe80a0257fd0f3ba"
+        ],
+        "short-description-2": "<p id=\"\">The official launch of the <a href=\"http://jameelindex.mit.edu\" target=\"_blank\" id=\"\"><strong id=\"\">Jameel Index for Food Trade and Vulnerability</strong></a>, a new online platform designed to assess countries' exposure to shocks in the global food trade, takes place in the Oxford Martin School at the University of Oxford.</p><p id=\"\">The launch event – the <strong id=\"\">Jameel Index Forum: Food trade in the current age of uncertainty </strong>– features two presentations and an expert panel will offer historical perspectives and future projections on food trade, drawing from the Jameel Index and global expertise.</p><p id=\"\">The Jameel&nbsp;Index was developed by the <a href=\"/programmes/j-wafs\" id=\"\">Abdul Latif Jameel Water and Food Systems Lab</a> (J-WAFS) at the Massachusetts Institute of Technology, in collaboration with the University of Oxford and the International Food Policy Research Institute and supported by Community Jameel.</p><p id=\"\">As global food trade increasingly impacts food security, the Jameel Index helps stakeholders assess historical, near-term and future vulnerabilities to trade shocks.</p><p id=\"\">The official launch event introduces the Jameel Index, highlighting its application in analysing the BRICS trade group.</p><p id=\"\">Amidst global challenges to food trade, the expanding BRICS group – comprising Brazil, Russia, India, China, South Africa, Egypt, Ethiopia, Indonesia, Iran and the United Arab Emirates – holds significant influence as agricultural trade heavyweights. </p><p id=\"\">Brazil hosts COP30 in 2025 and is prioritising sustainable food systems in the agenda.</p><p id=\"\">While the BRICS group accounts for significant global grain production, consumption and exports, its collective role in shaping agricultural trade policies and ensuring food security remains underexplored.</p>",
+        "hero-image": {
+          "fileId": "684bd74dc271100d89a944f7",
+          "url": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/684bd74dc271100d89a944f7_Jameel_Index_Launch_Oxford_HERO.webp",
+          "alt": null
+        },
+        "open-graph-image": {
+          "fileId": "684bd753e48a0ad9531f9ab9",
+          "url": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/684bd753e48a0ad9531f9ab9_Jameel_Index_Launch_Oxford_OG.webp",
+          "alt": null
+        },
+        "thumbnail": {
+          "fileId": "684bd75833feceaffe97de48",
+          "url": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/684bd75833feceaffe97de48_Jameel_Index_Launch_Oxford_THUMB.webp",
+          "alt": null
+        },
+        "trailer-livestream-highlights-video-link": {
+          "url": "https://www.youtube.com/watch?v=i9ckXhjsbQs",
+          "metadata": {
+            "width": 854,
+            "height": 480,
+            "html": "<iframe class=\"embedly-embed\" src=\"//cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2Fi9ckXhjsbQs%3Ffeature%3Doembed&display_name=YouTube&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3Di9ckXhjsbQs&image=https%3A%2F%2Fi.ytimg.com%2Fvi%2Fi9ckXhjsbQs%2Fhqdefault.jpg&type=text%2Fhtml&schema=youtube\" width=\"854\" height=\"480\" scrolling=\"no\" title=\"YouTube embed\" frameborder=\"0\" allow=\"autoplay; fullscreen; encrypted-media; picture-in-picture;\" allowfullscreen=\"true\"></iframe>",
+            "aspectRatio": 0,
+            "title": "Jameel Index | Measuring food trade and vulnerability",
+            "provider_name": "YouTube",
+            "type": "video",
+            "thumbnail_url": "https://i.ytimg.com/vi/i9ckXhjsbQs/hqdefault.jpg",
+            "description": "The Jameel Index measures over 160 countries' exposure to global food security vulnerability, dependence on global trade and regional threats impacting the trade of food goods. Major food importing countries, like Algeria and Botswana, and small island states, like Cabo Verde, are highly vulnerable, according to the index.",
+            "author_name": "Community Jameel"
+          }
+        }
+      }
+    }
+  ]
+}

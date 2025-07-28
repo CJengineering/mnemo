@@ -259,6 +259,16 @@ export function SimpleEditor({
     }
   });
 
+  // Update editor content when initialContent changes (for form resets)
+  React.useEffect(() => {
+    if (editor && initialContent !== undefined) {
+      const currentContent = editor.getHTML();
+      if (currentContent !== initialContent) {
+        editor.commands.setContent(initialContent || '');
+      }
+    }
+  }, [editor, initialContent]);
+
   React.useEffect(() => {
     const checkCursorVisibility = () => {
       if (!editor || !toolbarRef.current) return;

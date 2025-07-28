@@ -1,0 +1,1083 @@
+[
+  {
+    "post": {
+      "id": "686270e505d9e67ccb2bc5bf",
+      "name": "Summer craft workshops to delight Al-Darb Al-Ahmar children and families",
+      "slug": "summer-craft-workshops-to-delight-al-darb-al-ahmar-children-and-families",
+      "webflowId": "686270e505d9e67ccb2bc5bf"
+    },
+    "images": [],
+    "mnemo": {
+      "success": false,
+      "error": "Slug already exists"
+    },
+    "summary": {
+      "totalImages": 0,
+      "successfulImages": 0,
+      "dryRunImages": 0,
+      "failedImages": 0,
+      "skippedImages": 0,
+      "mnemoCreated": false
+    }
+  },
+  {
+    "post": {
+      "id": "6870e7527eb371f27aec0e61",
+      "name": "Underwater video systems empower a new generation of ocean champions in Monaco",
+      "slug": "underwater-video-systems-empower-a-new-generation-of-ocean-champions-in-monaco",
+      "webflowId": "6870e7527eb371f27aec0e61"
+    },
+    "images": [],
+    "mnemo": {
+      "success": false,
+      "error": "Slug already exists"
+    },
+    "summary": {
+      "totalImages": 0,
+      "successfulImages": 0,
+      "dryRunImages": 0,
+      "failedImages": 0,
+      "skippedImages": 0,
+      "mnemoCreated": false
+    }
+  },
+  {
+    "post": {
+      "id": "686b69c87111cae2985c825f",
+      "name": "J-PAL MENA celebrates five years of transforming policymaking in the Middle East and North Africa",
+      "slug": "j-pal-mena-marks-5th-anniversary",
+      "webflowId": "686b69c87111cae2985c825f"
+    },
+    "images": [],
+    "mnemo": {
+      "success": false,
+      "error": "Slug already exists"
+    },
+    "summary": {
+      "totalImages": 0,
+      "successfulImages": 0,
+      "dryRunImages": 0,
+      "failedImages": 0,
+      "skippedImages": 0,
+      "mnemoCreated": false
+    }
+  },
+  {
+    "post": {
+      "id": "6857ceb565f912f452f82073",
+      "name": "The Jameel House of Traditional Arts in Cairo opens call for its two-year programme",
+      "slug": "the-jameel-house-of-traditional-arts-in-cairo-opens-call-for-its-two-year-programme",
+      "webflowId": "6857ceb565f912f452f82073"
+    },
+    "images": [
+      {
+        "type": "thumbnail",
+        "index": null,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/6857d0c5692bed77734f56c9_THUMBNAIL.jpg",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/the-jameel-house-of-traditional-arts-in-cairo-opens-call-for-its-two-year-programme/thumbnail.jpg",
+        "gcsPath": "website/collection/posts/the-jameel-house-of-traditional-arts-in-cairo-opens-call-for-its-two-year-programme/thumbnail.jpg",
+        "fileSize": 198107
+      },
+      {
+        "type": "mainImage",
+        "index": null,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/6857d0c9f3e45c1515a1713d_960x540.jpg",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/the-jameel-house-of-traditional-arts-in-cairo-opens-call-for-its-two-year-programme/mainImage.jpg",
+        "gcsPath": "website/collection/posts/the-jameel-house-of-traditional-arts-in-cairo-opens-call-for-its-two-year-programme/mainImage.jpg",
+        "fileSize": 360451
+      },
+      {
+        "type": "openGraphImage",
+        "index": null,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/6857d0cd6cbdb55266138ecf_700x484.jpg",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/the-jameel-house-of-traditional-arts-in-cairo-opens-call-for-its-two-year-programme/openGraphImage.jpg",
+        "gcsPath": "website/collection/posts/the-jameel-house-of-traditional-arts-in-cairo-opens-call-for-its-two-year-programme/openGraphImage.jpg",
+        "fileSize": 279350
+      }
+    ],
+    "mnemo": {
+      "success": true,
+      "collectionItem": {
+        "id": "0a7bac78-2d5e-4dd7-952a-f4b415cfd7b9",
+        "title": "The Jameel House of Traditional Arts in Cairo opens call for its two-year programme",
+        "type": "post",
+        "data": {
+          "tags": [],
+          "featured": false,
+          "location": "Cairo, Egypt",
+          "pushToGR": false,
+          "seoTitle": "The Jameel House in Cairo opens call for its two-year programme",
+          "mainImage": {
+            "alt": "",
+            "url": "https://cdn.communityjameel.io/website/collection/posts/the-jameel-house-of-traditional-arts-in-cairo-opens-call-for-its-two-year-programme/mainImage.jpg"
+          },
+          "thumbnail": {
+            "alt": "",
+            "url": "https://cdn.communityjameel.io/website/collection/posts/the-jameel-house-of-traditional-arts-in-cairo-opens-call-for-its-two-year-programme/thumbnail.jpg"
+          },
+          "bodyArabic": "<p id=\"\">أعلن <strong id=\"\">بيت جميل للفنون التراثية في القاهرة</strong> اليوم عن فتح باب التقديمللدفعة الجديدة من برنامجه الرائد الممتد لعامين، والذي يُعد من أبرز الب��امج المتخصصةفي الفنون التراثية على مستوى المنطقة. ويتيح البرنامج نحو 20 مقعداً دراسياً للمتقدمينالمهتمين بالحفاظ على الحرف التقليدية وصون التراث الفني.</p><p id=\"\"> </p><p id=\"\">وسيحظى المشاركون المقبولون بفرصة دراسة فنون الهندسة، والرسم، وتجانسالألوان، والزخرفة العربية (الأرابيسك)، إلى جانب تدريب عملي في مجالات الخزف، والزجاج،والجص، وتشكيل المعادن، والحرف الخشبية، تحت إشراف نخبة من الفنانين والمعلمين المتخصصين.</p><p id=\"\">&nbsp;</p><p id=\"\">تأسس بيت جميل في القاهرة عام 2009 كمبادرة مشتركة بين مجتمع جميل، ومدرسة الملكتشارلز للفنون التقليدية(KFSTA)، وصندوق التنمية الثقافية المصري،ويُقدَّم البرنامج في قلب القاهرة التاريخية، بمنطقة الفسطاط، على مدى عامين، وبالاعتمادعلى ذات المبادئ التعليمية التي تطبقها المدرسة في مقرها الرئيسي بلندن.</p><p id=\"\">&nbsp;</p><p id=\"\">ويُعد البرنامج منصة متميزة لصون الفنون التراثية وتعزيزاستدامتها، حيث يتخرج منه سنوياً قرابة 20 طالباً، ينضمون إلى شبكة ديناميكية من الخريجينعبر \"نادي الخريجين\"، ويشاركون في معرض سنوي يعرض نتاج أعمالهم الإبداعية. </p><p id=\"\">ويتمتع خريجو البرنامج رصيداً معرفياً وعملياً متيناً في الفنون التراثية، يؤهلهمللانطلاق في مسارات مهنية متعددة تشمل الممارسة الفنية، والصناعات الإبداعية، ومجالاتحفظ التراث، وأعمال الترميم المعماري.</p><p id=\"\">&nbsp;</p><p id=\"\">ويُرحب البرنامج بجميع المتقدمين من سن 18 عاماً فأكثر، دون الحاجة لأي مؤهلاتأكاديمية مسبقة أو خبرة سابقة في المجال، حيث يُقدَّم بالكامل كمنحة دراسية مجانيةتغطي الرسوم والتكاليف كافة طيلة فترة الدراسة.</p><p id=\"\">&nbsp;</p><p id=\"\">يتم اختيار المشاركين عبر عملية تنافسية تشمل تقديم استمارة مكتملة مع حافظةأعمال فنية، وذلك شخصياً في بيت جميل للفنون التراثية بالفسطاط، من الأحد إلى الخميس،بين الساعة 10 صباحاً و3 بعد الظهر.</p><p id=\"\">&nbsp;</p><p id=\"\">آخر موعد للتقديم:<strong id=\"\">42 أغسطس 2025</strong>.</p><p id=\"\">&nbsp;</p><p id=\"\">وسيُدعى المتقدمون المختارون للمرحلة التالية إلى اختبار قبول ومقابلة شخصيةضمن مراحل التقييم النهائية.</p><p id=\"\">&nbsp;</p><p id=\"\">للتقديم، انقر <a href=\"https://www.communityjameel.org/programmes/jameel-houses/cairo/apply\" id=\"\"><strong id=\"\">هنا</strong></a><strong id=\"\">.</strong></p>",
+          "arabicTitle": "\"مجتمع جميل\" يعلن فتح باب التقديم لبرنامج \"بيت جميل للفنون التراثية\" في القاهرة",
+          "bodyEnglish": "<p id=\"\">The <a href=\"/programmes/jameel-house-of-traditional-arts-in-cairo\" id=\"\">Jameel House of Traditional Arts in Cairo</a> today opens the call for applications to the next intake of its flagship two-year programme. </p><p id=\"\">There are around 20 places available on the course. </p><p id=\"\">Successful applicants will study geometry, drawing, colour harmony and arabesque studies and receive practical training in ceramics, glass and gypsum, metalwork and woodwork. &nbsp;</p><p id=\"\">Opening in 2009, the Jameel House in Cairo was founded by Community Jameel, The King’s Foundation School of Traditional Arts (KFSTA) and Egypt’s Cultural Development Fund. &nbsp;</p><p id=\"\">The two-year programme is developed and delivered by the KFSTA according to the same principles and standards as the postgraduate courses at its London campus. </p><p id=\"\">Located in Fustat, in the heart of the historic district of Old Cairo, the Jameel House in Cairo programme focuses on the preservation of local cultural heritage. &nbsp;</p><p id=\"\">Around 20 students graduate each year and join the many alumni who connect through the programme’s alumni club and participate in the annual alumni fair. </p><p id=\"\">With a deep understanding of the principles and practical applications of traditional arts, graduates pursue careers ranging from artistic practice and the creative industries to heritage conservation and architectural preservation. </p><p id=\"\">The programme is open to all, aged 18 or above, and no prior qualifications are required. </p><p id=\"\">Interested applicants should submit a completed application form and a portfolio in person to the Jameel House in Cairo, located at the Fustat Traditional Crafts Centre, from Sunday to Thursday, between 10h00 and 15h00. </p><p id=\"\">The deadline for applications is <strong id=\"\">24 August 2025</strong>. &nbsp;</p><p id=\"\">Applicants selected to move to the next round of the process will be required to complete an entry exam and an interview. </p><p id=\"\">Students attend the programme on a scholarship, with no fees for tuition or materials required.</p><p id=\"\">To apply, complete the form and follow the instructions <a href=\"https://www.communityjameel.org/programmes/jameel-houses/cairo/apply\">here</a>.</p>",
+          "datePublished": "2025-06-28T00:00:00.000Z",
+          "imageCarousel": [],
+          "locationArabic": "القاهرة",
+          "openGraphImage": {
+            "alt": "",
+            "url": "https://cdn.communityjameel.io/website/collection/posts/the-jameel-house-of-traditional-arts-in-cairo-opens-call-for-its-two-year-programme/openGraphImage.jpg"
+          },
+          "seoTitleArabic": " فتح باب بيت جميل للفنون التراثية في القاهرة للتقديم برنامجه الرائد الممتد لعامين "
+        },
+        "created_at": "2025-07-21T10:51:23.063Z",
+        "updated_at": "2025-07-21T10:51:23.063Z",
+        "slug": "the-jameel-house-of-traditional-arts-in-cairo-opens-call-for-its-two-year-programme",
+        "status": "draft"
+      }
+    },
+    "summary": {
+      "totalImages": 3,
+      "successfulImages": 3,
+      "dryRunImages": 0,
+      "failedImages": 0,
+      "skippedImages": 0,
+      "mnemoCreated": true
+    }
+  },
+  {
+    "post": {
+      "id": "686530ec3e19111feef62a28",
+      "name": "Andrea Bocelli performs live in Pompeii with Bocelli-Jameel scholars",
+      "slug": "community-jameel-and-jameel-motors-italia-present-andrea-bocelli-live-in-pompeii",
+      "webflowId": "686530ec3e19111feef62a28"
+    },
+    "images": [
+      {
+        "type": "thumbnail",
+        "index": null,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/686be2c4102654d9a45bf62f_JameelMotorsxBocelliPompeii_THUMB.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/community-jameel-and-jameel-motors-italia-present-andrea-bocelli-live-in-pompeii/thumbnail.webp",
+        "gcsPath": "website/collection/posts/community-jameel-and-jameel-motors-italia-present-andrea-bocelli-live-in-pompeii/thumbnail.webp",
+        "fileSize": 63780
+      },
+      {
+        "type": "mainImage",
+        "index": null,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/686be2d091dd121f882ef960_JameelMotorsxBocelliPompeii_HERO.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/community-jameel-and-jameel-motors-italia-present-andrea-bocelli-live-in-pompeii/mainImage.webp",
+        "gcsPath": "website/collection/posts/community-jameel-and-jameel-motors-italia-present-andrea-bocelli-live-in-pompeii/mainImage.webp",
+        "fileSize": 121870
+      },
+      {
+        "type": "openGraphImage",
+        "index": null,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/686be2caa22147af0bcbbee9_JameelMotorsxBocelliPompeii_OG.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/community-jameel-and-jameel-motors-italia-present-andrea-bocelli-live-in-pompeii/openGraphImage.webp",
+        "gcsPath": "website/collection/posts/community-jameel-and-jameel-motors-italia-present-andrea-bocelli-live-in-pompeii/openGraphImage.webp",
+        "fileSize": 77712
+      },
+      {
+        "type": "imageCarousel",
+        "index": 0,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/686be217263dce9600c91caa_Pompeii_Boc_01.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/community-jameel-and-jameel-motors-italia-present-andrea-bocelli-live-in-pompeii/imageCarousel-0.webp",
+        "gcsPath": "website/collection/posts/community-jameel-and-jameel-motors-italia-present-andrea-bocelli-live-in-pompeii/imageCarousel-0.webp",
+        "fileSize": 912364
+      },
+      {
+        "type": "imageCarousel",
+        "index": 1,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/686be2177775fdaa829acca8_Pompeii_Boc_02.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/community-jameel-and-jameel-motors-italia-present-andrea-bocelli-live-in-pompeii/imageCarousel-1.webp",
+        "gcsPath": "website/collection/posts/community-jameel-and-jameel-motors-italia-present-andrea-bocelli-live-in-pompeii/imageCarousel-1.webp",
+        "fileSize": 813074
+      },
+      {
+        "type": "imageCarousel",
+        "index": 2,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/686be2174a3a5a83361b4ea7_Pompeii_Boc_03.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/community-jameel-and-jameel-motors-italia-present-andrea-bocelli-live-in-pompeii/imageCarousel-2.webp",
+        "gcsPath": "website/collection/posts/community-jameel-and-jameel-motors-italia-present-andrea-bocelli-live-in-pompeii/imageCarousel-2.webp",
+        "fileSize": 753566
+      },
+      {
+        "type": "imageCarousel",
+        "index": 3,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/686be21710d360f05a99901b_Pompeii_Boc_04.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/community-jameel-and-jameel-motors-italia-present-andrea-bocelli-live-in-pompeii/imageCarousel-3.webp",
+        "gcsPath": "website/collection/posts/community-jameel-and-jameel-motors-italia-present-andrea-bocelli-live-in-pompeii/imageCarousel-3.webp",
+        "fileSize": 560730
+      },
+      {
+        "type": "imageCarousel",
+        "index": 4,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/686be218377cb8e2bd62c980_Pompeii_Boc_05.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/community-jameel-and-jameel-motors-italia-present-andrea-bocelli-live-in-pompeii/imageCarousel-4.webp",
+        "gcsPath": "website/collection/posts/community-jameel-and-jameel-motors-italia-present-andrea-bocelli-live-in-pompeii/imageCarousel-4.webp",
+        "fileSize": 2433064
+      }
+    ],
+    "mnemo": {
+      "success": true,
+      "collectionItem": {
+        "id": "a58a061b-13e5-4dbf-a8b8-41b8b5f8f5bf",
+        "title": "Andrea Bocelli performs live in Pompeii with Bocelli-Jameel scholars",
+        "type": "post",
+        "data": {
+          "tags": [],
+          "featured": false,
+          "location": "Pompeii, Italy",
+          "pushToGR": false,
+          "seoTitle": "Andrea Bocelli performs live in Pompeii with Bocelli-Jameel scholars",
+          "mainImage": {
+            "alt": "",
+            "url": "https://cdn.communityjameel.io/website/collection/posts/community-jameel-and-jameel-motors-italia-present-andrea-bocelli-live-in-pompeii/mainImage.webp"
+          },
+          "thumbnail": {
+            "alt": "",
+            "url": "https://cdn.communityjameel.io/website/collection/posts/community-jameel-and-jameel-motors-italia-present-andrea-bocelli-live-in-pompeii/thumbnail.webp"
+          },
+          "bodyEnglish": "<p id=\"\">World-famous tenor <strong id=\"\">Andrea Bocelli</strong> performed among the ancient ruins of Pompeii on 27-28 July 2025 in a special concert that also featured <strong id=\"\">Clara Barbier Serrano</strong> and <strong id=\"\">Laura Mekhail</strong>, two former recipients of the <a href=\"/programmes/bocelli-jameel-scholarship\" id=\"\"><strong id=\"\">Andrea Bocelli Foundation–Community&nbsp;Jameel scholarship</strong></a>.</p><p id=\"\">Presented by <strong id=\"\">Community Jameel</strong> and Jameel Motors Italia, the event showcased the work of the Andrea Bocelli Foundation (ABF) and included over 60 young singers from the ABF&nbsp;Voices of Italy choir. </p><p>Watch the performances by <a href=\"https://www.youtube.com/watch?v=EFTxpZxa9F4\" target=\"_blank\">Clara</a> and <a href=\"https://www.youtube.com/watch?v=gVZokszg2u8\" target=\"_blank\">Laura</a>.</p><h5 id=\"\">A celebration of heritage and inclusion</h5><p id=\"\">Andrea Bocelli described the event as a celebration of “making music together, building friendships and sharing culture”. </p><p id=\"\">The Pompeii concert combined heritage, youth and music, turning one of the world’s most iconic ancient sites into a platform for the next generation of performers.</p><h5 id=\"\">A longstanding partnership</h5><p id=\"\">A key initiative in the close partnership between Community&nbsp;Jameel and ABF, the Bocelli‑Jameel scholarship was established in 2019 to support outstanding singers from around the world to study at the Royal College of Music&nbsp;in London, the world's top-ranked conservatoire.</p><p id=\"\">Awarded on the basis of merit and financial need, the scholarship has supported five students.</p><p id=\"\">Clara, a soprano and the inaugural recipient of the scholarship in 2020, has performed at major international events, including with Maestro Bocelli <a href=\"https://www.youtube.com/watch?v=M78msoCnWbM\" id=\"\">in Lourdes</a>, France, in 2023.</p><p id=\"\">Egyptian soprano Laura, awarded the scholarship in 2021, performed with the maestro <a href=\"https://www.youtube.com/watch?v=I4Vs7YwgfCs\" id=\"\">in AlUla</a>, Saudi Arabia, in 2023.</p><p id=\"\">The other recipients of the scholarship are Seonwoo Lee, Anastasia Koorn and Henna Mun.</p><p id=\"\">Beyond music, the two organisations collaborated to <a href=\"https://www.andreabocellifoundation.org/community-jameel-supports-the-abf-fight-against-the-italy-covid-19-emergency/\" id=\"\">support health systems</a> in Italy during the COVID-19 pandemic. </p><p id=\"\">Mohammed Jameel KBE, founder and chairman of Community Jameel, sits on the ABF&nbsp;advisory board.</p>",
+          "datePublished": "2025-06-27T00:00:00.000Z",
+          "imageCarousel": [
+            {
+              "alt": "",
+              "url": "https://cdn.communityjameel.io/website/collection/posts/community-jameel-and-jameel-motors-italia-present-andrea-bocelli-live-in-pompeii/imageCarousel-0.webp"
+            },
+            {
+              "alt": "",
+              "url": "https://cdn.communityjameel.io/website/collection/posts/community-jameel-and-jameel-motors-italia-present-andrea-bocelli-live-in-pompeii/imageCarousel-1.webp"
+            },
+            {
+              "alt": "",
+              "url": "https://cdn.communityjameel.io/website/collection/posts/community-jameel-and-jameel-motors-italia-present-andrea-bocelli-live-in-pompeii/imageCarousel-2.webp"
+            },
+            {
+              "alt": "",
+              "url": "https://cdn.communityjameel.io/website/collection/posts/community-jameel-and-jameel-motors-italia-present-andrea-bocelli-live-in-pompeii/imageCarousel-3.webp"
+            },
+            {
+              "alt": "",
+              "url": "https://cdn.communityjameel.io/website/collection/posts/community-jameel-and-jameel-motors-italia-present-andrea-bocelli-live-in-pompeii/imageCarousel-4.webp"
+            }
+          ],
+          "openGraphImage": {
+            "alt": "",
+            "url": "https://cdn.communityjameel.io/website/collection/posts/community-jameel-and-jameel-motors-italia-present-andrea-bocelli-live-in-pompeii/openGraphImage.webp"
+          }
+        },
+        "created_at": "2025-07-21T10:51:34.723Z",
+        "updated_at": "2025-07-21T10:51:34.723Z",
+        "slug": "community-jameel-and-jameel-motors-italia-present-andrea-bocelli-live-in-pompeii",
+        "status": "draft"
+      }
+    },
+    "summary": {
+      "totalImages": 8,
+      "successfulImages": 8,
+      "dryRunImages": 0,
+      "failedImages": 0,
+      "skippedImages": 0,
+      "mnemoCreated": true
+    }
+  },
+  {
+    "post": {
+      "id": "685c2c47cc407c371f929124",
+      "name": "Jameel C40 Urban Planning Climate Labs announce new partnership, convenings in Chennai and London",
+      "slug": "jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership",
+      "webflowId": "685c2c47cc407c371f929124"
+    },
+    "images": [
+      {
+        "type": "thumbnail",
+        "index": null,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c3245eb0fbba5abeaf1a9_C40_CHENNAI_CONFERENCE_THUMB.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/thumbnail.webp",
+        "gcsPath": "website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/thumbnail.webp",
+        "fileSize": 39086
+      },
+      {
+        "type": "mainImage",
+        "index": null,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c3239f167bb6ed529b17a_C40_CHENNAI_CONFERENCE_HERO.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/mainImage.webp",
+        "gcsPath": "website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/mainImage.webp",
+        "fileSize": 70842
+      },
+      {
+        "type": "openGraphImage",
+        "index": null,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c323fa171f1591f2a6393_C40_CHENNAI_CONFERENCE_OG.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/openGraphImage.webp",
+        "gcsPath": "website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/openGraphImage.webp",
+        "fileSize": 57036
+      },
+      {
+        "type": "imageCarousel",
+        "index": 0,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c31534c9f78cc3720420a_4-_DSF8076%20copy.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-0.webp",
+        "gcsPath": "website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-0.webp",
+        "fileSize": 180740
+      },
+      {
+        "type": "imageCarousel",
+        "index": 1,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c3153a332fef7aa36af50_13-_DSF8515%20copy.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-1.webp",
+        "gcsPath": "website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-1.webp",
+        "fileSize": 144690
+      },
+      {
+        "type": "imageCarousel",
+        "index": 2,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c3153a332fef7aa36af4d_15-DSCF8257%20copy.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-2.webp",
+        "gcsPath": "website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-2.webp",
+        "fileSize": 105502
+      },
+      {
+        "type": "imageCarousel",
+        "index": 3,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c3153dbe6cefb17335fbb_17-_DSF8616%20copy.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-3.webp",
+        "gcsPath": "website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-3.webp",
+        "fileSize": 272236
+      },
+      {
+        "type": "imageCarousel",
+        "index": 4,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c315319d496a2580942c0_23-DSCF9714%20copy.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-4.webp",
+        "gcsPath": "website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-4.webp",
+        "fileSize": 139920
+      },
+      {
+        "type": "imageCarousel",
+        "index": 5,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c3153606eeb2ea2c1e863_32-DSCF8662%20copy.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-5.webp",
+        "gcsPath": "website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-5.webp",
+        "fileSize": 66050
+      },
+      {
+        "type": "imageCarousel",
+        "index": 6,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c3153a80137c0d779e390_39-DSCF8505%20copy.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-6.webp",
+        "gcsPath": "website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-6.webp",
+        "fileSize": 121372
+      },
+      {
+        "type": "imageCarousel",
+        "index": 7,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c315311113d0f8aad579a_39-DSCF9894%20copy.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-7.webp",
+        "gcsPath": "website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-7.webp",
+        "fileSize": 87118
+      },
+      {
+        "type": "imageCarousel",
+        "index": 8,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c3153614788be127d93c0_51-DSCF0051%20copy.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-8.webp",
+        "gcsPath": "website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-8.webp",
+        "fileSize": 185414
+      },
+      {
+        "type": "imageCarousel",
+        "index": 9,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c3153526ffd279133b404_56-DSCF8960%20copy.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-9.webp",
+        "gcsPath": "website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-9.webp",
+        "fileSize": 125188
+      },
+      {
+        "type": "imageCarousel",
+        "index": 10,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c3153dbe6cefb17335fbe_58-DSCF8971%20copy.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-10.webp",
+        "gcsPath": "website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-10.webp",
+        "fileSize": 160996
+      },
+      {
+        "type": "imageCarousel",
+        "index": 11,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c315395f558804e2dd109_61-DSCF0188%20copy.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-11.webp",
+        "gcsPath": "website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-11.webp",
+        "fileSize": 147432
+      },
+      {
+        "type": "imageCarousel",
+        "index": 12,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685d49cdf5e399aa5ab487fa_DSC00039%20copy.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-12.webp",
+        "gcsPath": "website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-12.webp",
+        "fileSize": 217968
+      },
+      {
+        "type": "imageCarousel",
+        "index": 13,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685d49cd0cc893242c00d71f_DSC00062%20copy.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-13.webp",
+        "gcsPath": "website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-13.webp",
+        "fileSize": 157990
+      },
+      {
+        "type": "imageCarousel",
+        "index": 14,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685d49cd0cc893242c00d729_DSC00107%20copy.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-14.webp",
+        "gcsPath": "website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-14.webp",
+        "fileSize": 192138
+      },
+      {
+        "type": "imageCarousel",
+        "index": 15,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685d49cd3a9146f9deeeadf0_DSC00114%20copy.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-15.webp",
+        "gcsPath": "website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-15.webp",
+        "fileSize": 191944
+      },
+      {
+        "type": "imageCarousel",
+        "index": 16,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685d49cd65638d19a795c15c_DSC00127%20copy.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-16.webp",
+        "gcsPath": "website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-16.webp",
+        "fileSize": 306610
+      },
+      {
+        "type": "imageCarousel",
+        "index": 17,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685d49cd550e3c39fe267b33_DSC00133%20copy.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-17.webp",
+        "gcsPath": "website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-17.webp",
+        "fileSize": 253736
+      },
+      {
+        "type": "imageCarousel",
+        "index": 18,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685d49ce8631fa1ce796736b_DSC00141%20copy.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-18.webp",
+        "gcsPath": "website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-18.webp",
+        "fileSize": 157700
+      }
+    ],
+    "mnemo": {
+      "success": true,
+      "collectionItem": {
+        "id": "a9d56fd5-9149-4fd0-812b-551aabc4fc84",
+        "title": "Jameel C40 Urban Planning Climate Labs announce new partnership, convenings in Chennai and London",
+        "type": "post",
+        "data": {
+          "tags": [],
+          "featured": false,
+          "location": "London",
+          "pushToGR": false,
+          "seoTitle": "Jameel C40 Urban Planning Climate Labs announce partnership, convenings",
+          "mainImage": {
+            "alt": "",
+            "url": "https://cdn.communityjameel.io/website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/mainImage.webp"
+          },
+          "thumbnail": {
+            "alt": "",
+            "url": "https://cdn.communityjameel.io/website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/thumbnail.webp"
+          },
+          "bodyEnglish": "<p id=\"\">The <a href=\"/programmes/jameel-c40-urban-planning-climate-labs\" id=\"\"><strong id=\"\">Jameel C40 Urban Planning Climate Labs</strong></a> announced today a series of significant advancements in their mission to embed climate action into the fabric of urban governance. </p><h5 id=\"\"><strong id=\"\">A national convening in Chennai and a new partnership</strong></h5><p id=\"\">Last week in Chennai, the Jameel C40 labs hosted a <strong id=\"\">national convening on mainstreaming climate action in cities</strong>. </p><p id=\"\">The three-day event was attended by 14 city officials from six Indian cities, providing a critical platform for exploring the integration of climate action into core areas of urban governance such as planning, budgeting and implementation. </p><p id=\"\">This event also marked the first in-person gathering of the Jameel C40 labs' <strong id=\"\">cohort of city practitioners</strong>, a network of 11 cities in South and West Asia—including Amman, Chennai, Dubai, Mumbai and the newly added Jeddah—dedicated to peer learning and collaborative problem-solving.</p><p id=\"\">The final day of the conference expanded to include over 100 national experts, city leaders and stakeholders.</p><p id=\"\">Supriya Sahu, additional chief secretary for environment, climate change and forests, Tamil Nadu, delivered a keynote address emphasising the importance of inclusive, climate-smart approaches to city development.</p><p id=\"\">In a significant development, the Jameel C40 Urban Planning Climate Labs announced a new collaboration with the <strong id=\"\">Shakti Sustainable Energy Foundation</strong>. </p><p id=\"\">This partnership will extend the labs' work in Tamil Nadu through the development of a neighbourhood pilot project in Chennai and the replication of the Jameel C40 model to catalyse systemic, city-scale climate action in other cities across the state.</p><h5 id=\"\">Accelerating climate action in London</h5><p id=\"\">The momentum continued today on the sidelines of London Climate Action Week, where Community Jameel and C40 Cities – co-founders of the Jameel C40 labs – joined with global design and architecture firm Gensler to host an event titled <strong id=\"\">Accelerating climate action through urban planning</strong>.</p><p id=\"\">Bringing together leaders across urban design, policy and implementation, the session explored how cities can use planning as a powerful lever to deliver nature-positive and socially inclusive outcomes.</p><p id=\"\">Taking place at Gensler's London offices, the event featured a panel discussion, moderated by C40's Hélène Chartier, with:&nbsp;</p><ul id=\"\"><li id=\"\">Tainà de Paula, secretary for environment and climate, Rio de Janeiro</li><li>Njenga Muchekehu, advisor to the governor of Nairobi</li><li id=\"\">Signe Kongebro, global director, future resilient design, Ramboll</li><li id=\"\">Adam Freed, principal, Bloomberg Associates</li></ul><p id=\"\">Remarks were also made by youth representatives from Brazil, ahead of the COP30 climate conference this year, and Lucy Rochford, arts and culture programmes officer at Community&nbsp;Jameel.</p><h5 id=\"\">About the Jameel C40 Urban Planning Climate Labs</h5><p id=\"\">The Jameel C40 Urban Planning Climate Labs are a global partnership between C40 Cities and Community Jameel, dedicated to assisting rapidly growing cities in merging climate action with urban planning. </p><p id=\"\">The initiative provides cities with the technical expertise and support needed to refine city plans, align them with ambitious climate goals and develop sustainable, low-carbon urban spaces that can serve as models for others. </p><p id=\"\">The labs focus on tangible frameworks and collaborative problem-solving to ensure that climate considerations are integrated into every stage of urban development, from policy and budgeting to implementation on the ground.</p>",
+          "datePublished": "2025-06-25T00:00:00.000Z",
+          "imageCarousel": [
+            {
+              "alt": "",
+              "url": "https://cdn.communityjameel.io/website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-0.webp"
+            },
+            {
+              "alt": "",
+              "url": "https://cdn.communityjameel.io/website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-1.webp"
+            },
+            {
+              "alt": "",
+              "url": "https://cdn.communityjameel.io/website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-2.webp"
+            },
+            {
+              "alt": "",
+              "url": "https://cdn.communityjameel.io/website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-3.webp"
+            },
+            {
+              "alt": "",
+              "url": "https://cdn.communityjameel.io/website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-4.webp"
+            },
+            {
+              "alt": "",
+              "url": "https://cdn.communityjameel.io/website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-5.webp"
+            },
+            {
+              "alt": "",
+              "url": "https://cdn.communityjameel.io/website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-6.webp"
+            },
+            {
+              "alt": "",
+              "url": "https://cdn.communityjameel.io/website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-7.webp"
+            },
+            {
+              "alt": "",
+              "url": "https://cdn.communityjameel.io/website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-8.webp"
+            },
+            {
+              "alt": "",
+              "url": "https://cdn.communityjameel.io/website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-9.webp"
+            },
+            {
+              "alt": "",
+              "url": "https://cdn.communityjameel.io/website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-10.webp"
+            },
+            {
+              "alt": "",
+              "url": "https://cdn.communityjameel.io/website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-11.webp"
+            },
+            {
+              "alt": "",
+              "url": "https://cdn.communityjameel.io/website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-12.webp"
+            },
+            {
+              "alt": "",
+              "url": "https://cdn.communityjameel.io/website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-13.webp"
+            },
+            {
+              "alt": "",
+              "url": "https://cdn.communityjameel.io/website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-14.webp"
+            },
+            {
+              "alt": "",
+              "url": "https://cdn.communityjameel.io/website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-15.webp"
+            },
+            {
+              "alt": "",
+              "url": "https://cdn.communityjameel.io/website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-16.webp"
+            },
+            {
+              "alt": "",
+              "url": "https://cdn.communityjameel.io/website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-17.webp"
+            },
+            {
+              "alt": "",
+              "url": "https://cdn.communityjameel.io/website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/imageCarousel-18.webp"
+            }
+          ],
+          "openGraphImage": {
+            "alt": "",
+            "url": "https://cdn.communityjameel.io/website/collection/posts/jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership/openGraphImage.webp"
+          }
+        },
+        "created_at": "2025-07-21T10:51:50.036Z",
+        "updated_at": "2025-07-21T10:51:50.036Z",
+        "slug": "jameel-c40-urban-planning-climate-labs-host-events-in-london-and-chennai-announce-new-partnership",
+        "status": "draft"
+      }
+    },
+    "summary": {
+      "totalImages": 22,
+      "successfulImages": 22,
+      "dryRunImages": 0,
+      "failedImages": 0,
+      "skippedImages": 0,
+      "mnemoCreated": true
+    }
+  },
+  {
+    "post": {
+      "id": "685ba21cadf045202cfa0a8e",
+      "name": "Morocco Innovation and Evaluation Lab conference highlights importance of evidence use in policy-making",
+      "slug": "morocco-innovation-and-evaluation-lab-conference-highlights-importance-of-evidence-use-in-policy-making",
+      "webflowId": "685ba21cadf045202cfa0a8e"
+    },
+    "images": [
+      {
+        "type": "thumbnail",
+        "index": null,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c135e7455584636aa4393_MEL_MoroccoLaunch_THUMB.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/morocco-innovation-and-evaluation-lab-conference-highlights-importance-of-evidence-use-in-policy-making/thumbnail.webp",
+        "gcsPath": "website/collection/posts/morocco-innovation-and-evaluation-lab-conference-highlights-importance-of-evidence-use-in-policy-making/thumbnail.webp",
+        "fileSize": 62250
+      },
+      {
+        "type": "mainImage",
+        "index": null,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c13660441539924e14531_MEL_MoroccoLaunch_HERO.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/morocco-innovation-and-evaluation-lab-conference-highlights-importance-of-evidence-use-in-policy-making/mainImage.webp",
+        "gcsPath": "website/collection/posts/morocco-innovation-and-evaluation-lab-conference-highlights-importance-of-evidence-use-in-policy-making/mainImage.webp",
+        "fileSize": 64574
+      },
+      {
+        "type": "openGraphImage",
+        "index": null,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c13637328028681b7cb16_MEL_MoroccoLaunch_OG.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/morocco-innovation-and-evaluation-lab-conference-highlights-importance-of-evidence-use-in-policy-making/openGraphImage.webp",
+        "gcsPath": "website/collection/posts/morocco-innovation-and-evaluation-lab-conference-highlights-importance-of-evidence-use-in-policy-making/openGraphImage.webp",
+        "fileSize": 52474
+      },
+      {
+        "type": "imageCarousel",
+        "index": 0,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c138a46d677e5cd616b21_DSC00666.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/morocco-innovation-and-evaluation-lab-conference-highlights-importance-of-evidence-use-in-policy-making/imageCarousel-0.webp",
+        "gcsPath": "website/collection/posts/morocco-innovation-and-evaluation-lab-conference-highlights-importance-of-evidence-use-in-policy-making/imageCarousel-0.webp",
+        "fileSize": 107502
+      },
+      {
+        "type": "imageCarousel",
+        "index": 1,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c1397a23dd61112988cc9_DSC00743.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/morocco-innovation-and-evaluation-lab-conference-highlights-importance-of-evidence-use-in-policy-making/imageCarousel-1.webp",
+        "gcsPath": "website/collection/posts/morocco-innovation-and-evaluation-lab-conference-highlights-importance-of-evidence-use-in-policy-making/imageCarousel-1.webp",
+        "fileSize": 156528
+      },
+      {
+        "type": "imageCarousel",
+        "index": 2,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c13a2f8f19b97fea2261f_DSC00673.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/morocco-innovation-and-evaluation-lab-conference-highlights-importance-of-evidence-use-in-policy-making/imageCarousel-2.webp",
+        "gcsPath": "website/collection/posts/morocco-innovation-and-evaluation-lab-conference-highlights-importance-of-evidence-use-in-policy-making/imageCarousel-2.webp",
+        "fileSize": 200008
+      },
+      {
+        "type": "imageCarousel",
+        "index": 3,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c13ab1f30013225dcdc38_DSC00713.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/morocco-innovation-and-evaluation-lab-conference-highlights-importance-of-evidence-use-in-policy-making/imageCarousel-3.webp",
+        "gcsPath": "website/collection/posts/morocco-innovation-and-evaluation-lab-conference-highlights-importance-of-evidence-use-in-policy-making/imageCarousel-3.webp",
+        "fileSize": 178630
+      },
+      {
+        "type": "imageCarousel",
+        "index": 4,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c13af3c7d51000a6de47f_DSC00719.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/morocco-innovation-and-evaluation-lab-conference-highlights-importance-of-evidence-use-in-policy-making/imageCarousel-4.webp",
+        "gcsPath": "website/collection/posts/morocco-innovation-and-evaluation-lab-conference-highlights-importance-of-evidence-use-in-policy-making/imageCarousel-4.webp",
+        "fileSize": 184158
+      },
+      {
+        "type": "imageCarousel",
+        "index": 5,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c13c62731f6e4c1a0e779_KOU07002.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/morocco-innovation-and-evaluation-lab-conference-highlights-importance-of-evidence-use-in-policy-making/imageCarousel-5.webp",
+        "gcsPath": "website/collection/posts/morocco-innovation-and-evaluation-lab-conference-highlights-importance-of-evidence-use-in-policy-making/imageCarousel-5.webp",
+        "fileSize": 159832
+      },
+      {
+        "type": "imageCarousel",
+        "index": 6,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c13cb20a4b64f5f758f15_KOU07031.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/morocco-innovation-and-evaluation-lab-conference-highlights-importance-of-evidence-use-in-policy-making/imageCarousel-6.webp",
+        "gcsPath": "website/collection/posts/morocco-innovation-and-evaluation-lab-conference-highlights-importance-of-evidence-use-in-policy-making/imageCarousel-6.webp",
+        "fileSize": 52062
+      },
+      {
+        "type": "imageCarousel",
+        "index": 7,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c13d2399f53276c6ac8fe_KOU06904.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/morocco-innovation-and-evaluation-lab-conference-highlights-importance-of-evidence-use-in-policy-making/imageCarousel-7.webp",
+        "gcsPath": "website/collection/posts/morocco-innovation-and-evaluation-lab-conference-highlights-importance-of-evidence-use-in-policy-making/imageCarousel-7.webp",
+        "fileSize": 104550
+      },
+      {
+        "type": "imageCarousel",
+        "index": 8,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c13d656a7749710050eae_KOU06920.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/morocco-innovation-and-evaluation-lab-conference-highlights-importance-of-evidence-use-in-policy-making/imageCarousel-8.webp",
+        "gcsPath": "website/collection/posts/morocco-innovation-and-evaluation-lab-conference-highlights-importance-of-evidence-use-in-policy-making/imageCarousel-8.webp",
+        "fileSize": 84140
+      },
+      {
+        "type": "imageCarousel",
+        "index": 9,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c13daa7ed81da2c280af3_KOU06924.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/morocco-innovation-and-evaluation-lab-conference-highlights-importance-of-evidence-use-in-policy-making/imageCarousel-9.webp",
+        "gcsPath": "website/collection/posts/morocco-innovation-and-evaluation-lab-conference-highlights-importance-of-evidence-use-in-policy-making/imageCarousel-9.webp",
+        "fileSize": 144766
+      },
+      {
+        "type": "imageCarousel",
+        "index": 10,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/685c13ea1e386971b4dd91fb_KOU07087.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/morocco-innovation-and-evaluation-lab-conference-highlights-importance-of-evidence-use-in-policy-making/imageCarousel-10.webp",
+        "gcsPath": "website/collection/posts/morocco-innovation-and-evaluation-lab-conference-highlights-importance-of-evidence-use-in-policy-making/imageCarousel-10.webp",
+        "fileSize": 74952
+      }
+    ],
+    "mnemo": {
+      "success": true,
+      "collectionItem": {
+        "id": "96478edf-9ca5-4512-ada0-b9168d6569ae",
+        "title": "Morocco Innovation and Evaluation Lab conference highlights importance of evidence use in policy-making",
+        "type": "post",
+        "data": {
+          "tags": [],
+          "featured": false,
+          "location": "Rabat, Morocco",
+          "pushToGR": false,
+          "seoTitle": "Morocco Innovation and Evaluation Lab hosts conference at UM6P",
+          "mainImage": {
+            "alt": "",
+            "url": "https://cdn.communityjameel.io/website/collection/posts/morocco-innovation-and-evaluation-lab-conference-highlights-importance-of-evidence-use-in-policy-making/mainImage.webp"
+          },
+          "thumbnail": {
+            "alt": "",
+            "url": "https://cdn.communityjameel.io/website/collection/posts/morocco-innovation-and-evaluation-lab-conference-highlights-importance-of-evidence-use-in-policy-making/thumbnail.webp"
+          },
+          "bodyEnglish": "<p id=\"\">The <strong id=\"\">Morocco Innovation and Evaluation Lab</strong> (MEL) and the University Mohammed VI Polytechnic (UM6P) hosted a high-level policy conference today at UM6P’s campus in Rabat-Salé. </p><p id=\"\">Titled 'Toward evidence-based development: Climate change, education and employment in Morocco', the one-day conference offered a platform for Moroccan decision-makers and international researchers to jointly discuss how rigorous impact evaluations can drive effective policy. </p><p id=\"\">Launched in 2024 and emerging from the Morocco Employment Lab, MEL is based at UM6P in Rabat and works to foster development in Morocco by translating scientific evidence into impactful policies. </p><p id=\"\">The MEL is a collaboration between UM6P, the <a href=\"/programmes/j-pal\" id=\"\">Abdul Latif Jameel Poverty Action Lab</a> (J-PAL), the Harvard Centre for International Development and Community Jameel.</p><p id=\"\">The conference opened with remarks from Hicham El Habti, president of UM6P, Nader Iskandar Diab, head of programmes at Community Jameel, Professor Rema Hanna from the Harvard Kennedy School of Government, Professor Bruno Crépon from the Institut Polytechnique de Paris and Florencia Devoto, MEL project director and affiliate professor at UM6P. </p><p id=\"\">The opening remarks were followed by a presentation on Morocco’s education policy priorities from Mohamed Saad Berrada, the minister of national education, preschool and sports.</p><p id=\"\">Professor Esther Duflo, Nobel laureate, co-founder and co-director of J-PAL, professor at the Massachusetts Institute of Technology and president of the Paris School of Economics, delivered the event’s keynote speech on the challenges of climate change adaptation.</p><p><strong>Professor Esther Duflo said:&nbsp;</strong>\"The need to start developing a toolkit for policymakers on what works today and what will work when the climate actually changes, as very few studies have been conducted on this topic so far. </p><p>\"It’s also essential to include local communities, who are key actors in building resilience to climate change.</p><p>\"The impacts of climate change are felt most by those living in poverty.\"</p><p id=\"\">Throughout the event, attendees engaged in a series of panels on recent developments in the sectors of climate change and sustainable agriculture, education and labour in Morocco. </p><p id=\"\">Speakers shared their insights from ongoing efforts to integrate the use of evidence into their institutions’ work and entered into dialogue with researchers from several distinguished universities.</p><p id=\"\">The MEL is part of J-PAL’s <a href=\"/programmes/j-pal-evidence-to-policy\" id=\"\">Evidence to Policy programme</a>, which was launched in 2022 in collaboration with Co-Impact and Community Jameel. </p><p id=\"\">Through the programme, J-PAL is partnering with governments to advance their common goal of improving the lives of people living in poverty through mobilising governments’ adoption at scale of specific evidence-based policies and programmes.</p><p id=\"\">J-PAL&nbsp;also works with partner governments in the programme to institutionalise a broader culture of evidence and data-driven policymaking in government systems.</p><p id=\"\">To date, the Evidence to Policy programme has impacted the lives of <strong id=\"\">over six million people</strong>.</p>",
+          "datePublished": "2025-06-25T00:00:00.000Z",
+          "imageCarousel": [
+            {
+              "alt": "",
+              "url": "https://cdn.communityjameel.io/website/collection/posts/morocco-innovation-and-evaluation-lab-conference-highlights-importance-of-evidence-use-in-policy-making/imageCarousel-0.webp"
+            },
+            {
+              "alt": "",
+              "url": "https://cdn.communityjameel.io/website/collection/posts/morocco-innovation-and-evaluation-lab-conference-highlights-importance-of-evidence-use-in-policy-making/imageCarousel-1.webp"
+            },
+            {
+              "alt": "",
+              "url": "https://cdn.communityjameel.io/website/collection/posts/morocco-innovation-and-evaluation-lab-conference-highlights-importance-of-evidence-use-in-policy-making/imageCarousel-2.webp"
+            },
+            {
+              "alt": "",
+              "url": "https://cdn.communityjameel.io/website/collection/posts/morocco-innovation-and-evaluation-lab-conference-highlights-importance-of-evidence-use-in-policy-making/imageCarousel-3.webp"
+            },
+            {
+              "alt": "",
+              "url": "https://cdn.communityjameel.io/website/collection/posts/morocco-innovation-and-evaluation-lab-conference-highlights-importance-of-evidence-use-in-policy-making/imageCarousel-4.webp"
+            },
+            {
+              "alt": "",
+              "url": "https://cdn.communityjameel.io/website/collection/posts/morocco-innovation-and-evaluation-lab-conference-highlights-importance-of-evidence-use-in-policy-making/imageCarousel-5.webp"
+            },
+            {
+              "alt": "",
+              "url": "https://cdn.communityjameel.io/website/collection/posts/morocco-innovation-and-evaluation-lab-conference-highlights-importance-of-evidence-use-in-policy-making/imageCarousel-6.webp"
+            },
+            {
+              "alt": "",
+              "url": "https://cdn.communityjameel.io/website/collection/posts/morocco-innovation-and-evaluation-lab-conference-highlights-importance-of-evidence-use-in-policy-making/imageCarousel-7.webp"
+            },
+            {
+              "alt": "",
+              "url": "https://cdn.communityjameel.io/website/collection/posts/morocco-innovation-and-evaluation-lab-conference-highlights-importance-of-evidence-use-in-policy-making/imageCarousel-8.webp"
+            },
+            {
+              "alt": "",
+              "url": "https://cdn.communityjameel.io/website/collection/posts/morocco-innovation-and-evaluation-lab-conference-highlights-importance-of-evidence-use-in-policy-making/imageCarousel-9.webp"
+            },
+            {
+              "alt": "",
+              "url": "https://cdn.communityjameel.io/website/collection/posts/morocco-innovation-and-evaluation-lab-conference-highlights-importance-of-evidence-use-in-policy-making/imageCarousel-10.webp"
+            }
+          ],
+          "openGraphImage": {
+            "alt": "",
+            "url": "https://cdn.communityjameel.io/website/collection/posts/morocco-innovation-and-evaluation-lab-conference-highlights-importance-of-evidence-use-in-policy-making/openGraphImage.webp"
+          }
+        },
+        "created_at": "2025-07-21T10:52:13.766Z",
+        "updated_at": "2025-07-21T10:52:13.766Z",
+        "slug": "morocco-innovation-and-evaluation-lab-conference-highlights-importance-of-evidence-use-in-policy-making",
+        "status": "draft"
+      }
+    },
+    "summary": {
+      "totalImages": 14,
+      "successfulImages": 14,
+      "dryRunImages": 0,
+      "failedImages": 0,
+      "skippedImages": 0,
+      "mnemoCreated": true
+    }
+  },
+  {
+    "post": {
+      "id": "68511dfe16d021f41481b1aa",
+      "name": "Jameel Index launches to illuminate food security risks amid global food trade uncertainty",
+      "slug": "jameel-index-launches-to-illuminate-food-security-risks-amid-global-food-trade-uncertainty",
+      "webflowId": "68511dfe16d021f41481b1aa"
+    },
+    "images": [
+      {
+        "type": "thumbnail",
+        "index": null,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/6851388fe3ca3c896244aff9_JAMEEL_INDEX_LAUNCH_JUNE2025_THUMB.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/jameel-index-launches-to-illuminate-food-security-risks-amid-global-food-trade-uncertainty/thumbnail.webp",
+        "gcsPath": "website/collection/posts/jameel-index-launches-to-illuminate-food-security-risks-amid-global-food-trade-uncertainty/thumbnail.webp",
+        "fileSize": 16476
+      },
+      {
+        "type": "mainImage",
+        "index": null,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/6851388db873ccee4948cad5_JAMEEL_INDEX_LAUNCH_JUNE2025_HERO.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/jameel-index-launches-to-illuminate-food-security-risks-amid-global-food-trade-uncertainty/mainImage.webp",
+        "gcsPath": "website/collection/posts/jameel-index-launches-to-illuminate-food-security-risks-amid-global-food-trade-uncertainty/mainImage.webp",
+        "fileSize": 47120
+      },
+      {
+        "type": "openGraphImage",
+        "index": null,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/6851388bd4f39caba01d223c_JAMEEL_INDEX_LAUNCH_JUNE2025_OG.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/jameel-index-launches-to-illuminate-food-security-risks-amid-global-food-trade-uncertainty/openGraphImage.webp",
+        "gcsPath": "website/collection/posts/jameel-index-launches-to-illuminate-food-security-risks-amid-global-food-trade-uncertainty/openGraphImage.webp",
+        "fileSize": 39428
+      }
+    ],
+    "mnemo": {
+      "success": true,
+      "collectionItem": {
+        "id": "0a8e2dcd-7815-4c44-9f02-05a878f3d390",
+        "title": "Jameel Index launches to illuminate food security risks amid global food trade uncertainty",
+        "type": "post",
+        "data": {
+          "tags": [],
+          "featured": false,
+          "location": "Oxford, England",
+          "pushToGR": false,
+          "seoTitle": "Jameel Index launches to illuminate food security risks",
+          "mainImage": {
+            "alt": "",
+            "url": "https://cdn.communityjameel.io/website/collection/posts/jameel-index-launches-to-illuminate-food-security-risks-amid-global-food-trade-uncertainty/mainImage.webp"
+          },
+          "thumbnail": {
+            "alt": "",
+            "url": "https://cdn.communityjameel.io/website/collection/posts/jameel-index-launches-to-illuminate-food-security-risks-amid-global-food-trade-uncertainty/thumbnail.webp"
+          },
+          "bodyEnglish": "<p id=\"\">The <a href=\"/programmes/j-wafs\" id=\"\">Abdul Latif Jameel Water and Food Systems Lab</a> (J-WAFS) at the Massachusetts Institute of Technology (MIT) announced today the official launch of the <a href=\"https://jameelindex.mit.edu/\" id=\"\"><strong id=\"\">Jameel Index for Food Trade and Vulnerability</strong></a>. </p><p id=\"\">The innovative online tool equips policymakers, investors and development practitioners with data-driven insights to better navigate the complexity of global food trade and its implications for food security at a time of mounting geopolitical, climate and economic instability. </p><p id=\"\">The Jameel Index is the foundational project of the J-WAFS-led Food and Climate Systems Transformation (FACT) Alliance, a global network of over 20 leading research institutions and stakeholder organisations, with support from Community Jameel.</p><p id=\"\">Fewer than 10 countries provide more than 90% of the world’s food exports. The Jameel Index indicates that 55% of the world’s countries are in medium to extreme food import vulnerability. </p><p id=\"\">This growing interdependence raises serious questions about systemic resilience, equity and preparedness. </p><p id=\"\">By translating complex global trade data into actionable insights, the Jameel Index aims to inform and guide both global and local strategies for enhancing food security through diversified sourcing, policy alignment and sustainable investment.</p><p id=\"\">The Jameel Index generates food trade vulnerability scores for over 180 countries, analysing risks across eight major agricultural commodities (wheat, rice, soy, maize, dairy, meat, sugar and cooking oils). </p><p id=\"\">It integrates indicators on import dependency, supply chain diversity, supply variability and foreign exchange––offering a customisable, holistic platform to assess exposure to global food trade shocks.</p><p id=\"\">According to the Jameel Index, four countries in the Middle East – Jordan, Kuwait, Lebanon and Oman – are among the most vulnerable, alongside small island states, such as Cabo Verde and Grenada. </p><p id=\"\">By contrast, major food exporters, including Argentina, the United States and China, remain the most resilient to shocks in global food trade.</p><p id=\"\">The Jameel Index was formally unveiled today at the <strong id=\"\">Jameel Index Forum: Food trade in the current age of uncertainty</strong>, a special event hosted by the Oxford Martin School at the University of Oxford. </p><p id=\"\">The event featured a presentation of the Jameel Index and a thematic address exploring the Jameel Index’s application within the evolving BRICS trade bloc, now composed of 11 major agri-food economies. </p><p id=\"\">The event additionally included a panel discussion with global leaders in food systems, trade, and sustainability. </p><p id=\"\"><strong id=\"\">Dr Greg Sixt, director of the FACT Alliance, led by&nbsp;J-WAFS at MIT, said:</strong> \"The Jameel Index is a critical tool for the planning and investment needed to ensure that food trade can meet food security needs in an increasingly volatile global trade environment. </p><p id=\"\">\"In the coming months, the Jameel Index will integrate the impacts of future climate change scenarios on food trade, which will further enhance the index’s value for long-term future planning.\"</p><p id=\"\"><strong id=\"\">Nader Iskandar Diab, head of programmes, Community Jameel, said:</strong> \"Shielding global communities, especially the most vulnerable ones, from the impact of climate change is core to our mission at Community Jameel. </p><p id=\"\">\"We are pleased to support the development of the Jameel Index, which will equip policymakers and practitioners with the critical insights they need to strengthen food systems, improve resilience, and ultimately safeguard lives and livelihoods in a time of mounting uncertainty. </p><p id=\"\">\"We are proud to see this tool come to life as a cornerstone for more equitable and sustainable global food security.\"</p><p id=\"\"><strong id=\"\">Dr Linus Mofor, regional advisor for sustainability and climate, UNICEF Eastern and Southern Africa regional office, said:</strong> \"Africa continues to be disproportionately affected by the increasing adverse impacts of climate change, particularly regarding food security. </p><p id=\"\">\"With the operationalisation of the Africa Continental Free Trade Area, enhancing understanding of the nexus between climate change, trade and food security is critical. </p><p id=\"\">\"The Jameel Index tool can play a powerful foundational role for an Africa-specific index in this regard.\"</p><p id=\"\"><strong id=\"\">Paola de Almeida, food, agriculture and water portfolio head, Pegasus Capital Advisors, said:</strong> \"The Jameel Index is a valuable tool that will help de-risk investments around the world. </p><p id=\"\">\"It serves as a sentinel for food and agricultural systems risk areas ensuring that money is properly deployed and allocated fit for purpose and context.\"</p><p id=\"\">The Jameel Index was <a href=\"/post/jameel-index-unveiled-at-the-world-food-prize-conference-assessing-countries-food-trade-vulnerability\" id=\"\">previewed</a> at the 2024 World Food Prize’s Borlaug Dialogue, where project co-leads Dr Greg Sixt and Professor Kenneth Strzepek presented the framework and a preliminary version of the index. </p>",
+          "datePublished": "2025-06-17T00:00:00.000Z",
+          "imageCarousel": [],
+          "openGraphImage": {
+            "alt": "",
+            "url": "https://cdn.communityjameel.io/website/collection/posts/jameel-index-launches-to-illuminate-food-security-risks-amid-global-food-trade-uncertainty/openGraphImage.webp"
+          }
+        },
+        "created_at": "2025-07-21T10:51:57.038Z",
+        "updated_at": "2025-07-21T10:51:57.038Z",
+        "slug": "jameel-index-launches-to-illuminate-food-security-risks-amid-global-food-trade-uncertainty",
+        "status": "draft"
+      }
+    },
+    "summary": {
+      "totalImages": 3,
+      "successfulImages": 3,
+      "dryRunImages": 0,
+      "failedImages": 0,
+      "skippedImages": 0,
+      "mnemoCreated": true
+    }
+  },
+  {
+    "post": {
+      "id": "6852ea286f12e6fdce889f78",
+      "name": "Ammar Jiman runner-up for King's Foundation innovation award",
+      "slug": "ammar-jiman-runner-up-for-the-kings-foundation-award",
+      "webflowId": "6852ea286f12e6fdce889f78"
+    },
+    "images": [
+      {
+        "type": "thumbnail",
+        "index": null,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/6852eafdabd4b3a65bc545d3_AMMAR_JIMAN_THUMB.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/ammar-jiman-runner-up-for-the-kings-foundation-award/thumbnail.webp",
+        "gcsPath": "website/collection/posts/ammar-jiman-runner-up-for-the-kings-foundation-award/thumbnail.webp",
+        "fileSize": 26080
+      },
+      {
+        "type": "mainImage",
+        "index": null,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/6852eb04878a0f4445de7c11_AMMAR_JIMAN_HERO.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/ammar-jiman-runner-up-for-the-kings-foundation-award/mainImage.webp",
+        "gcsPath": "website/collection/posts/ammar-jiman-runner-up-for-the-kings-foundation-award/mainImage.webp",
+        "fileSize": 53196
+      },
+      {
+        "type": "openGraphImage",
+        "index": null,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/6852eaff565571a415775e70_AMMAR_JIMAN_OG.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/ammar-jiman-runner-up-for-the-kings-foundation-award/openGraphImage.webp",
+        "gcsPath": "website/collection/posts/ammar-jiman-runner-up-for-the-kings-foundation-award/openGraphImage.webp",
+        "fileSize": 35924
+      }
+    ],
+    "mnemo": {
+      "success": true,
+      "collectionItem": {
+        "id": "24c467e6-58e0-498f-b75b-a4ade724cb1f",
+        "title": "Ammar Jiman runner-up for King's Foundation innovation award",
+        "type": "post",
+        "data": {
+          "tags": [],
+          "featured": false,
+          "location": "London, England",
+          "pushToGR": false,
+          "seoTitle": "Ammar Jiman runner-up for King's Foundation innovation award",
+          "mainImage": {
+            "alt": "",
+            "url": "https://cdn.communityjameel.io/website/collection/posts/ammar-jiman-runner-up-for-the-kings-foundation-award/mainImage.webp"
+          },
+          "thumbnail": {
+            "alt": "",
+            "url": "https://cdn.communityjameel.io/website/collection/posts/ammar-jiman-runner-up-for-the-kings-foundation-award/thumbnail.webp"
+          },
+          "bodyArabic": "<p id=\"\">كان الفنان عمار جيمان، المقيم في جدة وخريج بيت جميل للفنون التراثية في جدة، من المنافسين على جائزة الابتكار في الممارسة لعام 2025 التي تقدمها مؤسسة الملك تشارلز.</p><p id=\"\">وقد فازت بالجائزة المعمارية ياسمين لاري، كما رُشحت لها شركة \"تيموروس بيستيز\" الاسكتلندية المتخصصة في طباعة المنسوجات.</p><p id=\"\">تجسّد ممارسة عمار جيمان وتستوحي من تعاليم مدرسة مؤسسة الملك تشارلز للفنون التقليدية.</p><p id=\"\">وكان عمار قد التحق ببرنامج بيت جميل في جدة بين عامي 2018 و2019، وهو البرنامج الرائد الذي أسسته مجتمع جميل بالشراكة مع مؤسسة الملك تشارلز للفنون التقليدية عام 2015 في المملكة العربية السعودية.</p><p id=\"\">ومنذ تخرجه، طوّر عمار ممارسته لتشمل الأصباغ الطبيعية، وصناعة الألوان، والمواد الحيوية، والرسم، ونسج سعف النخيل.</p><p id=\"\">كما يُدرّس عمار ويُمارس حاليًا في العلا، حيث تقدم مؤسسة الملك تشارلز للفنون التقليدية برامجها الحرفية.</p><p id=\"\">وقد قُدمت جائزة الابتكار في الممارسة لعام 2025 خلال حفل أُقيم في قصر سانت جيمس في لندن، بحضور جلالة الملك تشارلز الثالث، الرئيس المؤسس الملكي لمؤسسة الملك تشارلز.</p>",
+          "arabicTitle": "عمار جيمان من المنافسين على جائزة مؤسسة الملك تشارلز للابتكار",
+          "bodyEnglish": "<p id=\"\"><strong id=\"\">Ammar Jiman</strong>, a Jeddah-based artist and a graduate of the <a href=\"/programmes/jameel-house-of-traditional-arts-in-jeddah\" id=\"\"><strong id=\"\">Jameel House of Traditional Arts in Jeddah</strong></a>, was a runner-up for The King’s Foundation’s 2025 Innovation in Practice award today.</p><p id=\"\">The award was won by architect Yasmeen Lari. Timorous Beasties, a Scottish textile printing company, was also nominated.</p><p id=\"\">Ammar Jiman's practice reflects and draws on the teachings of The King's Foundation School of Traditional Arts (KFSTA). </p><p id=\"\">Between 2018 and 2019, Ammar studied at the Jameel House in Jeddah, the pioneering programme co-founded by Community Jameel and the KFSTA in 2015 in Saudi Arabia.</p><p id=\"\">Since graduation, Ammar has developed his practice to incorporate natural dyes, pigment making, bio-materials, painting and palm weaving.</p><p id=\"\">Ammar also teaches and practises in AlUla, where the KFSTA delivers craft programmes.</p><p id=\"\">The 2025 Innovation in Practice award was presented at a ceremony at St James’s Palace in London, attended by His Majesty King Charles III, royal founding president of The King’s Foundation.</p>",
+          "datePublished": "2025-06-12T00:00:00.000Z",
+          "imageCarousel": [],
+          "openGraphImage": {
+            "alt": "",
+            "url": "https://cdn.communityjameel.io/website/collection/posts/ammar-jiman-runner-up-for-the-kings-foundation-award/openGraphImage.webp"
+          },
+          "seoTitleArabic": "كان عمار جيمان من المنافسين على جائزة مؤسسة الملك تشارلز للابتكار"
+        },
+        "created_at": "2025-07-21T10:51:57.297Z",
+        "updated_at": "2025-07-21T10:51:57.297Z",
+        "slug": "ammar-jiman-runner-up-for-the-kings-foundation-award",
+        "status": "draft"
+      }
+    },
+    "summary": {
+      "totalImages": 3,
+      "successfulImages": 3,
+      "dryRunImages": 0,
+      "failedImages": 0,
+      "skippedImages": 0,
+      "mnemoCreated": true
+    }
+  },
+  {
+    "post": {
+      "id": "683dc9779d433f683b4b909c",
+      "name": "Underwater video systems reveal thriving marine ecosystem in Monaco",
+      "slug": "underwater-survey-highlights-the-vital-role-of-monacos-larvotto-marine-protected-area-in-marine-biodiversity-conservation",
+      "webflowId": "683dc9779d433f683b4b909c"
+    },
+    "images": [
+      {
+        "type": "thumbnail",
+        "index": null,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/683dcadff849ffae20fc50b1_BRUVS_CLOSING_THUMB.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/underwater-survey-highlights-the-vital-role-of-monacos-larvotto-marine-protected-area-in-marine-biodiversity-conservation/thumbnail.webp",
+        "gcsPath": "website/collection/posts/underwater-survey-highlights-the-vital-role-of-monacos-larvotto-marine-protected-area-in-marine-biodiversity-conservation/thumbnail.webp",
+        "fileSize": 60204
+      },
+      {
+        "type": "mainImage",
+        "index": null,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/683dcada21dcfa67c2abcbf6_BRUVS_CLOSING_HERO.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/underwater-survey-highlights-the-vital-role-of-monacos-larvotto-marine-protected-area-in-marine-biodiversity-conservation/mainImage.webp",
+        "gcsPath": "website/collection/posts/underwater-survey-highlights-the-vital-role-of-monacos-larvotto-marine-protected-area-in-marine-biodiversity-conservation/mainImage.webp",
+        "fileSize": 115450
+      },
+      {
+        "type": "openGraphImage",
+        "index": null,
+        "status": "success",
+        "originalUrl": "https://cdn.prod.website-files.com/612cede33b271d1b5bac6200/683dcadd5409f49c8cb5bc22_BRUVS_CLOSING_OG.webp",
+        "newUrl": "https://cdn.communityjameel.io/website/collection/posts/underwater-survey-highlights-the-vital-role-of-monacos-larvotto-marine-protected-area-in-marine-biodiversity-conservation/openGraphImage.webp",
+        "gcsPath": "website/collection/posts/underwater-survey-highlights-the-vital-role-of-monacos-larvotto-marine-protected-area-in-marine-biodiversity-conservation/openGraphImage.webp",
+        "fileSize": 78930
+      }
+    ],
+    "mnemo": {
+      "success": true,
+      "collectionItem": {
+        "id": "3c915bd0-2c6a-477b-be14-5f35c74b14bf",
+        "title": "Underwater video systems reveal thriving marine ecosystem in Monaco",
+        "type": "post",
+        "data": {
+          "tags": [],
+          "featured": false,
+          "location": "Monaco",
+          "pushToGR": false,
+          "seoTitle": "Underwater video systems reveal thriving marine ecosystem in Monaco",
+          "mainImage": {
+            "alt": "",
+            "url": "https://cdn.communityjameel.io/website/collection/posts/underwater-survey-highlights-the-vital-role-of-monacos-larvotto-marine-protected-area-in-marine-biodiversity-conservation/mainImage.webp"
+          },
+          "thumbnail": {
+            "alt": "",
+            "url": "https://cdn.communityjameel.io/website/collection/posts/underwater-survey-highlights-the-vital-role-of-monacos-larvotto-marine-protected-area-in-marine-biodiversity-conservation/thumbnail.webp"
+          },
+          "datePublished": "2025-06-02T00:00:00.000Z",
+          "imageCarousel": [],
+          "openGraphImage": {
+            "alt": "",
+            "url": "https://cdn.communityjameel.io/website/collection/posts/underwater-survey-highlights-the-vital-role-of-monacos-larvotto-marine-protected-area-in-marine-biodiversity-conservation/openGraphImage.webp"
+          },
+          "bulletPointsEnglish": "<p id=\"\">A recent underwater survey of the Larvotto marine protected area (MPA) in Monaco has revealed a thriving, seasonally dynamic ecosystem, underscoring the reserve's crucial role in safeguarding marine biodiversity.</p><p id=\"\">Conducted using <a href=\"/programmes/bruvs-monaco\" id=\"\"><strong id=\"\">baited remote underwater video systems</strong></a> (BRUVS), the survey is part of a pioneering research project launched in 2023 through a collaboration between the Prince Albert II of Monaco Foundation, Community Jameel, the Monégasque Association for the Protection of Nature (AMPN), THALASSA Marine Research and Environmental Awareness and Blue Abacus.</p><p id=\"\">The findings, published in a new report, are already helping to shape AMPN’s strategy for managing the Larvotto MPA, reinforcing the importance of adaptive and evidence-based conservation approaches.</p><h4 id=\"\">Seasonal shifts reveal ecological richness</h4><p id=\"\">The project, which included two survey campaigns conducted in summer 2023 and winter 2024, yielded striking results. </p><p id=\"\">In January 2024, researchers recorded 332 fish individuals in the Larvotto MPA – almost three times the 123 individuals observed during the July 2023 survey. </p><p id=\"\">Remarkably, among the 32 species identified by the project, only 12 appeared in both surveys, highlighting significant seasonal shifts in species composition.</p><p id=\"\">Underwater footage captured during the January survey revealed large schools of blotched picarel (<em id=\"\">Spicara maena</em>), which alone accounted for 30% of individuals observed. </p><p id=\"\">The common pandora (<em id=\"\">Pagellus erythrinus</em>) was present in nearly every location during both surveys, providing a rare point of continuity. </p><p id=\"\">Mediterranean eels (<em id=\"\">Muraena helena</em>) and European congers (Conger conger) also appeared consistently across seasons. </p><h4 id=\"\">Changing dynamics and surprising discoveries</h4><p id=\"\">The size and biomass of fish also varied seasonally, with total biomass and species abundance significantly higher in winter than in summer.</p><p id=\"\">The project’s smallest find was a 3.5 cm brown comber (<em id=\"\">Serranus hepatus</em>), while its largest – a 73 cm common dentex (<em id=\"\">Dentex dentex</em>) – demonstrated the reserve’s ability to support both juvenile and mature marine life.</p><p id=\"\">Moreover, some ecologically important or rare species – like amberjacks (<em id=\"\">Seriola dumerili</em>), common dentex (<em id=\"\">Dentex dentex</em>), seabreams (<em id=\"\">Diplodus sp.</em>) and John Dory (<em id=\"\">Zeus faber</em>) – were also observed, highlighting the ecological value of the MPA.</p><p id=\"\"><strong id=\"\">George Richards, director of Community Jameel, said:</strong> “We are excited to see how the successful deployment of underwater video systems has revealed the richness of the Larvotto marine reserve.</p><p id=\"\">“The project has delivered important data that is now informing the protection and conservation of marine life in Monaco.”</p><p id=\"\"><strong id=\"\">Jacqueline Gautier-Debernardi, director of AMPN, said: </strong>“These seasonal differences highlight the complex ecological dynamics at play and reinforce the need for ongoing, year-round monitoring.”</p><h4 id=\"\">Guiding the future of marine conservation</h4><p id=\"\">The BRUVS project has identified several priorities for future research and conservation planning. </p><p id=\"\">Expanding surveys to encompass Posidonia seagrass, rocky substrates and artificial structures could yield a more complete picture of the MPA’s biodiversity.</p><p id=\"\">The continuation of this monitoring could help track changes in fish populations related to species migration and climate change.</p><p id=\"\">As Monaco continues to lead global efforts in ocean protection, this project stands as a powerful example of how innovative tools and international partnerships can support smart and sustainable marine management strategies. </p>"
+        },
+        "created_at": "2025-07-21T10:52:21.460Z",
+        "updated_at": "2025-07-21T10:52:21.460Z",
+        "slug": "underwater-survey-highlights-the-vital-role-of-monacos-larvotto-marine-protected-area-in-marine-biodiversity-conservation",
+        "status": "draft"
+      }
+    },
+    "summary": {
+      "totalImages": 3,
+      "successfulImages": 3,
+      "dryRunImages": 0,
+      "failedImages": 0,
+      "skippedImages": 0,
+      "mnemoCreated": true
+    }
+  }
+]
