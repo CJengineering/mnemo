@@ -4,9 +4,9 @@ import './globals.scss';
 import { Analytics } from '@vercel/analytics/react';
 
 export const metadata = {
-  title: 'Next.js App Router + NextAuth + Tailwind CSS',
+  title: 'Mnemo - Content & Data Manager',
   description:
-    'A user admin dashboard configured with Next.js, Postgres, NextAuth, Tailwind CSS, TypeScript, and Prettier.'
+    'Internal App for data and content management'
 };
 
 export default function RootLayout({
