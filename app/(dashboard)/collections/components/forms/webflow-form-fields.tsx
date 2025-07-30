@@ -24,6 +24,7 @@ import { Badge } from '@/components/ui/badge';
 import { X, Plus, Upload, Link, ExternalLink, Calendar } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { DarkModeSimpleEditor } from './dark-mode-simple-editor';
+import { DateTimePicker } from '@/components/ui/date-time-picker';
 
 // Webflow-style Text Field
 interface WebflowTextFieldProps {
@@ -291,14 +292,12 @@ export function WebflowDateField({
             {required && <span className="text-red-500">*</span>}
           </FormLabel>
           <FormControl>
-            <div className="relative">
-              <Input
-                type="datetime-local"
-                {...field}
-                className="bg-gray-800 border-gray-600 text-white placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500 h-12"
-              />
-              <Calendar className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
-            </div>
+            <DateTimePicker
+              value={field.value}
+              onChange={field.onChange}
+              placeholder={`Select ${label.toLowerCase()}...`}
+              className="w-full"
+            />
           </FormControl>
           <FormMessage className="text-red-400 text-xs" />
         </FormItem>
