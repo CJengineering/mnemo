@@ -1,5 +1,7 @@
 import Link from 'next/link';
 import {
+  Database,
+  Folder,
   Home,
   LineChart,
   Package,
@@ -60,7 +62,8 @@ function DesktopNav() {
     <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">
       <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
         <Link
-          href="https://vercel.com/templates/next.js/admin-dashboard-tailwind-postgres-react-nextjs"
+          href="https://www.communityjameel.org"
+          target='_blank'
           className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
         >
           <VercelLogo className="h-3 w-3 transition-all group-hover:scale-110" />
@@ -75,17 +78,14 @@ function DesktopNav() {
           <PanelsTopLeft className="h-5 w-5" />
         </NavItem>
 
-        <NavItem href="/collections" label="Products">
-          <Package className="h-5 w-5" />
+        <NavItem href="/collections" label="Collections">
+          <Database className="h-5 w-5" />
         </NavItem>
 
-        <NavItem href="/customers" label="Customers">
-          <Users2 className="h-5 w-5" />
+        <NavItem href="/content" label="Customers">
+          <Folder className="h-5 w-5" />
         </NavItem>
 
-        <NavItem href="#" label="Analytics">
-          <LineChart className="h-5 w-5" />
-        </NavItem>
       </nav>
       <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
         <TooltipBasic>
