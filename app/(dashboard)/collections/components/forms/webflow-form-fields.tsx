@@ -25,6 +25,7 @@ import { X, Plus, Upload, Link, ExternalLink, Calendar } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { DarkModeSimpleEditor } from './dark-mode-simple-editor';
 import { DateTimePicker } from '@/components/ui/date-time-picker';
+import './compact-form.css';
 
 // Webflow-style Text Field
 interface WebflowTextFieldProps {
@@ -195,37 +196,227 @@ export function WebflowSelectField({
   required = false,
   placeholder = 'Select an option'
 }: WebflowSelectFieldProps) {
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [selectedValue, setSelectedValue] = React.useState('');
+  const [highlightedIndex, setHighlightedIndex] = React.useState(-1);
+  const dropdownRef = React.useRef<HTMLDivElement>(null);
+  const triggerRef = React.useRef<HTMLButtonElement>(null);
+  const fieldRef = React.useRef<any>(null);
+
+  // Close dropdown when clicking outside
+  React.useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+        setHighlightedIndex(-1);
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleSelect = React.useCallback((optionValue: string) => {
+    setSelectedValue(optionValue);
+    if (fieldRef.current) {
+      fieldRef.current.onChange(optionValue);
+    }
+    setIsOpen(false);
+    setHighlightedIndex(-1);
+    triggerRef.current?.focus();
+  }, []);
+
+  // Handle keyboard navigation
+  React.useEffect(() => {
+    function handleKeyDown(event: KeyboardEvent) {
+      if (!isOpen) {
+        if (
+          event.key === 'Enter' ||
+          event.key === ' ' ||
+          event.key === 'ArrowDown'
+        ) {
+          event.preventDefault();
+          setIsOpen(true);
+          setHighlightedIndex(0);
+        }
+        return;
+      }
+
+      switch (event.key) {
+        case 'Escape':
+          event.preventDefault();
+          setIsOpen(false);
+          setHighlightedIndex(-1);
+          triggerRef.current?.focus();
+          break;
+        case 'ArrowDown':
+          event.preventDefault();
+          setHighlightedIndex((prev) =>
+            prev < options.length - 1 ? prev + 1 : prev
+          );
+          break;
+        case 'ArrowUp':
+          event.preventDefault();
+          setHighlightedIndex((prev) => (prev > 0 ? prev - 1 : prev));
+          break;
+        case 'Enter':
+        case ' ':
+          event.preventDefault();
+          if (highlightedIndex >= 0) {
+            const option = options[highlightedIndex];
+            if (option) {
+              handleSelect(option.value);
+            }
+          }
+          break;
+        case 'Home':
+          event.preventDefault();
+          setHighlightedIndex(0);
+          break;
+        case 'End':
+          event.preventDefault();
+          setHighlightedIndex(options.length - 1);
+          break;
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, highlightedIndex, options, handleSelect]);
+
   return (
     <FormField
       control={control}
       name={name}
-      render={({ field }) => (
-        <FormItem className="space-y-3">
-          <FormLabel className="text-sm font-medium text-white flex items-center gap-1">
-            {label}
-            {required && <span className="text-red-500">*</span>}
-          </FormLabel>
-          <Select onValueChange={field.onChange} value={field.value}>
-            <FormControl>
-              <SelectTrigger className="bg-gray-800 border-gray-600 text-white h-12">
-                <SelectValue placeholder={placeholder} />
-              </SelectTrigger>
-            </FormControl>
-            <SelectContent className="bg-gray-800 border-gray-600">
-              {options.map((option) => (
-                <SelectItem
-                  key={option.value}
-                  value={option.value}
-                  className="text-white hover:bg-gray-700"
+      render={({ field }) => {
+        // Store field reference for callbacks
+        fieldRef.current = field;
+
+        // Sync field value with local state
+        React.useEffect(() => {
+          setSelectedValue(field.value || '');
+        }, [field.value]);
+
+        const selectedOption = options.find(
+          (option) => option.value === selectedValue
+        );
+
+        return (
+          <FormItem className="space-y-3">
+            <FormLabel className="text-sm font-medium text-white flex items-center gap-1">
+              {label}
+              {required && <span className="text-red-500">*</span>}
+            </FormLabel>
+            <div className="relative" ref={dropdownRef}>
+              {/* Trigger Button */}
+              <button
+                ref={triggerRef}
+                type="button"
+                className={`
+                  dropdown-trigger flex h-12 w-full items-center justify-between rounded-lg border px-4 py-3 text-sm 
+                  transition-all duration-200 ease-in-out
+                  ${
+                    isOpen
+                      ? 'border-blue-400 ring-2 ring-blue-400/20'
+                      : 'border-gray-600 hover:border-gray-500'
+                  }
+                  focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20
+                  disabled:cursor-not-allowed disabled:opacity-50
+                `}
+                onClick={() => {
+                  setIsOpen(!isOpen);
+                  if (!isOpen) {
+                    setHighlightedIndex(
+                      selectedValue
+                        ? options.findIndex(
+                            (opt) => opt.value === selectedValue
+                          )
+                        : 0
+                    );
+                  }
+                }}
+                aria-haspopup="listbox"
+                aria-expanded={isOpen}
+                aria-label={`Select ${label}`}
+              >
+                <span
+                  className={
+                    selectedOption ? 'text-white font-medium' : 'text-gray-400'
+                  }
                 >
-                  {option.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <FormMessage className="text-red-400 text-xs" />
-        </FormItem>
-      )}
+                  {selectedOption ? selectedOption.label : placeholder}
+                </span>
+                <div
+                  className={`transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+                >
+                  <svg
+                    className="h-4 w-4 text-gray-400"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </div>
+              </button>
+
+              {/* Dropdown Menu */}
+              {isOpen && (
+                <div className="dropdown-menu absolute top-full left-0 right-0 z-50 mt-2 max-h-60 overflow-auto rounded-lg">
+                  <div className="py-1">
+                    {options.map((option, index) => (
+                      <button
+                        key={option.value}
+                        type="button"
+                        className={`
+                          dropdown-option w-full px-4 py-3 text-left text-sm
+                          ${
+                            selectedValue === option.value
+                              ? 'selected text-white font-medium'
+                              : 'text-gray-200 hover:text-white'
+                          }
+                          ${highlightedIndex === index ? 'bg-blue-600/50 text-white' : ''}
+                          ${index === 0 ? 'rounded-t-lg' : ''}
+                          ${index === options.length - 1 ? 'rounded-b-lg' : ''}
+                          focus:outline-none focus:text-white
+                        `}
+                        onClick={() => handleSelect(option.value)}
+                        onMouseEnter={() => setHighlightedIndex(index)}
+                        role="option"
+                        aria-selected={selectedValue === option.value}
+                      >
+                        <div className="flex items-center justify-between">
+                          <span>{option.label}</span>
+                          {selectedValue === option.value && (
+                            <svg
+                              className="h-4 w-4 text-green-400"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                clipRule="evenodd"
+                              />
+                            </svg>
+                          )}
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+            <FormMessage className="text-red-400 text-xs" />
+          </FormItem>
+        );
+      }}
     />
   );
 }

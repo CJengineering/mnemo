@@ -24,6 +24,7 @@ export interface IncomingEventData {
   seoMetaDescription?: string;
   teaserText?: string;
   shortDescription?: string;
+  richText?: string;
 
   // Event details
   eventDate?: string;
