@@ -229,64 +229,6 @@ export function WebflowSelectField({
     triggerRef.current?.focus();
   }, []);
 
-  // Handle keyboard navigation
-  React.useEffect(() => {
-    function handleKeyDown(event: KeyboardEvent) {
-      if (!isOpen) {
-        if (
-          event.key === 'Enter' ||
-          event.key === ' ' ||
-          event.key === 'ArrowDown'
-        ) {
-          event.preventDefault();
-          setIsOpen(true);
-          setHighlightedIndex(0);
-        }
-        return;
-      }
-
-      switch (event.key) {
-        case 'Escape':
-          event.preventDefault();
-          setIsOpen(false);
-          setHighlightedIndex(-1);
-          triggerRef.current?.focus();
-          break;
-        case 'ArrowDown':
-          event.preventDefault();
-          setHighlightedIndex((prev) =>
-            prev < options.length - 1 ? prev + 1 : prev
-          );
-          break;
-        case 'ArrowUp':
-          event.preventDefault();
-          setHighlightedIndex((prev) => (prev > 0 ? prev - 1 : prev));
-          break;
-        case 'Enter':
-        case ' ':
-          event.preventDefault();
-          if (highlightedIndex >= 0) {
-            const option = options[highlightedIndex];
-            if (option) {
-              handleSelect(option.value);
-            }
-          }
-          break;
-        case 'Home':
-          event.preventDefault();
-          setHighlightedIndex(0);
-          break;
-        case 'End':
-          event.preventDefault();
-          setHighlightedIndex(options.length - 1);
-          break;
-      }
-    }
-
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, highlightedIndex, options, handleSelect]);
-
   return (
     <FormField
       control={control}
@@ -911,7 +853,7 @@ export function WebflowRichTextField({
               className="border border-gray-600 rounded-lg bg-gray-800 overflow-hidden"
             >
               <DarkModeSimpleEditor
-                key={`${name}-${field.value?.length || 0}`}
+                key={name}
                 initialContent={field.value || ''}
                 onChange={(content) => {
                   field.onChange(content);
