@@ -223,7 +223,11 @@ export const WebflowTeamForm = forwardRef<
               Save Draft
             </Button>
             <Button
-              type="submit"
+              type="button"
+              onClick={() => {
+                form.setValue('status', 'published');
+                form.handleSubmit(handleSubmit)();
+              }}
               className="bg-blue-600 hover:bg-blue-700 text-white"
             >
               Publish
