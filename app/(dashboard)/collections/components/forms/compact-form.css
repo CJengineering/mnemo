@@ -124,3 +124,191 @@
 .compact-form-container::-webkit-scrollbar-thumb:hover {
   background: #a0aec0;
 }
+
+/* Layout Shift Prevention Utilities */
+.prevent-layout-shift {
+  scrollbar-gutter: stable;
+  contain: layout;
+}
+
+.stable-scroll-container {
+  scrollbar-gutter: stable;
+  overflow-anchor: none;
+  contain: layout style;
+}
+
+.dropdown-container {
+  contain: layout style size;
+}
+
+/* Ensure dropdowns don't cause layout shifts */
+[data-radix-select-content] {
+  contain: layout style size;
+  will-change: auto;
+}
+
+/* Fix dropdown visibility - override compact form styles */
+.dropdown-container {
+  contain: layout style size;
+  font-size: 14px !important;
+  min-width: 200px !important;
+  max-height: 300px !important;
+  z-index: 9999 !important;
+  padding: 4px !important;
+}
+
+.dropdown-container [data-radix-select-item] {
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+  padding: 8px 12px !important;
+  min-height: 36px !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  width: 100% !important;
+}
+
+/* Ensure dropdown text is visible */
+[data-radix-select-content] * {
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+}
+
+/* Override compact form styles for select components */
+.compact-form [data-radix-select-content],
+.compact-form [data-radix-select-item],
+.compact-form [data-radix-select-content] *,
+.compact-form [data-radix-select-item] * {
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+  min-height: 36px !important;
+}
+
+/* Specific overrides for select item text */
+[data-radix-select-content] [data-radix-select-item-text],
+.dropdown-container [data-radix-select-item-text] {
+  font-size: 14px !important;
+  font-weight: normal !important;
+  color: white !important;
+}
+
+/* Native select styling for WebflowSelectField */
+.compact-form select {
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+  height: 48px !important;
+  padding: 8px 12px !important;
+  background-color: rgb(31 41 55) !important;
+  border-color: rgb(75 85 99) !important;
+  color: white !important;
+}
+
+.compact-form select option {
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+  background-color: rgb(31 41 55) !important;
+  color: white !important;
+  padding: 8px 12px !important;
+}
+
+/* Custom dropdown animations and styles */
+@keyframes dropdown-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes dropdown-fade-out {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.95);
+  }
+}
+
+/* Enhanced dropdown trigger styling */
+.dropdown-trigger {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  background: linear-gradient(135deg, rgb(31 41 55), rgb(35 45 59));
+}
+
+.dropdown-trigger:hover {
+  background: linear-gradient(135deg, rgb(35 45 59), rgb(39 49 63));
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.dropdown-trigger:focus {
+  background: linear-gradient(135deg, rgb(31 41 55), rgb(35 45 59));
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1), 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.dropdown-trigger[aria-expanded="true"] {
+  background: linear-gradient(135deg, rgb(31 41 55), rgb(35 45 59));
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1), 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Enhanced dropdown menu styling */
+.dropdown-menu {
+  animation: dropdown-fade-in 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(12px);
+  background: rgba(31, 41, 55, 0.95);
+  border: 1px solid rgba(75, 85, 99, 0.5);
+  box-shadow: 
+    0 20px 25px -5px rgba(0, 0, 0, 0.3),
+    0 10px 10px -5px rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+/* Enhanced dropdown option styling */
+.dropdown-option {
+  transition: background-color 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.dropdown-option:hover,
+.dropdown-option:focus {
+  background: linear-gradient(90deg, rgb(59 130 246), rgb(67 137 253));
+}
+
+.dropdown-option.selected {
+  background: linear-gradient(90deg, rgb(59 130 246), rgb(67 137 253));
+  box-shadow: inset 3px 0 0 rgb(34 197 94);
+}
+
+.dropdown-option.selected::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: rgb(34 197 94);
+}
+
+/* Improved scrollbar for dropdown */
+.dropdown-menu::-webkit-scrollbar {
+  width: 6px;
+}
+
+.dropdown-menu::-webkit-scrollbar-track {
+  background: rgba(31, 41, 55, 0.1);
+  border-radius: 3px;
+}
+
+.dropdown-menu::-webkit-scrollbar-thumb {
+  background: rgba(75, 85, 99, 0.7);
+  border-radius: 3px;
+  transition: background 0.2s;
+}
+
+.dropdown-menu::-webkit-scrollbar-thumb:hover {
+  background: rgba(75, 85, 99, 0.9);
+}
