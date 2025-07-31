@@ -341,6 +341,8 @@ export const WebflowTeamForm = forwardRef<
                         label="Profile Photo"
                         helperText="Required - Main profile image"
                         required
+                        collectionType="team"
+                        slug={form.watch('slug')}
                       />
 
                       <WebflowTextField

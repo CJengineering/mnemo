@@ -506,6 +506,10 @@ interface WebflowImageFieldProps {
   helperText?: string;
   multiple?: boolean;
   maxImages?: number;
+  // New optional props for organized folder structure
+  collectionType?: string; // e.g., 'team', 'events', 'news'
+  slug?: string; // The item slug for folder organization
+  preserveFormat?: boolean; // Whether to preserve original format
 }
 
 export function WebflowImageField({
@@ -515,9 +519,15 @@ export function WebflowImageField({
   required = false,
   helperText,
   multiple = false,
-  maxImages = 5
+  maxImages = 5,
+  collectionType,
+  slug,
+  preserveFormat = false
 }: WebflowImageFieldProps) {
   const [isUploading, setIsUploading] = useState(false);
+
+  // Determine which API to use based on whether collection info is provided
+  const useCollectionAPI = Boolean(collectionType && slug);
 
   if (multiple) {
     return (
@@ -589,24 +599,50 @@ export function WebflowImageField({
 
                         setIsUploading(true);
                         try {
-                          const API = (await import('@/tip-tap/lib/api'))
-                            .default;
-                          const uploadPromises = files.map((file) =>
-                            API.uploadImage(file)
-                          );
-                          const uploadedURLs =
-                            await Promise.all(uploadPromises);
+                          if (useCollectionAPI) {
+                            // Use collection-specific API
+                            const CollectionAPI = (
+                              await import('@/tip-tap/lib/collection-api')
+                            ).default;
+                            const uploadedURLs =
+                              await CollectionAPI.uploadMultipleCollectionImages(
+                                files,
+                                collectionType!,
+                                slug!,
+                                preserveFormat
+                              );
 
-                          const newImages = uploadedURLs
-                            .filter((url) => url)
-                            .map((url) => ({ url, alt: '' }));
+                            const newImages = uploadedURLs
+                              .filter((url) => url)
+                              .map((url) => ({ url, alt: '' }));
 
-                          const currentImages = field.value || [];
-                          const updatedImages = [
-                            ...currentImages,
-                            ...newImages
-                          ].slice(0, maxImages);
-                          field.onChange(updatedImages);
+                            const currentImages = field.value || [];
+                            const updatedImages = [
+                              ...currentImages,
+                              ...newImages
+                            ].slice(0, maxImages);
+                            field.onChange(updatedImages);
+                          } else {
+                            // Use original API
+                            const API = (await import('@/tip-tap/lib/api'))
+                              .default;
+                            const uploadPromises = files.map((file) =>
+                              API.uploadImage(file)
+                            );
+                            const uploadedURLs =
+                              await Promise.all(uploadPromises);
+
+                            const newImages = uploadedURLs
+                              .filter((url) => url)
+                              .map((url) => ({ url, alt: '' }));
+
+                            const currentImages = field.value || [];
+                            const updatedImages = [
+                              ...currentImages,
+                              ...newImages
+                            ].slice(0, maxImages);
+                            field.onChange(updatedImages);
+                          }
                         } catch (error) {
                           console.error('Upload error:', error);
                           alert('Upload failed. Please try again.');
@@ -619,7 +655,7 @@ export function WebflowImageField({
                       type="button"
                       variant="outline"
                       className="w-full bg-gray-700 border-gray-600 text-white hover:bg-gray-600"
-                      disabled={isUploading}
+                      disabled={isUploading || (useCollectionAPI && !slug)}
                       onClick={() =>
                         document.getElementById(`${name}-upload`)?.click()
                       }
@@ -627,6 +663,22 @@ export function WebflowImageField({
                       <Plus className="h-4 w-4 mr-2" />
                       {isUploading ? 'Uploading...' : 'Add Images'}
                     </Button>
+
+                    {/* Show warning if using collection API but no slug */}
+                    {useCollectionAPI && !slug && (
+                      <p className="text-xs text-yellow-400">
+                        ⚠️ Please save the item first to enable organized image
+                        uploads
+                      </p>
+                    )}
+                  </div>
+                )}
+
+                {/* Show folder structure info if using collection API */}
+                {useCollectionAPI && slug && (
+                  <div className="text-xs text-gray-500 break-all">
+                    📁 Images will be stored at: collection/{collectionType}/
+                    {slug}/
                   </div>
                 )}
               </CardContent>
@@ -684,7 +736,7 @@ export function WebflowImageField({
                 <Input
                   type="file"
                   accept="image/*"
-                  disabled={isUploading}
+                  disabled={isUploading || (useCollectionAPI && !slug)}
                   className="hidden"
                   id={`${name}-upload`}
                   onChange={async (e) => {
@@ -693,20 +745,47 @@ export function WebflowImageField({
 
                     setIsUploading(true);
                     try {
-                      const API = (await import('@/tip-tap/lib/api')).default;
-                      const uploadedURL = await API.uploadImage(file);
+                      if (useCollectionAPI) {
+                        // Use collection-specific API
+                        const CollectionAPI = (
+                          await import('@/tip-tap/lib/collection-api')
+                        ).default;
+                        const uploadedURL =
+                          await CollectionAPI.uploadCollectionImage(
+                            file,
+                            collectionType!,
+                            slug!,
+                            preserveFormat
+                          );
 
-                      if (!uploadedURL) {
-                        alert('Upload failed. Try again.');
-                        return;
+                        if (!uploadedURL) {
+                          alert('Upload failed. Try again.');
+                          return;
+                        }
+
+                        const currentValue = field.value || {};
+                        field.onChange({
+                          ...currentValue,
+                          url: uploadedURL,
+                          alt: currentValue.alt || ''
+                        });
+                      } else {
+                        // Use original API
+                        const API = (await import('@/tip-tap/lib/api')).default;
+                        const uploadedURL = await API.uploadImage(file);
+
+                        if (!uploadedURL) {
+                          alert('Upload failed. Try again.');
+                          return;
+                        }
+
+                        const currentValue = field.value || {};
+                        field.onChange({
+                          ...currentValue,
+                          url: uploadedURL,
+                          alt: currentValue.alt || ''
+                        });
                       }
-
-                      const currentValue = field.value || {};
-                      field.onChange({
-                        ...currentValue,
-                        url: uploadedURL,
-                        alt: currentValue.alt || ''
-                      });
                     } catch (error) {
                       console.error('Upload error:', error);
                       alert('Upload failed. Please try again.');
@@ -720,7 +799,7 @@ export function WebflowImageField({
                   type="button"
                   variant="outline"
                   className="w-full bg-gray-700 border-gray-600 text-white hover:bg-gray-600"
-                  disabled={isUploading}
+                  disabled={isUploading || (useCollectionAPI && !slug)}
                   onClick={() =>
                     document.getElementById(`${name}-upload`)?.click()
                   }
@@ -732,6 +811,14 @@ export function WebflowImageField({
                       ? 'Replace Image'
                       : 'Upload Image'}
                 </Button>
+
+                {/* Show warning if using collection API but no slug */}
+                {useCollectionAPI && !slug && (
+                  <p className="text-xs text-yellow-400">
+                    ⚠️ Please save the item first to enable organized image
+                    uploads
+                  </p>
+                )}
 
                 {/* Alt Text Input */}
                 {field.value?.url && (
@@ -770,6 +857,14 @@ export function WebflowImageField({
                   }}
                   className="bg-gray-700 border-gray-600 text-white placeholder-gray-400"
                 />
+
+                {/* Show folder structure info if using collection API */}
+                {useCollectionAPI && slug && (
+                  <div className="text-xs text-gray-500 break-all">
+                    📁 Image will be stored at: collection/{collectionType}/
+                    {slug}/
+                  </div>
+                )}
               </div>
             </CardContent>
           </Card>
