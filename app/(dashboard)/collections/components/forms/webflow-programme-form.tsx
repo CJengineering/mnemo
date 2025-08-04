@@ -20,7 +20,8 @@ import {
   WebflowSwitchField,
   WebflowDateField,
   WebflowImageField,
-  WebflowRichTextField
+  WebflowRichTextField,
+  WebflowTagsField
 } from './webflow-form-fields';
 import { IncomingProgrammeData } from '../interfaces-incoming';
 import { generateSlug } from './base-form';
@@ -31,6 +32,17 @@ const webflowProgrammeSchema = z.object({
   slug: z.string().min(1, 'Slug is required'),
   status: z.enum(['draft', 'published']).default('draft'),
   description: z.string().optional(),
+  type: z
+    .enum([
+      'Centre',
+      'Fund',
+      'Scholarship',
+      'Project',
+      'Programme',
+      'Lab',
+      'Community Jameel'
+    ])
+    .optional(),
   nameArabic: z.string().optional(),
   shortNameEnglish: z.string().optional(),
   shortNameArabic: z.string().optional(),
@@ -74,6 +86,14 @@ const webflowProgrammeSchema = z.object({
   linkedin: z.string().url().optional().or(z.literal('')),
   instagram: z.string().url().optional().or(z.literal('')),
   twitter: z.string().url().optional().or(z.literal('')),
+  features: z
+    .array(
+      z.object({
+        id: z.string(),
+        slug: z.string()
+      })
+    )
+    .default([]),
   partners: z
     .array(
       z.object({
@@ -131,6 +151,7 @@ export const WebflowProgrammeForm = forwardRef<
       slug: initialData?.slug || '',
       status: (initialData?.status as 'draft' | 'published') || 'draft',
       description: initialData?.description || '',
+      type: initialData?.type || undefined,
       nameArabic: initialData?.nameArabic || '',
       shortNameEnglish: initialData?.shortNameEnglish || '',
       shortNameArabic: initialData?.shortNameArabic || '',
@@ -154,6 +175,7 @@ export const WebflowProgrammeForm = forwardRef<
       linkedin: initialData?.linkedin || '',
       instagram: initialData?.instagram || '',
       twitter: initialData?.twitter || '',
+      features: initialData?.features || [],
       partners: initialData?.partners || [],
       leadership: initialData?.leadership || [],
       relatedProgrammes: initialData?.relatedProgrammes || [],
@@ -170,6 +192,7 @@ export const WebflowProgrammeForm = forwardRef<
       slug: initialData?.slug || '',
       status: (initialData?.status as 'draft' | 'published') || 'draft',
       description: initialData?.description || '',
+      type: initialData?.type || undefined,
       nameArabic: initialData?.nameArabic || '',
       shortNameEnglish: initialData?.shortNameEnglish || '',
       shortNameArabic: initialData?.shortNameArabic || '',
@@ -193,6 +216,7 @@ export const WebflowProgrammeForm = forwardRef<
       linkedin: initialData?.linkedin || '',
       instagram: initialData?.instagram || '',
       twitter: initialData?.twitter || '',
+      features: initialData?.features || [],
       partners: initialData?.partners || [],
       leadership: initialData?.leadership || [],
       relatedProgrammes: initialData?.relatedProgrammes || [],
@@ -243,6 +267,41 @@ export const WebflowProgrammeForm = forwardRef<
   const statusOptions = [
     { value: 'draft', label: 'Draft' },
     { value: 'published', label: 'Published' }
+  ];
+
+  const typeOptions = [
+    { value: 'Centre', label: 'Centre' },
+    { value: 'Fund', label: 'Fund' },
+    { value: 'Scholarship', label: 'Scholarship' },
+    { value: 'Project', label: 'Project' },
+    { value: 'Programme', label: 'Programme' },
+    { value: 'Lab', label: 'Lab' },
+    { value: 'Community Jameel', label: 'Community Jameel' }
+  ];
+
+  // Hardcoded options for now - will be replaced with real data later
+  const featuresOptions = [
+    { value: 'feature-1', label: 'Feature 1' },
+    { value: 'feature-2', label: 'Feature 2' },
+    { value: 'feature-3', label: 'Feature 3' }
+  ];
+
+  const partnersOptions = [
+    { value: 'mit', label: 'MIT' },
+    { value: 'harvard', label: 'Harvard University' },
+    { value: 'oxford', label: 'Oxford University' }
+  ];
+
+  const leadershipOptions = [
+    { value: 'john-doe', label: 'John Doe' },
+    { value: 'jane-smith', label: 'Jane Smith' },
+    { value: 'ahmed-hassan', label: 'Ahmed Hassan' }
+  ];
+
+  const relatedProgrammesOptions = [
+    { value: 'j-pal', label: 'J-PAL' },
+    { value: 'j-wafs', label: 'J-WAFS' },
+    { value: 'jameel-clinic', label: 'Jameel Clinic' }
   ];
 
   return (
@@ -325,6 +384,52 @@ export const WebflowProgrammeForm = forwardRef<
                     options={statusOptions}
                     required
                   />
+
+                  <WebflowSelectField
+                    control={form.control}
+                    name="type"
+                    label="Type"
+                    options={typeOptions}
+                  />
+
+                  {/* Relationship Fields */}
+                  <div className="space-y-4">
+                    <h3 className="text-base font-medium text-white">
+                      Relationships
+                    </h3>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <WebflowTagsField
+                        control={form.control}
+                        name="features"
+                        label="Features"
+                        helperText="Add programme features (multi-select)"
+                      />
+
+                      <WebflowTagsField
+                        control={form.control}
+                        name="partners"
+                        label="Partners"
+                        helperText="Add partner organizations (multi-select)"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <WebflowTagsField
+                        control={form.control}
+                        name="leadership"
+                        label="Leadership"
+                        helperText="Add leadership team members (multi-select)"
+                      />
+
+                      <WebflowTagsField
+                        control={form.control}
+                        name="relatedProgrammes"
+                        label="Related Programmes"
+                        helperText="Add related programmes (multi-select)"
+                      />
+                    </div>
+                  </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <WebflowTextField

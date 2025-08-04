@@ -65,6 +65,14 @@ export interface IncomingProgrammeData {
   status?: 'published' | 'draft';
 
   // Programme specific fields
+  type?:
+    | 'Centre'
+    | 'Fund'
+    | 'Scholarship'
+    | 'Project'
+    | 'Programme'
+    | 'Lab'
+    | 'Community Jameel';
   nameArabic?: string;
   shortNameEnglish?: string;
   shortNameArabic?: string;
@@ -100,6 +108,7 @@ export interface IncomingProgrammeData {
   twitter?: string;
 
   // Relations
+  features?: IncomingReferenceItem[];
   partners?: IncomingReferenceItem[];
   leadership?: IncomingReferenceItem[];
   relatedProgrammes?: IncomingReferenceItem[];
