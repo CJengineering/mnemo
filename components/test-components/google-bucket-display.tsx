@@ -27,6 +27,9 @@ export default function GoogleBucketExplorer() {
   const [pathHistory, setPathHistory] = useState<string[]>(['']);
   const [uploading, setUploading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState<string | null>(null);
+  const [creatingFolder, setCreatingFolder] = useState(false);
+  const [showFolderInput, setShowFolderInput] = useState(false);
+  const [newFolderName, setNewFolderName] = useState('');
 
   const fetchFiles = async (prefix: string = '') => {
     try {
@@ -122,6 +125,65 @@ export default function GoogleBucketExplorer() {
       setError(err instanceof Error ? err.message : 'Upload failed');
     } finally {
       setUploading(false);
+    }
+  };
+
+  const handleCreateFolder = async () => {
+    if (!newFolderName.trim()) {
+      setError('Please enter a folder name');
+      return;
+    }
+
+    // Validate folder name (no special characters except dash and underscore)
+    const validFolderName = /^[a-zA-Z0-9_-]+$/.test(newFolderName.trim());
+    if (!validFolderName) {
+      setError('Folder name can only contain letters, numbers, dashes, and underscores');
+      return;
+    }
+
+    try {
+      setCreatingFolder(true);
+      setError(null);
+
+      // Create the full folder path
+      const folderPath = currentPath ? `${currentPath}${newFolderName.trim()}/` : `${newFolderName.trim()}/`;
+
+      console.log(`📁 Creating folder: "${folderPath}"`);
+
+      const response = await fetch('/api/bucket/create-folder', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          folderPath: folderPath
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`Create folder failed: ${response.status}`);
+      }
+
+      const result = await response.json();
+
+      if (!result.success) {
+        throw new Error(result.error || 'Create folder failed');
+      }
+
+      console.log('✅ Folder created successfully:', result);
+
+      // Clear the input and hide the form
+      setNewFolderName('');
+      setShowFolderInput(false);
+
+      // Refresh the current folder to show the new folder
+      await fetchFiles(currentPath);
+
+    } catch (err) {
+      console.error('🔴 Create folder error:', err);
+      setError(err instanceof Error ? err.message : 'Create folder failed');
+    } finally {
+      setCreatingFolder(false);
     }
   };
 
@@ -315,7 +377,69 @@ export default function GoogleBucketExplorer() {
               {uploading ? '⏳ Uploading...' : '📤 Upload File'}
             </label>
           </div>
+
+          {/* Create Folder Button */}
+          <button
+            onClick={() => setShowFolderInput(!showFolderInput)}
+            disabled={creatingFolder}
+            className={`px-3 py-1 text-sm rounded transition-colors ${
+              creatingFolder
+                ? 'bg-gray-400 text-gray-600 cursor-not-allowed'
+                : 'bg-purple-600 text-white hover:bg-purple-700'
+            }`}
+          >
+            {creatingFolder ? '⏳ Creating...' : '📁 Add Folder'}
+          </button>
         </div>
+
+        {/* Create Folder Input */}
+        {showFolderInput && (
+          <div className="bg-purple-50 border border-purple-200 rounded-lg p-4 mb-4">
+            <h3 className="text-purple-800 font-medium mb-2">Create New Folder</h3>
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={newFolderName}
+                onChange={(e) => {
+                  setNewFolderName(e.target.value);
+                  // Clear any existing error when user starts typing
+                  if (error) setError(null);
+                }}
+                placeholder="Enter folder name..."
+                className="flex-1 px-3 py-2 border border-purple-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                autoFocus
+                disabled={creatingFolder}
+              />
+              <button
+                onClick={handleCreateFolder}
+                disabled={creatingFolder || !newFolderName.trim()}
+                className={`px-4 py-2 text-sm rounded transition-colors ${
+                  creatingFolder || !newFolderName.trim()
+                    ? 'bg-gray-400 text-gray-600 cursor-not-allowed'
+                    : 'bg-purple-600 text-white hover:bg-purple-700'
+                }`}
+              >
+                Create
+              </button>
+              <button
+                onClick={() => {
+                  setShowFolderInput(false);
+                  setNewFolderName('');
+                }}
+                disabled={creatingFolder}
+                className="px-4 py-2 bg-gray-500 text-white text-sm rounded hover:bg-gray-600"
+              >
+                Cancel
+              </button>
+            </div>
+            <p className="text-xs text-purple-600 mt-2">
+              📁 Folder will be created in: <span className="font-mono bg-purple-100 px-1 rounded">{currentPath || '/'}</span>
+            </p>
+            <p className="text-xs text-purple-500 mt-1">
+              Only letters, numbers, dashes (-), and underscores (_) are allowed
+            </p>
+          </div>
+        )}
 
         {/* Current Path Info */}
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4">
