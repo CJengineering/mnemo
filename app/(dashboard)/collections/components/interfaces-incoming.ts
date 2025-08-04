@@ -170,14 +170,19 @@ export interface IncomingNewsData {
   // Media
   thumbnail?: IncomingImageField;
   heroImage?: IncomingImageField;
+  imageAltTextEnglish?: string;
+  imageAltTextArabic?: string;
 
-  // Relations (required for news)
-  sources: IncomingReferenceItem;
-  programmeLabel: IncomingReferenceItem;
-  relatedProgrammes: IncomingReferenceItem[];
+  // Relations (optional for news)
+  sources?: IncomingReferenceItem;
+  programmeLabel?: IncomingReferenceItem;
+  relatedProgrammes?: IncomingReferenceItem[];
+
+  // People relations
+  people?: IncomingReferenceItem[];
+  relatedCjTeamMembers?: IncomingReferenceItem[];
 
   // Optional relations
-  people?: IncomingReferenceItem[];
   innovations?: IncomingReferenceItem[];
   relatedEvent?: IncomingReferenceItem;
   relatedEvents?: IncomingReferenceItem[];
@@ -198,6 +203,7 @@ export interface IncomingPostData {
 
   // Post specific fields
   arabicTitle?: string;
+  arabicCompleteIncomplete?: boolean;
   datePublished: string;
   location?: string;
   locationArabic?: string;
@@ -216,10 +222,18 @@ export interface IncomingPostData {
 
   // Media (required for posts)
   thumbnail: IncomingImageField;
+  heroImage: IncomingImageField;
   mainImage: IncomingImageField;
   openGraphImage: IncomingImageField;
 
+  // Image metadata
+  altTextHeroImageEnglish?: string;
+  altTextHeroImageArabic?: string;
+  photoCreditHeroImageEnglish?: string;
+  photoCreditHeroImageArabic?: string;
+
   // Video
+  videoAsHero?: boolean;
   heroVideoYoutubeId?: string;
   heroVideoArabicYoutubeId?: string;
 
@@ -240,8 +254,7 @@ export interface IncomingPostData {
   // Flags
   featured?: boolean;
   pushToGR?: boolean;
-  videoAsHero?: boolean;
-  arabicCompleteIncomplete?: boolean;
+  sitemapIndexing?: boolean;
 }
 
 // Incoming Source Data from Frontend Form
