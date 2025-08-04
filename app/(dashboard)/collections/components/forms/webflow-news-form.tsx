@@ -38,6 +38,76 @@ const webflowNewsSchema = z.object({
   excerpt: z.string().optional(),
   externalLink: z.string().url().optional().or(z.literal('')),
   datePublished: z.string(),
+
+  // Sources
+  sources: z
+    .object({
+      id: z.string(),
+      slug: z.string()
+    })
+    .optional(),
+
+  // Programme relationships
+  programmeLabel: z
+    .object({
+      id: z.string(),
+      slug: z.string()
+    })
+    .optional(),
+  relatedProgrammes: z
+    .array(
+      z.object({
+        id: z.string(),
+        slug: z.string()
+      })
+    )
+    .default([]),
+
+  // People relationships
+  people: z
+    .array(
+      z.object({
+        id: z.string(),
+        slug: z.string()
+      })
+    )
+    .default([]),
+  relatedCjTeamMembers: z
+    .array(
+      z.object({
+        id: z.string(),
+        slug: z.string()
+      })
+    )
+    .default([]),
+
+  // Innovation relationships
+  innovations: z
+    .array(
+      z.object({
+        id: z.string(),
+        slug: z.string()
+      })
+    )
+    .default([]),
+
+  // Event relationships
+  relatedEvent: z
+    .object({
+      id: z.string(),
+      slug: z.string()
+    })
+    .optional(),
+  relatedEvents: z
+    .array(
+      z.object({
+        id: z.string(),
+        slug: z.string()
+      })
+    )
+    .default([]),
+
+  // Images with alt text
   thumbnail: z
     .object({
       url: z.string().optional(),
@@ -50,6 +120,10 @@ const webflowNewsSchema = z.object({
       alt: z.string().optional()
     })
     .optional(),
+  imageAltTextEnglish: z.string().optional(),
+  imageAltTextArabic: z.string().optional(),
+
+  // Tags
   tags: z
     .array(
       z.object({
@@ -58,6 +132,8 @@ const webflowNewsSchema = z.object({
       })
     )
     .default([]),
+
+  // Settings
   featured: z.boolean().default(false),
   pushToGR: z.boolean().default(false),
   removeFromNewsGrid: z.boolean().default(false)
@@ -96,14 +172,56 @@ export const WebflowNewsForm = forwardRef<
       externalLink: initialData?.externalLink || '',
       datePublished:
         initialData?.datePublished || new Date().toISOString().split('T')[0],
+
+      // New relationship fields
+      sources: initialData?.sources || undefined,
+      programmeLabel: initialData?.programmeLabel || undefined,
+      relatedProgrammes: initialData?.relatedProgrammes || [],
+      people: initialData?.people || [],
+      relatedCjTeamMembers: initialData?.relatedCjTeamMembers || [],
+      innovations: initialData?.innovations || [],
+      relatedEvent: initialData?.relatedEvent || undefined,
+      relatedEvents: initialData?.relatedEvents || [],
+
+      // Images and alt text
       thumbnail: initialData?.thumbnail || { url: '', alt: '' },
       heroImage: initialData?.heroImage || { url: '', alt: '' },
+      imageAltTextEnglish: initialData?.imageAltTextEnglish || '',
+      imageAltTextArabic: initialData?.imageAltTextArabic || '',
+
+      // Tags and settings
       tags: initialData?.tags || [],
       featured: initialData?.featured || false,
       pushToGR: initialData?.pushToGR || false,
       removeFromNewsGrid: initialData?.removeFromNewsGrid || false
     }
   });
+
+  // Mock data for dropdown options
+  const sourcesOptions = [
+    { value: 'source-1', label: 'MIT Technology Review' },
+    { value: 'source-2', label: 'Nature Journal' },
+    { value: 'source-3', label: 'Reuters' },
+    { value: 'source-4', label: 'BBC News' },
+    { value: 'source-5', label: 'Al Jazeera' }
+  ];
+
+  const programmeLabelOptions = [
+    { value: 'prog-1', label: 'Water Security' },
+    { value: 'prog-2', label: 'Climate Change' },
+    { value: 'prog-3', label: 'Education' },
+    { value: 'prog-4', label: 'Healthcare' },
+    { value: 'prog-5', label: 'Innovation' },
+    { value: 'prog-6', label: 'Poverty Alleviation' }
+  ];
+
+  const relatedEventOptions = [
+    { value: 'event-1', label: 'Annual Climate Summit 2024' },
+    { value: 'event-2', label: 'Water Innovation Conference' },
+    { value: 'event-3', label: 'Healthcare Technology Forum' },
+    { value: 'event-4', label: 'Education Excellence Awards' },
+    { value: 'event-5', label: 'Innovation Showcase' }
+  ];
 
   // Expose submit function via ref
   useImperativeHandle(ref, () => ({
@@ -129,8 +247,24 @@ export const WebflowNewsForm = forwardRef<
       externalLink: initialData?.externalLink || '',
       datePublished:
         initialData?.datePublished || new Date().toISOString().split('T')[0],
+
+      // New relationship fields
+      sources: initialData?.sources || undefined,
+      programmeLabel: initialData?.programmeLabel || undefined,
+      relatedProgrammes: initialData?.relatedProgrammes || [],
+      people: initialData?.people || [],
+      relatedCjTeamMembers: initialData?.relatedCjTeamMembers || [],
+      innovations: initialData?.innovations || [],
+      relatedEvent: initialData?.relatedEvent || undefined,
+      relatedEvents: initialData?.relatedEvents || [],
+
+      // Images and alt text
       thumbnail: initialData?.thumbnail || { url: '', alt: '' },
       heroImage: initialData?.heroImage || { url: '', alt: '' },
+      imageAltTextEnglish: initialData?.imageAltTextEnglish || '',
+      imageAltTextArabic: initialData?.imageAltTextArabic || '',
+
+      // Tags and settings
       tags: initialData?.tags || [],
       featured: initialData?.featured || false,
       pushToGR: initialData?.pushToGR || false,
@@ -371,6 +505,105 @@ export const WebflowNewsForm = forwardRef<
                       label="Remove from News Grid"
                       description="Hide from main news grid display"
                     />
+                  </div>
+
+                  {/* Relationship Fields */}
+                  <div className="space-y-6">
+                    <h3 className="text-base font-medium text-white">
+                      Relationships
+                    </h3>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <WebflowSelectField
+                        control={form.control}
+                        name="sources"
+                        label="Sources"
+                        options={sourcesOptions}
+                        placeholder="Select a source"
+                      />
+
+                      <WebflowSelectField
+                        control={form.control}
+                        name="programmeLabel"
+                        label="Programme Label"
+                        options={programmeLabelOptions}
+                        placeholder="Select a programme"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <WebflowTagsField
+                        control={form.control}
+                        name="relatedProgrammes"
+                        label="Related Programmes"
+                        helperText="Multiple programmes related to this news (multi-select)"
+                      />
+
+                      <WebflowSelectField
+                        control={form.control}
+                        name="relatedEvent"
+                        label="Related Event"
+                        options={relatedEventOptions}
+                        placeholder="Select a related event"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <WebflowTagsField
+                        control={form.control}
+                        name="relatedEvents"
+                        label="Related Events"
+                        helperText="Multiple events related to this news (multi-select)"
+                      />
+
+                      <WebflowTagsField
+                        control={form.control}
+                        name="people"
+                        label="People"
+                        helperText="People featured or mentioned in this news (multi-select)"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <WebflowTagsField
+                        control={form.control}
+                        name="relatedCjTeamMembers"
+                        label="Related CJ Team Members"
+                        helperText="Community Jameel team members related to this news (multi-select)"
+                      />
+
+                      <WebflowTagsField
+                        control={form.control}
+                        name="innovations"
+                        label="Innovations"
+                        helperText="Innovations featured in this news (multi-select)"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Image Alt Text Fields */}
+                  <div className="space-y-4">
+                    <h3 className="text-base font-medium text-white">
+                      Image Alt Text
+                    </h3>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <WebflowTextField
+                        control={form.control}
+                        name="imageAltTextEnglish"
+                        label="Image Alt Text (English)"
+                        placeholder="Describe the image for accessibility"
+                        helperText="Alternative text for images in English"
+                      />
+
+                      <WebflowTextField
+                        control={form.control}
+                        name="imageAltTextArabic"
+                        label="Image Alt Text (Arabic)"
+                        placeholder="وصف الصورة بالعربية"
+                        helperText="Alternative text for images in Arabic"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
