@@ -33,28 +33,56 @@ export interface IncomingEventData {
   city?: string;
   address?: string;
   locationLink?: string;
+  extraLocationInformation?: string;
+
+  // Links and CTAs
+  rsvpLink?: string;
+  contactDetails?: string;
+  livestreamLink?: string;
+  ctaLink?: string;
+  buttonCtaText?: string;
+  attendanceType?: string;
 
   // Media
   thumbnail?: IncomingImageField;
   heroImage?: IncomingImageField;
-  mainVideo?: string;
+  imageGallery?: IncomingImageField[];
+  galleryPhotoCredits?: string;
 
-  // Relations
+  // Video fields
+  videoAsHero?: boolean;
+  mainVideo?: string;
+  mainVideoEmbedCode?: string;
+  video2?: string;
+  video2EmbedCode?: string;
+  video3?: string;
+  video3EmbedCode?: string;
+
+  // Rich text content fields
+  signupEmbed?: string;
+  moreInformation?: string;
+  moreDetails?: string;
+  relatedPeopleRichText?: string;
+  inTheMedia?: string;
+  customCodeForHidingWeglot?: string;
+
+  // Boolean toggles
+  pushToGr?: boolean;
+  pushToGR?: boolean; // Keep both for compatibility
+  newsOnOff?: boolean;
+  moreDetailsOnOff?: boolean;
+  inTheMediaOnOff?: boolean;
+  featured?: boolean;
+
+  // References
+  group?: IncomingReferenceItem;
   programmeLabel?: IncomingReferenceItem;
   relatedProgrammes?: IncomingReferenceItem[];
   tags?: IncomingReferenceItem[];
   relatedPeople?: IncomingReferenceItem[];
-
-  // Flags
-  featured?: boolean;
-  pushToGR?: boolean;
-  videoAsHero?: boolean;
-
-  // RSVP/Contact
-  rsvpLink?: string;
-  contactDetails?: string;
-  livestreamLink?: string;
-  attendanceType?: string;
+  organisers?: IncomingReferenceItem[];
+  partners?: IncomingReferenceItem[];
+  withRepresentativesFrom?: IncomingReferenceItem[];
 }
 
 // Incoming Programme Data from Frontend Form
