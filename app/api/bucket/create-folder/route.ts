@@ -25,7 +25,9 @@ export async function POST(request: NextRequest) {
     }
 
     // Ensure the folder path ends with a slash
-    const normalizedPath = folderPath.endsWith('/') ? folderPath : `${folderPath}/`;
+    const normalizedPath = folderPath.endsWith('/')
+      ? folderPath
+      : `${folderPath}/`;
 
     console.log(`📁 Creating folder: ${normalizedPath}`);
 
@@ -41,7 +43,7 @@ export async function POST(request: NextRequest) {
     // Create a placeholder file to ensure the folder exists
     // Google Cloud Storage doesn't have actual folders, so we create a hidden file
     const placeholderFile = bucket.file(`${normalizedPath}.keep`);
-    
+
     await placeholderFile.save('', {
       metadata: {
         contentType: 'text/plain',
@@ -59,14 +61,14 @@ export async function POST(request: NextRequest) {
       message: 'Folder created successfully',
       folderPath: normalizedPath
     });
-
   } catch (error) {
     console.error('🔴 Error creating folder:', error);
-    
+
     return NextResponse.json(
-      { 
-        success: false, 
-        error: error instanceof Error ? error.message : 'Failed to create folder' 
+      {
+        success: false,
+        error:
+          error instanceof Error ? error.message : 'Failed to create folder'
       },
       { status: 500 }
     );

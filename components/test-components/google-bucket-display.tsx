@@ -137,7 +137,9 @@ export default function GoogleBucketExplorer() {
     // Validate folder name (no special characters except dash and underscore)
     const validFolderName = /^[a-zA-Z0-9_-]+$/.test(newFolderName.trim());
     if (!validFolderName) {
-      setError('Folder name can only contain letters, numbers, dashes, and underscores');
+      setError(
+        'Folder name can only contain letters, numbers, dashes, and underscores'
+      );
       return;
     }
 
@@ -146,14 +148,16 @@ export default function GoogleBucketExplorer() {
       setError(null);
 
       // Create the full folder path
-      const folderPath = currentPath ? `${currentPath}${newFolderName.trim()}/` : `${newFolderName.trim()}/`;
+      const folderPath = currentPath
+        ? `${currentPath}${newFolderName.trim()}/`
+        : `${newFolderName.trim()}/`;
 
       console.log(`📁 Creating folder: "${folderPath}"`);
 
       const response = await fetch('/api/bucket/create-folder', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           folderPath: folderPath
@@ -178,7 +182,6 @@ export default function GoogleBucketExplorer() {
 
       // Refresh the current folder to show the new folder
       await fetchFiles(currentPath);
-
     } catch (err) {
       console.error('🔴 Create folder error:', err);
       setError(err instanceof Error ? err.message : 'Create folder failed');
@@ -395,7 +398,9 @@ export default function GoogleBucketExplorer() {
         {/* Create Folder Input */}
         {showFolderInput && (
           <div className="bg-purple-50 border border-purple-200 rounded-lg p-4 mb-4">
-            <h3 className="text-purple-800 font-medium mb-2">Create New Folder</h3>
+            <h3 className="text-purple-800 font-medium mb-2">
+              Create New Folder
+            </h3>
             <div className="flex gap-2">
               <input
                 type="text"
@@ -433,7 +438,10 @@ export default function GoogleBucketExplorer() {
               </button>
             </div>
             <p className="text-xs text-purple-600 mt-2">
-              📁 Folder will be created in: <span className="font-mono bg-purple-100 px-1 rounded">{currentPath || '/'}</span>
+              📁 Folder will be created in:{' '}
+              <span className="font-mono bg-purple-100 px-1 rounded">
+                {currentPath || '/'}
+              </span>
             </p>
             <p className="text-xs text-purple-500 mt-1">
               Only letters, numbers, dashes (-), and underscores (_) are allowed
