@@ -82,6 +82,9 @@ export interface IncomingProgrammeData {
   missionArabic?: string;
   summaryEnglish?: string;
   summaryArabic?: string;
+  summaryLongEnglish?: string;
+  summaryLongArabic?: string;
+  oldMissionEnglish?: string;
   researchEnglish?: string;
   researchArabic?: string;
 
@@ -94,8 +97,20 @@ export interface IncomingProgrammeData {
   // Media
   logoSvgDark?: IncomingImageField;
   logoSvgLight?: IncomingImageField;
+  logoSvgDarkOriginal?: IncomingImageField;
+  logoSvgLightOriginal?: IncomingImageField;
   heroSquare?: IncomingImageField;
   heroWide?: IncomingImageField;
+  hero1x1?: IncomingImageField;
+  hero16x9?: IncomingImageField;
+  heroImage?: IncomingImageField;
+  thumbnail?: IncomingImageField;
+  openGraph?: IncomingImageField;
+
+  // Video & Links
+  mainVideo?: string;
+  customLink?: string;
+  buttonText?: string;
 
   // Location
   longitude?: string;
@@ -106,12 +121,28 @@ export interface IncomingProgrammeData {
   linkedin?: string;
   instagram?: string;
   twitter?: string;
+  youtube?: string;
+  facebook?: string;
 
   // Relations
   features?: IncomingReferenceItem[];
   partners?: IncomingReferenceItem[];
   leadership?: IncomingReferenceItem[];
   relatedProgrammes?: IncomingReferenceItem[];
+
+  // Impact metrics (6 sets)
+  impact01?: string;
+  impact01TitleArabic?: string;
+  impact02?: string;
+  impact02TitleArabic?: string;
+  impact03?: string;
+  impact03TitleArabic?: string;
+  impact04?: string;
+  impact04TitleArabic?: string;
+  impact05?: string;
+  impact05TitleArabic?: string;
+  impact06?: string;
+  impact06TitleArabic?: string;
 
   // Flags
   lab?: boolean;
