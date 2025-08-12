@@ -90,17 +90,17 @@ export interface IncomingProgrammeData {
   title: string;
   description?: string;
   slug: string;
-  status?: 'published' | 'draft';
+  status?: "published" | "draft";
 
   // Programme specific fields
   type?:
-    | 'Centre'
-    | 'Fund'
-    | 'Scholarship'
-    | 'Project'
-    | 'Programme'
-    | 'Lab'
-    | 'Community Jameel';
+    | "Centre"
+    | "Fund"
+    | "Scholarship"
+    | "Project"
+    | "Programme"
+    | "Lab"
+    | "Community Jameel";
   nameArabic?: string;
   shortNameEnglish?: string;
   shortNameArabic?: string;
@@ -153,12 +153,12 @@ export interface IncomingProgrammeData {
   facebook?: string;
 
   // Relations
-  features?: IncomingReferenceItem[];
   partners?: IncomingReferenceItem[];
   leadership?: IncomingReferenceItem[];
   relatedProgrammes?: IncomingReferenceItem[];
+  features?: IncomingReferenceItem[];
 
-  // Impact metrics (6 sets)
+  // Impact metrics
   impact01?: string;
   impact01TitleArabic?: string;
   impact02?: string;

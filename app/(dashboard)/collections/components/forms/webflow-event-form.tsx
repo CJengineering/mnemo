@@ -32,32 +32,32 @@ const webflowEventSchema = z.object({
   title: z.string().min(1, 'Title is required'),
   slug: z.string().min(1, 'Slug is required'),
   status: z.enum(['draft', 'published']).default('draft'),
-  
+
   // Basic fields
   description: z.string().optional(),
   shortDescription: z.string().optional(),
   arabicTitle: z.string().optional(),
   teaserText: z.string().optional(),
-  
+
   // SEO fields
   seoTitle: z.string().optional(),
   seoMetaDescription: z.string().optional(),
-  
+
   // Date fields
   eventDate: z.string().optional(),
   endDate: z.string().optional(),
-  
+
   // Location fields
   city: z.string().optional(),
   address: z.string().optional(),
   extraLocationInformation: z.string().optional(),
-  
+
   // Links and CTAs
   rsvpLink: z.string().url().optional().or(z.literal('')),
   livestreamLink: z.string().url().optional().or(z.literal('')),
   ctaLink: z.string().url().optional().or(z.literal('')),
   buttonCtaText: z.string().optional(),
-  
+
   // Images
   thumbnail: z
     .object({
@@ -80,7 +80,7 @@ const webflowEventSchema = z.object({
     )
     .default([]),
   galleryPhotoCredits: z.string().optional(),
-  
+
   // Video fields
   videoAsHero: z.boolean().default(false),
   mainVideo: z.string().optional(),
@@ -89,7 +89,7 @@ const webflowEventSchema = z.object({
   video2EmbedCode: z.string().optional(),
   video3: z.string().optional(),
   video3EmbedCode: z.string().optional(),
-  
+
   // Rich text content fields
   signupEmbed: z.string().optional(),
   moreInformation: z.string().optional(),
@@ -97,13 +97,13 @@ const webflowEventSchema = z.object({
   relatedPeopleRichText: z.string().optional(),
   inTheMedia: z.string().optional(),
   customCodeForHidingWeglot: z.string().optional(),
-  
+
   // Boolean toggles
   pushToGr: z.boolean().default(false),
   newsOnOff: z.boolean().default(false),
   moreDetailsOnOff: z.boolean().default(false),
   inTheMediaOnOff: z.boolean().default(false),
-  
+
   // Dropdown fields
   attendanceType: z
     .enum(['in-person', 'virtual', 'hybrid'])
@@ -130,7 +130,7 @@ const webflowEventSchema = z.object({
         return undefined;
       }
     }),
-  
+
   // Multi-reference fields
   relatedProgrammes: z
     .array(
@@ -180,7 +180,7 @@ const webflowEventSchema = z.object({
       })
     )
     .default([]),
-  
+
   // Legacy field
   featured: z.boolean().default(false)
 });
@@ -249,7 +249,9 @@ export const WebflowEventForm = forwardRef<
       moreDetailsOnOff: initialData?.moreDetailsOnOff || false,
       inTheMediaOnOff: initialData?.inTheMediaOnOff || false,
       group: initialData?.group ? JSON.stringify(initialData.group) : '',
-      programmeLabel: initialData?.programmeLabel ? JSON.stringify(initialData.programmeLabel) : '',
+      programmeLabel: initialData?.programmeLabel
+        ? JSON.stringify(initialData.programmeLabel)
+        : '',
       relatedProgrammes: initialData?.relatedProgrammes || [],
       tags: initialData?.tags || [],
       relatedPeople: initialData?.relatedPeople || [],
@@ -316,7 +318,9 @@ export const WebflowEventForm = forwardRef<
       moreDetailsOnOff: initialData?.moreDetailsOnOff || false,
       inTheMediaOnOff: initialData?.inTheMediaOnOff || false,
       group: initialData?.group ? JSON.stringify(initialData.group) : '',
-      programmeLabel: initialData?.programmeLabel ? JSON.stringify(initialData.programmeLabel) : '',
+      programmeLabel: initialData?.programmeLabel
+        ? JSON.stringify(initialData.programmeLabel)
+        : '',
       relatedProgrammes: initialData?.relatedProgrammes || [],
       tags: initialData?.tags || [],
       relatedPeople: initialData?.relatedPeople || [],
@@ -579,7 +583,9 @@ export const WebflowEventForm = forwardRef<
 
                   {/* Links and CTAs */}
                   <div className="space-y-4">
-                    <h3 className="text-base font-medium text-white">Links & CTAs</h3>
+                    <h3 className="text-base font-medium text-white">
+                      Links & CTAs
+                    </h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <WebflowTextField
                         control={form.control}
@@ -657,8 +663,10 @@ export const WebflowEventForm = forwardRef<
 
                   {/* Video Fields */}
                   <div className="space-y-4">
-                    <h3 className="text-base font-medium text-white">Video Content</h3>
-                    
+                    <h3 className="text-base font-medium text-white">
+                      Video Content
+                    </h3>
+
                     <WebflowSwitchField
                       control={form.control}
                       name="videoAsHero"
@@ -725,8 +733,10 @@ export const WebflowEventForm = forwardRef<
 
                   {/* Rich Text Content Fields */}
                   <div className="space-y-4">
-                    <h3 className="text-base font-medium text-white">Rich Text Content</h3>
-                    
+                    <h3 className="text-base font-medium text-white">
+                      Rich Text Content
+                    </h3>
+
                     <WebflowRichTextField
                       control={form.control}
                       name="signupEmbed"
@@ -784,15 +794,20 @@ export const WebflowEventForm = forwardRef<
 
                   {/* Dropdown Relationships */}
                   <div className="space-y-4">
-                    <h3 className="text-base font-medium text-white">Relationships</h3>
-                    
+                    <h3 className="text-base font-medium text-white">
+                      Relationships
+                    </h3>
+
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <WebflowSelectField
                         control={form.control}
                         name="group"
                         label="Group"
-                        options={groupOptions.map(opt => ({
-                          value: JSON.stringify({ id: opt.value, slug: opt.value }),
+                        options={groupOptions.map((opt) => ({
+                          value: JSON.stringify({
+                            id: opt.value,
+                            slug: opt.value
+                          }),
                           label: opt.label
                         }))}
                         placeholder="Select a group"
@@ -802,8 +817,11 @@ export const WebflowEventForm = forwardRef<
                         control={form.control}
                         name="programmeLabel"
                         label="Programme Label"
-                        options={programmeLabelOptions.map(opt => ({
-                          value: JSON.stringify({ id: opt.value, slug: opt.value }),
+                        options={programmeLabelOptions.map((opt) => ({
+                          value: JSON.stringify({
+                            id: opt.value,
+                            slug: opt.value
+                          }),
                           label: opt.label
                         }))}
                         placeholder="Select a programme"
@@ -813,8 +831,10 @@ export const WebflowEventForm = forwardRef<
 
                   {/* Multi-reference Fields */}
                   <div className="space-y-4">
-                    <h3 className="text-base font-medium text-white">Multi-Reference Fields</h3>
-                    
+                    <h3 className="text-base font-medium text-white">
+                      Multi-Reference Fields
+                    </h3>
+
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <WebflowTagsField
                         control={form.control}
@@ -866,7 +886,9 @@ export const WebflowEventForm = forwardRef<
 
                   {/* Settings & Boolean Toggles */}
                   <div className="space-y-4">
-                    <h3 className="text-base font-medium text-white">Settings</h3>
+                    <h3 className="text-base font-medium text-white">
+                      Settings
+                    </h3>
 
                     <WebflowSwitchField
                       control={form.control}
