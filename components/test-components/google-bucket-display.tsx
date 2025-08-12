@@ -31,6 +31,13 @@ export default function GoogleBucketExplorer() {
   const [showFolderInput, setShowFolderInput] = useState(false);
   const [newFolderName, setNewFolderName] = useState('');
 
+  // Large upload state
+  const [largeUploading, setLargeUploading] = useState(false);
+  const [largeUploadProgress, setLargeUploadProgress] = useState<number>(0);
+
+  // Feedback state for Copy URL action
+  const [copiedFile, setCopiedFile] = useState<string | null>(null);
+
   const fetchFiles = async (prefix: string = '') => {
     try {
       setLoading(true);
@@ -82,6 +89,12 @@ export default function GoogleBucketExplorer() {
     fetchFiles('');
   };
 
+  const sanitizeFileName = (name: string) =>
+    name
+      .replace(/\s+/g, '-')
+      .replace(/[^a-zA-Z0-9.-]/g, '')
+      .toLowerCase();
+
   const handleFileUpload = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -125,6 +138,100 @@ export default function GoogleBucketExplorer() {
       setError(err instanceof Error ? err.message : 'Upload failed');
     } finally {
       setUploading(false);
+    }
+  };
+
+  // Large file upload via GCS resumable session
+  const handleLargeFileUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    // Optional client-side threshold guard
+    if (file.size < 5 * 1024 * 1024) {
+      console.log('ℹ️ Small file detected; consider using standard Upload.');
+    }
+
+    const sanitized = sanitizeFileName(file.name);
+    const fullPath = currentPath ? `${currentPath}${sanitized}` : sanitized;
+
+    try {
+      setLargeUploading(true);
+      setLargeUploadProgress(0);
+      setError(null);
+
+      // 1) Request a resumable session
+      const startRes = await fetch('/api/bucket/start-resumable', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          path: fullPath,
+          contentType: file.type || 'application/octet-stream'
+        })
+      });
+
+      if (!startRes.ok) {
+        throw new Error(`Failed to start resumable upload: ${startRes.status}`);
+      }
+
+      const { success, uploadUrl, error: errMsg } = await startRes.json();
+      if (!success || !uploadUrl) {
+        throw new Error(errMsg || 'Could not get upload URL');
+      }
+
+      console.log('🔗 Resumable session URL acquired');
+
+      // 2) Upload the file directly to GCS via the resumable URL
+      // Use XHR to track progress
+      await new Promise<void>((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open('PUT', uploadUrl, true);
+        xhr.setRequestHeader(
+          'Content-Type',
+          file.type || 'application/octet-stream'
+        );
+        // Full upload in one go: Content-Range header
+        xhr.setRequestHeader(
+          'Content-Range',
+          `bytes 0-${file.size - 1}/${file.size}`
+        );
+
+        xhr.upload.onprogress = (e) => {
+          if (e.lengthComputable) {
+            const pct = Math.round((e.loaded / e.total) * 100);
+            setLargeUploadProgress(pct);
+          }
+        };
+        xhr.onerror = () => reject(new Error('Network error during upload'));
+        xhr.onload = () => {
+          // GCS returns 200 or 201 when the resumable upload completes
+          if (xhr.status === 200 || xhr.status === 201) {
+            resolve();
+          } else if (xhr.status === 308) {
+            // Incomplete; should not happen for single-shot upload
+            setLargeUploadProgress(99);
+          } else {
+            reject(new Error(`Upload failed with status ${xhr.status}`));
+          }
+        };
+
+        xhr.send(file);
+      });
+
+      console.log('✅ Large file uploaded successfully');
+
+      // 3) Refresh listing
+      await fetchFiles(currentPath);
+
+      // Clear the input
+      event.target.value = '';
+    } catch (err) {
+      console.error('🔴 Large upload error:', err);
+      setError(err instanceof Error ? err.message : 'Large file upload failed');
+    } finally {
+      setLargeUploading(false);
+      setLargeUploadProgress(0);
     }
   };
 
@@ -335,10 +442,33 @@ export default function GoogleBucketExplorer() {
           </button>
           {currentPath && (
             <>
-              <span>/</span>
-              <span className="text-gray-800">
-                {currentPath.replace(/\/$/, '')}
-              </span>
+              {/* Render clickable segments for each folder level */}
+              {(() => {
+                const trimmed = currentPath.replace(/\/$/, '');
+                const segments = trimmed.split('/').filter(Boolean);
+                return segments.map((seg, idx) => {
+                  const prefix = segments.slice(0, idx + 1).join('/') + '/';
+                  const isLast = idx === segments.length - 1;
+                  return (
+                    <span
+                      key={`${prefix}-${idx}`}
+                      className="flex items-center gap-2"
+                    >
+                      <span>/</span>
+                      {isLast ? (
+                        <span className="text-gray-800">{seg}</span>
+                      ) : (
+                        <button
+                          onClick={() => navigateToFolder(prefix)}
+                          className="hover:text-blue-600 hover:underline"
+                        >
+                          {seg}
+                        </button>
+                      )}
+                    </span>
+                  );
+                });
+              })()}
             </>
           )}
         </div>
@@ -367,17 +497,40 @@ export default function GoogleBucketExplorer() {
               id="file-upload"
               className="hidden"
               onChange={handleFileUpload}
-              disabled={uploading}
+              disabled={uploading || largeUploading}
             />
             <label
               htmlFor="file-upload"
               className={`px-3 py-1 text-sm rounded cursor-pointer transition-colors ${
-                uploading
+                uploading || largeUploading
                   ? 'bg-gray-400 text-gray-600 cursor-not-allowed'
                   : 'bg-green-600 text-white hover:bg-green-700'
               }`}
             >
               {uploading ? '⏳ Uploading...' : '📤 Upload File'}
+            </label>
+          </div>
+
+          {/* Upload Large File Button */}
+          <div className="relative">
+            <input
+              type="file"
+              id="large-file-upload"
+              className="hidden"
+              onChange={handleLargeFileUpload}
+              disabled={largeUploading || uploading}
+            />
+            <label
+              htmlFor="large-file-upload"
+              className={`px-3 py-1 text-sm rounded cursor-pointer transition-colors ${
+                largeUploading || uploading
+                  ? 'bg-gray-400 text-gray-600 cursor-not-allowed'
+                  : 'bg-orange-600 text-white hover:bg-orange-700'
+              }`}
+            >
+              {largeUploading
+                ? `⏳ Uploading... ${largeUploadProgress}%`
+                : '📦 Upload Large File'}
             </label>
           </div>
 
@@ -394,6 +547,12 @@ export default function GoogleBucketExplorer() {
             {creatingFolder ? '⏳ Creating...' : '📁 Add Folder'}
           </button>
         </div>
+
+        {/* Optional hint for large uploads */}
+        <p className="text-xs text-gray-500 -mt-2 mb-2">
+          Tip: Use "Upload Large File" for files bigger than ~5 MB (uploads
+          directly to GCS)
+        </p>
 
         {/* Create Folder Input */}
         {showFolderInput && (
@@ -484,21 +643,24 @@ export default function GoogleBucketExplorer() {
           {files.map((file, index) => (
             <div
               key={`${file.name}-${index}`}
-              className={`p-3 border rounded-lg hover:bg-gray-50 transition-colors ${
+              className={`p-3 border rounded-lg hover:bg-gray-50 transition-colors overflow-hidden ${
                 file.isFolder ? 'cursor-pointer hover:border-blue-300' : ''
               }`}
               onClick={
                 file.isFolder ? () => navigateToFolder(file.name) : undefined
               }
             >
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between gap-4">
                 <div className="flex items-center space-x-3 flex-1 min-w-0">
                   <span className="text-2xl flex-shrink-0">
                     {getFileIcon(file)}
                   </span>
 
                   <div className="flex-1 min-w-0">
-                    <div className="font-medium text-gray-900 truncate">
+                    <div
+                      className="font-medium text-gray-900 truncate w-full"
+                      title={getDisplayName(file)}
+                    >
                       {getDisplayName(file)}
                     </div>
 
@@ -521,7 +683,7 @@ export default function GoogleBucketExplorer() {
                 </div>
 
                 {!file.isFolder && file.url && (
-                  <div className="flex space-x-2 ml-4">
+                  <div className="flex space-x-2 ml-4 flex-none whitespace-nowrap">
                     <a
                       href={file.url}
                       target="_blank"
@@ -532,13 +694,28 @@ export default function GoogleBucketExplorer() {
                       View
                     </a>
                     <button
-                      onClick={(e) => {
+                      onClick={async (e) => {
                         e.stopPropagation();
-                        navigator.clipboard.writeText(file.url);
+                        try {
+                          await navigator.clipboard.writeText(file.url);
+                          setCopiedFile(file.name);
+                          setTimeout(() => setCopiedFile(null), 1500);
+                        } catch (err) {
+                          console.error('Copy URL failed', err);
+                        }
                       }}
-                      className="px-3 py-1 bg-gray-600 text-white text-sm rounded hover:bg-gray-700"
+                      className={`px-3 py-1 text-white text-sm rounded transition-colors ${
+                        copiedFile === file.name
+                          ? 'bg-green-600 hover:bg-green-700'
+                          : 'bg-gray-600 hover:bg-gray-700'
+                      }`}
+                      title={
+                        copiedFile === file.name
+                          ? 'Copied!'
+                          : 'Copy URL to clipboard'
+                      }
                     >
-                      Copy URL
+                      {copiedFile === file.name ? '✓ Copied' : 'Copy URL'}
                     </button>
                     <button
                       onClick={(e) => {
@@ -558,7 +735,7 @@ export default function GoogleBucketExplorer() {
                 )}
 
                 {file.isFolder && (
-                  <div className="flex items-center space-x-2 ml-4">
+                  <div className="flex items-center space-x-2 ml-4 flex-none whitespace-nowrap">
                     <button
                       onClick={(e) => {
                         e.stopPropagation();

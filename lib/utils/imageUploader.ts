@@ -49,29 +49,64 @@ async function compressToWebP(
 }
 
 /**
- * Upload buffer to Google Cloud Storage
+ * Upload buffer to Google Cloud Storage with retry logic
  */
 async function uploadToGCS(
   buffer: Buffer,
   gcsPath: string,
-  contentType: string
+  contentType: string,
+  maxRetries: number = 3
 ): Promise<string> {
-  try {
-    const file = bucket.file(gcsPath);
+  let lastError: any;
 
-    await file.save(buffer, {
-      metadata: {
-        contentType: contentType,
-        cacheControl: 'public, max-age=31536000' // 1 year cache
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      console.log(`🔄 Upload attempt ${attempt}/${maxRetries} for: ${gcsPath}`);
+
+      const file = bucket.file(gcsPath);
+
+      // Use createWriteStream for more reliable uploads with larger files
+      await new Promise<void>((resolve, reject) => {
+        const writeStream = file.createWriteStream({
+          metadata: {
+            contentType: contentType,
+            cacheControl: 'public, max-age=31536000' // 1 year cache
+          },
+          resumable: false, // Use simple upload for smaller files
+          validation: 'md5'
+        });
+
+        writeStream.on('error', (error) => {
+          console.error(`❌ Upload stream error (attempt ${attempt}):`, error);
+          reject(error);
+        });
+
+        writeStream.on('finish', () => {
+          console.log(
+            `✅ Upload completed successfully (attempt ${attempt}): ${gcsPath}`
+          );
+          resolve();
+        });
+
+        writeStream.end(buffer);
+      });
+
+      return `${CDN_BASE_URL}/${gcsPath}`;
+    } catch (error) {
+      lastError = error;
+      console.error(`❌ Upload attempt ${attempt} failed:`, error);
+
+      if (attempt < maxRetries) {
+        const delay = Math.pow(2, attempt) * 1000; // Exponential backoff: 2s, 4s, 8s
+        console.log(`⏳ Retrying in ${delay}ms...`);
+        await new Promise((resolve) => setTimeout(resolve, delay));
       }
-    });
-
-    return `${CDN_BASE_URL}/${gcsPath}`;
-  } catch (error) {
-    throw new Error(
-      `GCS upload failed: ${error instanceof Error ? error.message : 'Unknown error'}`
-    );
+    }
   }
+
+  throw new Error(
+    `GCS upload failed after ${maxRetries} attempts: ${lastError instanceof Error ? lastError.message : 'Unknown error'}`
+  );
 }
 
 /**
@@ -138,8 +173,8 @@ export async function imageUploaderToCDN(
       .replace(/[^a-zA-Z0-9.-]/g, '') // Remove special characters except dots and hyphens
       .toLowerCase(); // Convert to lowercase
 
-    // Create the folder path: website/collection/[collection-name]/[slug]/
-    const folderPath = `website/collection/${collectionName}/${slug}`;
+    // Create the folder path: website/collections/[collection-name]/[slug]/
+    const folderPath = `website/collections/${collectionName}/${slug}`;
 
     // If compressing to WebP, change extension
     let finalFileName = sanitizedFileName;
@@ -151,13 +186,37 @@ export async function imageUploaderToCDN(
 
     console.log(`🔄 Downloading image from: ${imageUrl}`);
 
-    // Download image from external source
-    const imageResponse = await fetch(imageUrl);
+    // Download image from external source with timeout and proper headers
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+
+    const imageResponse = await fetch(imageUrl, {
+      signal: controller.signal,
+      headers: {
+        'User-Agent':
+          'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+      }
+    });
+
+    clearTimeout(timeoutId);
+
     if (!imageResponse.ok) {
-      throw new Error(`Failed to fetch image: ${imageResponse.statusText}`);
+      throw new Error(
+        `Failed to fetch image: ${imageResponse.status} ${imageResponse.statusText}`
+      );
     }
 
     const imageBuffer = Buffer.from(await imageResponse.arrayBuffer());
+
+    // Check if buffer is valid and not too large (max 50MB)
+    if (!imageBuffer || imageBuffer.length === 0) {
+      throw new Error('Downloaded image is empty or invalid');
+    }
+
+    if (imageBuffer.length > 50 * 1024 * 1024) {
+      // 50MB limit
+      throw new Error('Image file too large (max 50MB allowed)');
+    }
 
     // Process the image (compress to WebP if requested)
     let processedBuffer = imageBuffer;
@@ -174,7 +233,9 @@ export async function imageUploaderToCDN(
       contentType = 'image/webp';
     }
 
-    console.log(`🔄 Uploading to GCS: ${fullPath}`);
+    console.log(
+      `🔄 Uploading to GCS: ${fullPath} (${Math.round(processedBuffer.length / 1024)}KB)`
+    );
 
     // Upload to Google Cloud Storage
     const newUrl = await uploadToGCS(processedBuffer, fullPath, contentType);
