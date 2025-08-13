@@ -1,18 +1,36 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Storage } from '@google-cloud/storage';
 
-const theKey = process.env.PRIVATE_GCL;
+export const runtime = 'nodejs';
 
-const storage = new Storage({
-  projectId: 'cj-tech-381914',
-  credentials: {
-    client_email: 'todo-test@cj-tech-381914.iam.gserviceaccount.com',
-    private_key: `-----BEGIN PRIVATE KEY-----\n${theKey}=\n-----END PRIVATE KEY-----\n`
+const projectId = process.env.GCP_PROJECT_ID || 'cj-tech-381914';
+const bucketName = process.env.GCS_BUCKET || 'mnemo';
+const cdnBaseUrl = process.env.CDN_BASE_URL || 'https://cdn.communityjameel.io';
+
+function createStorage() {
+  const rawKey = process.env.PRIVATE_GCL || '';
+  const client_email = process.env.GCP_CLIENT_EMAIL || '';
+  const hasKey = rawKey && rawKey.trim().length > 0;
+  const hasEmail = client_email && client_email.trim().length > 0;
+  if (hasKey && hasEmail) {
+    let private_key = rawKey.replace(/\\n/g, '\n');
+    if (!private_key.includes('BEGIN PRIVATE KEY')) {
+      private_key = `-----BEGIN PRIVATE KEY-----\n${private_key}\n-----END PRIVATE KEY-----\n`;
+    }
+    console.log('🔐 GCS auth: using explicit service account credentials');
+    return new Storage({
+      projectId,
+      credentials: { client_email, private_key }
+    });
   }
-});
+  console.warn(
+    '⚠️ GCS auth: using Application Default Credentials (no env creds found)'
+  );
+  return new Storage({ projectId });
+}
 
-const bucket = storage.bucket('mnemo');
-const CDN_BASE_URL = 'https://cdn.communityjameel.io';
+const storage = createStorage();
+const bucket = storage.bucket(bucketName);
 
 export async function POST(request: NextRequest) {
   try {
@@ -54,7 +72,7 @@ export async function POST(request: NextRequest) {
       }
     });
 
-    const fileUrl = `${CDN_BASE_URL}/${fullPath}`;
+    const fileUrl = `${cdnBaseUrl}/${fullPath}`;
 
     console.log(`✅ File uploaded successfully: ${fileUrl}`);
 

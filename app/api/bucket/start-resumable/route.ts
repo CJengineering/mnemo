@@ -7,22 +7,30 @@ const projectId = process.env.GCP_PROJECT_ID || 'cj-tech-381914';
 const bucketName = process.env.GCS_BUCKET || 'mnemo';
 const cdnBaseUrl = process.env.CDN_BASE_URL || 'https://cdn.communityjameel.io';
 
-// Normalize private key from env (handle \n escapes and avoid forcing extra '=')
-const rawKey = process.env.PRIVATE_GCL || '';
-let private_key = rawKey.replace(/\\n/g, '\n');
-if (!private_key.includes('BEGIN PRIVATE KEY')) {
-  private_key = `-----BEGIN PRIVATE KEY-----\n${private_key}\n-----END PRIVATE KEY-----\n`;
+// Normalize private key and allow ADC fallback
+function createStorage() {
+  const rawKey = process.env.PRIVATE_GCL || '';
+  const client_email = process.env.GCP_CLIENT_EMAIL || '';
+  const hasKey = rawKey && rawKey.trim().length > 0;
+  const hasEmail = client_email && client_email.trim().length > 0;
+  if (hasKey && hasEmail) {
+    let private_key = rawKey.replace(/\\n/g, '\n');
+    if (!private_key.includes('BEGIN PRIVATE KEY')) {
+      private_key = `-----BEGIN PRIVATE KEY-----\n${private_key}\n-----END PRIVATE KEY-----\n`;
+    }
+    console.log('🔐 GCS auth: using explicit service account credentials');
+    return new Storage({
+      projectId,
+      credentials: { client_email, private_key }
+    });
+  }
+  console.warn(
+    '⚠️ GCS auth: using Application Default Credentials (no env creds found)'
+  );
+  return new Storage({ projectId });
 }
 
-const client_email =
-  process.env.GCP_CLIENT_EMAIL ||
-  'todo-test@cj-tech-381914.iam.gserviceaccount.com';
-
-const storage = new Storage({
-  projectId,
-  credentials: { client_email, private_key }
-});
-
+const storage = createStorage();
 const bucket = storage.bucket(bucketName);
 
 export async function POST(req: NextRequest) {

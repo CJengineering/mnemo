@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 
 interface BucketFile {
   name: string;
@@ -30,13 +30,257 @@ export default function GoogleBucketExplorer() {
   const [creatingFolder, setCreatingFolder] = useState(false);
   const [showFolderInput, setShowFolderInput] = useState(false);
   const [newFolderName, setNewFolderName] = useState('');
-
   // Large upload state
   const [largeUploading, setLargeUploading] = useState(false);
   const [largeUploadProgress, setLargeUploadProgress] = useState<number>(0);
-
   // Feedback state for Copy URL action
   const [copiedFile, setCopiedFile] = useState<string | null>(null);
+  // Drag-and-drop
+  const [isDragging, setIsDragging] = useState(false);
+
+  // Multi-file upload queue (CJ-534)
+  type UploadStatus = 'queued' | 'uploading' | 'success' | 'error' | 'canceled';
+  interface UploadItem {
+    id: string;
+    file: File;
+    name: string;
+    size: number;
+    type: string;
+    destPath: string; // computed name with prefix
+    isLarge: boolean;
+    progress?: number; // undefined => indeterminate
+    status: UploadStatus;
+    error?: string;
+  }
+  const [uploadQueue, setUploadQueue] = useState<UploadItem[]>([]);
+  // Keep refs to active controllers/xhrs by id for cancel
+  const controllersRef = useMemo(() => new Map<string, AbortController>(), []);
+  const xhrRef = useMemo(() => new Map<string, XMLHttpRequest>(), []);
+
+  // Helpers for upload flows
+  const sanitizeFileName = (name: string) =>
+    name
+      .replace(/\s+/g, '-')
+      .replace(/[^a-zA-Z0-9.-]/g, '')
+      .toLowerCase();
+
+  const addToQueue = (file: File, isLarge: boolean): UploadItem => {
+    const sanitized = sanitizeFileName(file.name);
+    const fullPath = currentPath ? `${currentPath}${sanitized}` : sanitized;
+    const id =
+      typeof crypto !== 'undefined' && 'randomUUID' in crypto
+        ? (crypto as any).randomUUID()
+        : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+    const item: UploadItem = {
+      id,
+      file,
+      name: file.name,
+      size: file.size,
+      type: file.type,
+      destPath: fullPath,
+      isLarge,
+      progress: isLarge ? 0 : undefined,
+      status: 'queued'
+    };
+    setUploadQueue((q) => [...q, item]);
+    return item;
+  };
+
+  const updateItem = (id: string, patch: Partial<UploadItem>) => {
+    setUploadQueue((q) =>
+      q.map((it) => (it.id === id ? { ...it, ...patch } : it))
+    );
+  };
+
+  const removeCompletedFromQueue = () => {
+    setUploadQueue((q) =>
+      q.filter((it) => it.status === 'uploading' || it.status === 'queued')
+    );
+  };
+
+  const uploadSmallFile = async (file: File, item?: UploadItem) => {
+    try {
+      if (!item) setUploading(true);
+      setError(null);
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('prefix', currentPath);
+      console.log(`📤 Uploading ${file.name} to folder: "${currentPath}"`);
+      const controller = new AbortController();
+      if (item) controllersRef.set(item.id, controller);
+      if (item) updateItem(item.id, { status: 'uploading' });
+      const response = await fetch('/api/bucket/upload', {
+        method: 'POST',
+        body: formData,
+        signal: controller.signal
+      });
+      if (!response.ok) throw new Error(`Upload failed: ${response.status}`);
+      const result = await response.json();
+      if (!result.success) throw new Error(result.error || 'Upload failed');
+      console.log('✅ File uploaded successfully:', result.file);
+      if (item) updateItem(item.id, { status: 'success', progress: 100 });
+      await fetchFiles(currentPath);
+    } catch (err: any) {
+      if (err?.name === 'AbortError') {
+        if (item)
+          updateItem(item.id, { status: 'canceled', error: 'Canceled' });
+      } else {
+        console.error('🔴 Upload error:', err);
+        setError(err instanceof Error ? err.message : 'Upload failed');
+        if (item)
+          updateItem(item.id, {
+            status: 'error',
+            error: err?.message || 'Upload failed'
+          });
+      }
+    } finally {
+      if (!item) setUploading(false);
+      if (item) controllersRef.delete(item.id);
+    }
+  };
+
+  const uploadLargeFile = async (file: File, item?: UploadItem) => {
+    const sanitized = sanitizeFileName(file.name);
+    const fullPath = currentPath ? `${currentPath}${sanitized}` : sanitized;
+    try {
+      if (!item) {
+        setLargeUploading(true);
+        setLargeUploadProgress(0);
+      }
+      setError(null);
+      const startRes = await fetch('/api/bucket/start-resumable', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          path: item?.destPath || fullPath,
+          contentType: file.type || 'application/octet-stream'
+        })
+      });
+      if (!startRes.ok)
+        throw new Error(`Failed to start resumable upload: ${startRes.status}`);
+      const { success, uploadUrl, error: errMsg } = await startRes.json();
+      if (!success || !uploadUrl)
+        throw new Error(errMsg || 'Could not get upload URL');
+      console.log('🔗 Resumable session URL acquired');
+
+      await new Promise<void>((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        if (item) xhrRef.set(item.id, xhr);
+        xhr.open('PUT', uploadUrl, true);
+        xhr.setRequestHeader(
+          'Content-Type',
+          file.type || 'application/octet-stream'
+        );
+        xhr.setRequestHeader(
+          'Content-Range',
+          `bytes 0-${file.size - 1}/${file.size}`
+        );
+        if (item) updateItem(item.id, { status: 'uploading' });
+        xhr.upload.onprogress = (e) => {
+          if (e.lengthComputable) {
+            const pct = Math.round((e.loaded / e.total) * 100);
+            if (item) updateItem(item.id, { progress: pct });
+            else setLargeUploadProgress(pct);
+          }
+        };
+        xhr.onerror = () => reject(new Error('Network error during upload'));
+        xhr.onload = () => {
+          if (xhr.status === 200 || xhr.status === 201) resolve();
+          else if (xhr.status === 308) {
+            if (item) updateItem(item.id, { progress: 99 });
+            else setLargeUploadProgress(99);
+          } else reject(new Error(`Upload failed with status ${xhr.status}`));
+        };
+        xhr.onabort = () =>
+          reject(Object.assign(new Error('Aborted'), { name: 'AbortError' }));
+        xhr.send(file);
+      });
+      console.log('✅ Large file uploaded successfully');
+      if (item) updateItem(item.id, { status: 'success', progress: 100 });
+      await fetchFiles(currentPath);
+    } catch (err: any) {
+      if (err?.name === 'AbortError') {
+        if (item)
+          updateItem(item.id, { status: 'canceled', error: 'Canceled' });
+      } else {
+        console.error('🔴 Large upload error:', err);
+        setError(
+          err instanceof Error ? err.message : 'Large file upload failed'
+        );
+        if (item)
+          updateItem(item.id, {
+            status: 'error',
+            error: err?.message || 'Large file upload failed'
+          });
+      }
+    } finally {
+      if (!item) {
+        setLargeUploading(false);
+        setLargeUploadProgress(0);
+      }
+      if (item) xhrRef.delete(item.id);
+    }
+  };
+
+  const handleFileUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const list = event.target.files;
+    if (!list || list.length === 0) return;
+    // Multi-file: iterate sequentially
+    for (let i = 0; i < list.length; i++) {
+      const file = list[i];
+      const item = addToQueue(file, false);
+      await uploadSmallFile(file, item);
+    }
+    event.target.value = '';
+  };
+
+  const handleLargeFileUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const list = event.target.files;
+    if (!list || list.length === 0) return;
+    for (let i = 0; i < list.length; i++) {
+      const file = list[i];
+      const item = addToQueue(file, true);
+      await uploadLargeFile(file, item);
+    }
+    event.target.value = '';
+  };
+
+  // Drag & Drop handlers
+  const onDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!isDragging) setIsDragging(true);
+  };
+  const onDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    // Only set false when leaving the container area
+    if ((e.target as HTMLElement).closest('#gcs-explorer') === null) {
+      setIsDragging(false);
+    }
+  };
+  const onDrop = async (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+    const filesList = e.dataTransfer.files;
+    if (!filesList || filesList.length === 0) return;
+    // Multi-file auto-routing by size threshold (~5MB)
+    for (let i = 0; i < filesList.length; i++) {
+      const file = filesList[i];
+      if (file.size > 5 * 1024 * 1024) {
+        const item = addToQueue(file, true);
+        await uploadLargeFile(file, item);
+      } else {
+        const item = addToQueue(file, false);
+        await uploadSmallFile(file, item);
+      }
+    }
+  };
 
   const fetchFiles = async (prefix: string = '') => {
     try {
@@ -87,152 +331,6 @@ export default function GoogleBucketExplorer() {
   const navigateToRoot = () => {
     setPathHistory(['']);
     fetchFiles('');
-  };
-
-  const sanitizeFileName = (name: string) =>
-    name
-      .replace(/\s+/g, '-')
-      .replace(/[^a-zA-Z0-9.-]/g, '')
-      .toLowerCase();
-
-  const handleFileUpload = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    try {
-      setUploading(true);
-      setError(null);
-
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('prefix', currentPath);
-
-      console.log(`📤 Uploading ${file.name} to folder: "${currentPath}"`);
-
-      const response = await fetch('/api/bucket/upload', {
-        method: 'POST',
-        body: formData
-      });
-
-      if (!response.ok) {
-        throw new Error(`Upload failed: ${response.status}`);
-      }
-
-      const result = await response.json();
-
-      if (!result.success) {
-        throw new Error(result.error || 'Upload failed');
-      }
-
-      console.log('✅ File uploaded successfully:', result.file);
-
-      // Refresh the current folder to show the new file
-      await fetchFiles(currentPath);
-
-      // Clear the input
-      event.target.value = '';
-    } catch (err) {
-      console.error('🔴 Upload error:', err);
-      setError(err instanceof Error ? err.message : 'Upload failed');
-    } finally {
-      setUploading(false);
-    }
-  };
-
-  // Large file upload via GCS resumable session
-  const handleLargeFileUpload = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    // Optional client-side threshold guard
-    if (file.size < 5 * 1024 * 1024) {
-      console.log('ℹ️ Small file detected; consider using standard Upload.');
-    }
-
-    const sanitized = sanitizeFileName(file.name);
-    const fullPath = currentPath ? `${currentPath}${sanitized}` : sanitized;
-
-    try {
-      setLargeUploading(true);
-      setLargeUploadProgress(0);
-      setError(null);
-
-      // 1) Request a resumable session
-      const startRes = await fetch('/api/bucket/start-resumable', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          path: fullPath,
-          contentType: file.type || 'application/octet-stream'
-        })
-      });
-
-      if (!startRes.ok) {
-        throw new Error(`Failed to start resumable upload: ${startRes.status}`);
-      }
-
-      const { success, uploadUrl, error: errMsg } = await startRes.json();
-      if (!success || !uploadUrl) {
-        throw new Error(errMsg || 'Could not get upload URL');
-      }
-
-      console.log('🔗 Resumable session URL acquired');
-
-      // 2) Upload the file directly to GCS via the resumable URL
-      // Use XHR to track progress
-      await new Promise<void>((resolve, reject) => {
-        const xhr = new XMLHttpRequest();
-        xhr.open('PUT', uploadUrl, true);
-        xhr.setRequestHeader(
-          'Content-Type',
-          file.type || 'application/octet-stream'
-        );
-        // Full upload in one go: Content-Range header
-        xhr.setRequestHeader(
-          'Content-Range',
-          `bytes 0-${file.size - 1}/${file.size}`
-        );
-
-        xhr.upload.onprogress = (e) => {
-          if (e.lengthComputable) {
-            const pct = Math.round((e.loaded / e.total) * 100);
-            setLargeUploadProgress(pct);
-          }
-        };
-        xhr.onerror = () => reject(new Error('Network error during upload'));
-        xhr.onload = () => {
-          // GCS returns 200 or 201 when the resumable upload completes
-          if (xhr.status === 200 || xhr.status === 201) {
-            resolve();
-          } else if (xhr.status === 308) {
-            // Incomplete; should not happen for single-shot upload
-            setLargeUploadProgress(99);
-          } else {
-            reject(new Error(`Upload failed with status ${xhr.status}`));
-          }
-        };
-
-        xhr.send(file);
-      });
-
-      console.log('✅ Large file uploaded successfully');
-
-      // 3) Refresh listing
-      await fetchFiles(currentPath);
-
-      // Clear the input
-      event.target.value = '';
-    } catch (err) {
-      console.error('🔴 Large upload error:', err);
-      setError(err instanceof Error ? err.message : 'Large file upload failed');
-    } finally {
-      setLargeUploading(false);
-      setLargeUploadProgress(0);
-    }
   };
 
   const handleCreateFolder = async () => {
@@ -350,9 +448,9 @@ export default function GoogleBucketExplorer() {
   };
 
   const formatFileSize = (bytes?: number): string => {
-    if (!bytes) return '';
+    if (!bytes && bytes !== 0) return '';
     const sizes = ['B', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(1024));
+    const i = bytes > 0 ? Math.floor(Math.log(bytes) / Math.log(1024)) : 0;
     return `${(bytes / Math.pow(1024, i)).toFixed(1)} ${sizes[i]}`;
   };
 
@@ -396,6 +494,12 @@ export default function GoogleBucketExplorer() {
     fetchFiles();
   }, []);
 
+  // Derived busy state and counts
+  const inFlightCount = uploadQueue.filter(
+    (i) => i.status === 'queued' || i.status === 'uploading'
+  ).length;
+  const isBusy = loading || inFlightCount > 0 || uploading || largeUploading;
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -426,7 +530,30 @@ export default function GoogleBucketExplorer() {
   }
 
   return (
-    <div className="w-full max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg">
+    <div
+      id="gcs-explorer"
+      className="w-full max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg relative"
+      onDragEnter={onDragOver}
+      onDragOver={onDragOver}
+      onDragLeave={onDragLeave}
+      onDrop={onDrop}
+    >
+      {/* Drag overlay */}
+      {isDragging && (
+        <div className="absolute inset-0 z-10 pointer-events-none flex items-center justify-center">
+          <div className="w-full h-full border-2 border-dashed border-blue-400 bg-blue-50/70 rounded-lg flex items-center justify-center p-6">
+            <div className="text-center text-blue-700">
+              <div className="text-3xl mb-2">📤</div>
+              <div className="font-medium">Drop files to upload</div>
+              <div className="text-xs mt-1">
+                Destination:{' '}
+                <span className="font-mono">{currentPath || '/'}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="mb-6">
         <h2 className="text-2xl font-bold text-gray-800 mb-2">
           📁 Google Cloud Storage Explorer
@@ -474,7 +601,7 @@ export default function GoogleBucketExplorer() {
         </div>
 
         {/* Navigation Controls */}
-        <div className="flex gap-2 mb-4">
+        <div className="flex gap-2 mb-4 flex-wrap">
           {pathHistory.length > 1 && (
             <button
               onClick={navigateBack}
@@ -490,47 +617,51 @@ export default function GoogleBucketExplorer() {
             🔄 Refresh
           </button>
 
-          {/* Upload Button */}
+          {/* Upload Button (multi) */}
           <div className="relative">
             <input
               type="file"
               id="file-upload"
               className="hidden"
               onChange={handleFileUpload}
-              disabled={uploading || largeUploading}
+              multiple
+              disabled={false}
             />
             <label
               htmlFor="file-upload"
               className={`px-3 py-1 text-sm rounded cursor-pointer transition-colors ${
-                uploading || largeUploading
-                  ? 'bg-gray-400 text-gray-600 cursor-not-allowed'
+                isBusy
+                  ? 'bg-gray-100 text-gray-800 border border-gray-300'
                   : 'bg-green-600 text-white hover:bg-green-700'
               }`}
+              title="Upload one or more small files via API"
             >
-              {uploading ? '⏳ Uploading...' : '📤 Upload File'}
+              {inFlightCount > 0 ? `📤 Add More Files` : '📤 Upload Files'}
             </label>
           </div>
 
-          {/* Upload Large File Button */}
+          {/* Upload Large File Button (multi) */}
           <div className="relative">
             <input
               type="file"
               id="large-file-upload"
               className="hidden"
               onChange={handleLargeFileUpload}
-              disabled={largeUploading || uploading}
+              multiple
+              disabled={false}
             />
             <label
               htmlFor="large-file-upload"
               className={`px-3 py-1 text-sm rounded cursor-pointer transition-colors ${
-                largeUploading || uploading
-                  ? 'bg-gray-400 text-gray-600 cursor-not-allowed'
+                isBusy
+                  ? 'bg-gray-100 text-gray-800 border border-gray-300'
                   : 'bg-orange-600 text-white hover:bg-orange-700'
               }`}
+              title="Start resumable uploads for large files"
             >
-              {largeUploading
-                ? `⏳ Uploading... ${largeUploadProgress}%`
-                : '📦 Upload Large File'}
+              {inFlightCount > 0
+                ? `📦 Add More Large Files`
+                : '📦 Upload Large Files'}
             </label>
           </div>
 
@@ -620,6 +751,114 @@ export default function GoogleBucketExplorer() {
             Files uploaded here will be saved to this folder
           </p>
         </div>
+
+        {/* Uploads panel */}
+        {uploadQueue.length > 0 && (
+          <div className="mb-6 border rounded-lg">
+            <div className="px-3 py-2 bg-gray-50 border-b flex items-center justify-between">
+              <div className="text-sm font-medium text-gray-700">
+                In-flight uploads ({inFlightCount}/{uploadQueue.length})
+              </div>
+              <div className="flex gap-2">
+                <button
+                  className="text-xs px-2 py-1 bg-gray-200 rounded hover:bg-gray-300"
+                  onClick={removeCompletedFromQueue}
+                  disabled={inFlightCount === uploadQueue.length}
+                  title="Remove completed/failed uploads from list"
+                >
+                  Clear completed
+                </button>
+              </div>
+            </div>
+            <div className="p-3 max-h-56 overflow-auto">
+              <ul className="space-y-2">
+                {uploadQueue.map((u) => (
+                  <li key={u.id} className="border rounded p-2">
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-2">
+                          <span className="text-lg">
+                            {u.isLarge ? '📦' : '📤'}
+                          </span>
+                          <span className="truncate font-medium" title={u.name}>
+                            {u.name}
+                          </span>
+                        </div>
+                        <div className="text-xs text-gray-500 mt-1">
+                          {formatFileSize(u.size)} •{' '}
+                          {u.isLarge ? 'resumable' : 'api'}
+                        </div>
+                        <div className="mt-2">
+                          {u.progress !== undefined ? (
+                            <div className="w-full bg-gray-200 rounded h-2">
+                              <div
+                                className={`h-2 rounded ${
+                                  u.status === 'error'
+                                    ? 'bg-red-500'
+                                    : u.status === 'success'
+                                      ? 'bg-green-600'
+                                      : 'bg-blue-600'
+                                }`}
+                                style={{ width: `${u.progress}%` }}
+                              />
+                            </div>
+                          ) : (
+                            <div className="text-xs text-gray-500">
+                              {u.status === 'uploading'
+                                ? 'Uploading…'
+                                : u.status === 'queued'
+                                  ? 'Queued'
+                                  : u.status === 'error'
+                                    ? `Error: ${u.error}`
+                                    : u.status}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                      <div className="flex-none whitespace-nowrap flex gap-2">
+                        {u.status === 'uploading' && (
+                          <button
+                            className="px-2 py-1 text-xs bg-gray-200 rounded hover:bg-gray-300"
+                            onClick={() => {
+                              if (u.isLarge) {
+                                const x = xhrRef.get(u.id);
+                                if (x) x.abort();
+                              } else {
+                                const c = controllersRef.get(u.id);
+                                if (c) c.abort();
+                              }
+                            }}
+                          >
+                            Cancel
+                          </button>
+                        )}
+                        {u.status === 'error' && (
+                          <button
+                            className="px-2 py-1 text-xs bg-yellow-200 rounded hover:bg-yellow-300"
+                            onClick={async () => {
+                              updateItem(u.id, {
+                                status: 'queued',
+                                error: undefined,
+                                progress: u.isLarge ? 0 : undefined
+                              });
+                              if (u.isLarge) await uploadLargeFile(u.file, u);
+                              else await uploadSmallFile(u.file, u);
+                            }}
+                          >
+                            Retry
+                          </button>
+                        )}
+                        {u.status === 'success' && (
+                          <span className="text-green-600 text-sm">✓</span>
+                        )}
+                      </div>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        )}
 
         <p className="text-gray-600">
           Bucket:{' '}

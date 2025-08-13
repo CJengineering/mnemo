@@ -1,18 +1,39 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Storage } from '@google-cloud/storage';
 
-const theKey = process.env.PRIVATE_GCL;
+export const runtime = 'nodejs';
 
-const storage = new Storage({
-  projectId: 'cj-tech-381914',
-  credentials: {
-    client_email: 'todo-test@cj-tech-381914.iam.gserviceaccount.com',
-    private_key: `-----BEGIN PRIVATE KEY-----\n${theKey}=\n-----END PRIVATE KEY-----\n`
+// Config from env with sensible defaults
+const projectId = process.env.GCP_PROJECT_ID || 'cj-tech-381914';
+const bucketName = process.env.GCS_BUCKET || 'mnemo';
+const cdnBaseUrl = process.env.CDN_BASE_URL || 'https://cdn.communityjameel.io';
+
+// Build Storage client with either explicit credentials or ADC fallback
+function createStorage() {
+  const rawKey = process.env.PRIVATE_GCL || '';
+  const client_email = process.env.GCP_CLIENT_EMAIL || '';
+  const hasKey = rawKey && rawKey.trim().length > 0;
+  const hasEmail = client_email && client_email.trim().length > 0;
+
+  if (hasKey && hasEmail) {
+    let private_key = rawKey.replace(/\\n/g, '\n');
+    if (!private_key.includes('BEGIN PRIVATE KEY')) {
+      private_key = `-----BEGIN PRIVATE KEY-----\n${private_key}\n-----END PRIVATE KEY-----\n`;
+    }
+    console.log('🔐 GCS auth: using explicit service account credentials');
+    return new Storage({
+      projectId,
+      credentials: { client_email, private_key }
+    });
   }
-});
+  console.warn(
+    '⚠️ GCS auth: using Application Default Credentials (no env creds found)'
+  );
+  return new Storage({ projectId });
+}
 
-const bucket = storage.bucket('mnemo');
-const CDN_BASE_URL = 'https://cdn.communityjameel.io';
+const storage = createStorage();
+const bucket = storage.bucket(bucketName);
 
 interface BucketFile {
   name: string;
@@ -38,7 +59,7 @@ export async function GET(request: NextRequest) {
     const delimiter = searchParams.get('delimiter') || '/';
 
     console.log(
-      `🟢 Fetching files from Google Cloud Storage bucket: mnemo, prefix: "${prefix}"`
+      `🟢 Fetching files from Google Cloud Storage bucket: ${bucketName}, prefix: "${prefix}"`
     );
 
     // Get files and prefixes (folders) from the bucket
@@ -52,17 +73,17 @@ export async function GET(request: NextRequest) {
 
     // Transform Google Cloud Storage files to our format
     const bucketFiles: BucketFile[] = files.map((file) => {
-      const metadata = file.metadata;
+      const metadata = file.metadata as any;
       return {
         name: file.name,
-        url: `${CDN_BASE_URL}/${file.name}`,
-        size: metadata.size
+        url: `${cdnBaseUrl}/${file.name}`,
+        size: metadata?.size
           ? typeof metadata.size === 'string'
             ? parseInt(metadata.size)
             : metadata.size
           : undefined,
-        timeCreated: metadata.timeCreated,
-        contentType: metadata.contentType,
+        timeCreated: metadata?.timeCreated,
+        contentType: metadata?.contentType,
         isFolder: false
       };
     });
@@ -95,7 +116,7 @@ export async function GET(request: NextRequest) {
       files: allItems,
       totalFiles: allItems.length,
       currentPrefix: prefix
-    });
+    } as BucketResponse);
   } catch (error) {
     console.error('🔴 Error fetching bucket files:', error);
 
