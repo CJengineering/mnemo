@@ -56,6 +56,9 @@ export default function GoogleBucketExplorer() {
   // Keep refs to active controllers/xhrs by id for cancel
   const controllersRef = useMemo(() => new Map<string, AbortController>(), []);
   const xhrRef = useMemo(() => new Map<string, XMLHttpRequest>(), []);
+  // Concurrency control
+  const MAX_CONCURRENCY = 3;
+  const startedRef = useMemo(() => new Set<string>(), []);
 
   // Helpers for upload flows
   const sanitizeFileName = (name: string) =>
@@ -97,6 +100,36 @@ export default function GoogleBucketExplorer() {
       q.filter((it) => it.status === 'uploading' || it.status === 'queued')
     );
   };
+
+  // Start up to MAX_CONCURRENCY queued uploads
+  const scheduleUploads = () => {
+    const active =
+      uploadQueue.filter((i) => i.status === 'uploading').length +
+      startedRef.size;
+    const slots = Math.max(0, MAX_CONCURRENCY - active);
+    if (slots === 0) return;
+    const toStart = uploadQueue
+      .filter((i) => i.status === 'queued' && !startedRef.has(i.id))
+      .slice(0, slots);
+    toStart.forEach((item) => {
+      startedRef.add(item.id);
+      const p = item.isLarge
+        ? uploadLargeFile(item.file, item)
+        : uploadSmallFile(item.file, item);
+      Promise.resolve(p)
+        .catch(() => {})
+        .finally(() => {
+          startedRef.delete(item.id);
+          // Next state updates from upload functions will trigger re-schedule via effect
+        });
+    });
+  };
+
+  // Re-run scheduler whenever queue changes
+  useEffect(() => {
+    scheduleUploads();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [uploadQueue]);
 
   const uploadSmallFile = async (file: File, item?: UploadItem) => {
     try {
@@ -227,11 +260,10 @@ export default function GoogleBucketExplorer() {
   ) => {
     const list = event.target.files;
     if (!list || list.length === 0) return;
-    // Multi-file: iterate sequentially
+    // Multi-file: queue all files; scheduler will process with concurrency
     for (let i = 0; i < list.length; i++) {
       const file = list[i];
-      const item = addToQueue(file, false);
-      await uploadSmallFile(file, item);
+      addToQueue(file, false);
     }
     event.target.value = '';
   };
@@ -243,8 +275,7 @@ export default function GoogleBucketExplorer() {
     if (!list || list.length === 0) return;
     for (let i = 0; i < list.length; i++) {
       const file = list[i];
-      const item = addToQueue(file, true);
-      await uploadLargeFile(file, item);
+      addToQueue(file, true);
     }
     event.target.value = '';
   };
@@ -269,15 +300,13 @@ export default function GoogleBucketExplorer() {
     setIsDragging(false);
     const filesList = e.dataTransfer.files;
     if (!filesList || filesList.length === 0) return;
-    // Multi-file auto-routing by size threshold (~5MB)
+    // Multi-file auto-routing by size threshold (~5MB). Queue only; scheduler will handle.
     for (let i = 0; i < filesList.length; i++) {
       const file = filesList[i];
       if (file.size > 5 * 1024 * 1024) {
-        const item = addToQueue(file, true);
-        await uploadLargeFile(file, item);
+        addToQueue(file, true);
       } else {
-        const item = addToQueue(file, false);
-        await uploadSmallFile(file, item);
+        addToQueue(file, false);
       }
     }
   };
@@ -497,6 +526,11 @@ export default function GoogleBucketExplorer() {
   // Derived busy state and counts
   const inFlightCount = uploadQueue.filter(
     (i) => i.status === 'queued' || i.status === 'uploading'
+  ).length;
+  const successCount = uploadQueue.filter((i) => i.status === 'success').length;
+  const errorCount = uploadQueue.filter((i) => i.status === 'error').length;
+  const canceledCount = uploadQueue.filter(
+    (i) => i.status === 'canceled'
   ).length;
   const isBusy = loading || inFlightCount > 0 || uploading || largeUploading;
 
@@ -755,11 +789,30 @@ export default function GoogleBucketExplorer() {
         {/* Uploads panel */}
         {uploadQueue.length > 0 && (
           <div className="mb-6 border rounded-lg">
-            <div className="px-3 py-2 bg-gray-50 border-b flex items-center justify-between">
+            <div className="px-3 py-2 bg-gray-50 border-b flex items-center justify-between gap-3 flex-wrap">
               <div className="text-sm font-medium text-gray-700">
                 In-flight uploads ({inFlightCount}/{uploadQueue.length})
               </div>
-              <div className="flex gap-2">
+              <div className="flex items-center gap-3 text-xs text-gray-600">
+                {successCount + errorCount + canceledCount > 0 && (
+                  <div className="flex items-center gap-2">
+                    {successCount > 0 && (
+                      <span className="px-2 py-0.5 rounded bg-green-100 text-green-700">
+                        ✓ {successCount} done
+                      </span>
+                    )}
+                    {errorCount > 0 && (
+                      <span className="px-2 py-0.5 rounded bg-red-100 text-red-700">
+                        ! {errorCount} failed
+                      </span>
+                    )}
+                    {canceledCount > 0 && (
+                      <span className="px-2 py-0.5 rounded bg-gray-200 text-gray-700">
+                        ⏹ {canceledCount} canceled
+                      </span>
+                    )}
+                  </div>
+                )}
                 <button
                   className="text-xs px-2 py-1 bg-gray-200 rounded hover:bg-gray-300"
                   onClick={removeCompletedFromQueue}
