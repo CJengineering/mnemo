@@ -25,6 +25,7 @@ import {
 } from './webflow-form-fields';
 import { IncomingNewsData } from '../interfaces-incoming';
 import { generateSlug } from './base-form';
+import './compact-form.css';
 
 // Webflow CMS News Schema
 const webflowNewsSchema = z.object({
@@ -305,7 +306,7 @@ export const WebflowNewsForm = forwardRef<
   ];
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full flex flex-col prevent-layout-shift">
       {/* Action Bar with Delete Button */}
       <div className="sticky top-0 z-10 bg-gray-900 border-b border-gray-700 p-4 -mx-6 -mt-6 mb-6">
         <div className="flex items-center justify-between">
@@ -354,7 +355,7 @@ export const WebflowNewsForm = forwardRef<
           onSubmit={form.handleSubmit(handleSubmit)}
           className="h-full flex flex-col"
         >
-          <div className="flex-1 overflow-y-auto px-1">
+          <div className="flex-1 overflow-y-scroll px-1 stable-scroll-container">
             <div className="space-y-8 pb-8">
               {/* Basic Info Section */}
               <div className="space-y-6">
