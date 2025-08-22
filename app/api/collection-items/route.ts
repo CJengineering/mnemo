@@ -8,14 +8,33 @@ const pool = new Pool({
 // GET - Fetch all collection items or filter by type
 export async function GET(req: NextRequest) {
   try {
+    // If an external API base is configured, proxy the request there instead of local DB (DB not present locally)
+    const external = process.env.NEXT_PUBLIC_EXTERNAL_API_BASE_URL;
+    if (external) {
+      const url = new URL(req.url);
+      const proxied = `${external}/api/collection-items${url.search}`;
+      const r = await fetch(proxied, { cache: 'no-store' });
+      const data = await r.json();
+      return NextResponse.json(data, { status: r.status });
+    }
+
     const { searchParams } = new URL(req.url);
     const type = searchParams.get('type');
     const status = searchParams.get('status');
+    const search = searchParams.get('search'); // optional text search
+    const slugsParam = searchParams.get('slugs'); // optional comma separated list of slugs to fetch explicitly
+
+    const slugList = slugsParam
+      ? slugsParam
+          .split(',')
+          .map((s) => s.trim())
+          .filter(Boolean)
+      : [];
 
     const client = await pool.connect();
 
     let query = 'SELECT * FROM "collectionItem"';
-    const params: string[] = [];
+    const params: any[] = [];
     const conditions: string[] = [];
 
     if (type) {
@@ -26,6 +45,24 @@ export async function GET(req: NextRequest) {
     if (status) {
       conditions.push(`status = $${params.length + 1}`);
       params.push(status);
+    }
+
+    if (slugList.length > 0) {
+      conditions.push(`slug = ANY($${params.length + 1})`);
+      params.push(slugList);
+    }
+
+    if (search) {
+      const like = `%${search}%`;
+      conditions.push(
+        `(
+          slug ILIKE $${params.length + 1}
+          OR title ILIKE $${params.length + 1}
+          OR (data->>'name') ILIKE $${params.length + 1}
+          OR (data->>'title') ILIKE $${params.length + 1}
+        )`
+      );
+      params.push(like);
     }
 
     if (conditions.length > 0) {

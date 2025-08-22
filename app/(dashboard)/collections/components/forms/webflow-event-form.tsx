@@ -21,7 +21,8 @@ import {
   WebflowDateField,
   WebflowImageField,
   WebflowTagsField,
-  WebflowRichTextField
+  WebflowRichTextField,
+  WebflowReferenceSelectField // added
 } from './webflow-form-fields';
 import { IncomingEventData } from '../interfaces-incoming';
 import { generateSlug } from './base-form';
@@ -132,55 +133,13 @@ const webflowEventSchema = z.object({
       }
     }),
 
-  // Multi-reference fields
-  relatedProgrammes: z
-    .array(
-      z.object({
-        id: z.string(),
-        slug: z.string()
-      })
-    )
-    .default([]),
-  tags: z
-    .array(
-      z.object({
-        id: z.string(),
-        slug: z.string()
-      })
-    )
-    .default([]),
-  relatedPeople: z
-    .array(
-      z.object({
-        id: z.string(),
-        slug: z.string()
-      })
-    )
-    .default([]),
-  organisers: z
-    .array(
-      z.object({
-        id: z.string(),
-        slug: z.string()
-      })
-    )
-    .default([]),
-  partners: z
-    .array(
-      z.object({
-        id: z.string(),
-        slug: z.string()
-      })
-    )
-    .default([]),
-  withRepresentativesFrom: z
-    .array(
-      z.object({
-        id: z.string(),
-        slug: z.string()
-      })
-    )
-    .default([]),
+  // Multi-reference fields now storing slug arrays
+  relatedProgrammes: z.array(z.string()).default([]),
+  tags: z.array(z.string()).default([]),
+  relatedPeople: z.array(z.string()).default([]),
+  organisers: z.array(z.string()).default([]),
+  partners: z.array(z.string()).default([]),
+  withRepresentativesFrom: z.array(z.string()).default([]),
 
   // Legacy field
   featured: z.boolean().default(false)
@@ -253,12 +212,16 @@ export const WebflowEventForm = forwardRef<
       programmeLabel: initialData?.programmeLabel
         ? JSON.stringify(initialData.programmeLabel)
         : '',
-      relatedProgrammes: initialData?.relatedProgrammes || [],
-      tags: initialData?.tags || [],
-      relatedPeople: initialData?.relatedPeople || [],
-      organisers: initialData?.organisers || [],
-      partners: initialData?.partners || [],
-      withRepresentativesFrom: initialData?.withRepresentativesFrom || [],
+      relatedProgrammes: (initialData?.relatedProgrammes || []).map(
+        (r: any) => r.slug
+      ),
+      tags: (initialData?.tags || []).map((r: any) => r.slug),
+      relatedPeople: (initialData?.relatedPeople || []).map((r: any) => r.slug),
+      organisers: (initialData?.organisers || []).map((r: any) => r.slug),
+      partners: (initialData?.partners || []).map((r: any) => r.slug),
+      withRepresentativesFrom: (initialData?.withRepresentativesFrom || []).map(
+        (r: any) => r.slug
+      ),
       featured: initialData?.featured || false,
       attendanceType:
         (initialData?.attendanceType as 'in-person' | 'virtual' | 'hybrid') ||
@@ -322,12 +285,16 @@ export const WebflowEventForm = forwardRef<
       programmeLabel: initialData?.programmeLabel
         ? JSON.stringify(initialData.programmeLabel)
         : '',
-      relatedProgrammes: initialData?.relatedProgrammes || [],
-      tags: initialData?.tags || [],
-      relatedPeople: initialData?.relatedPeople || [],
-      organisers: initialData?.organisers || [],
-      partners: initialData?.partners || [],
-      withRepresentativesFrom: initialData?.withRepresentativesFrom || [],
+      relatedProgrammes: (initialData?.relatedProgrammes || []).map(
+        (r: any) => r.slug
+      ),
+      tags: (initialData?.tags || []).map((r: any) => r.slug),
+      relatedPeople: (initialData?.relatedPeople || []).map((r: any) => r.slug),
+      organisers: (initialData?.organisers || []).map((r: any) => r.slug),
+      partners: (initialData?.partners || []).map((r: any) => r.slug),
+      withRepresentativesFrom: (initialData?.withRepresentativesFrom || []).map(
+        (r: any) => r.slug
+      ),
       featured: initialData?.featured || false,
       attendanceType:
         (initialData?.attendanceType as 'in-person' | 'virtual' | 'hybrid') ||
@@ -363,7 +330,19 @@ export const WebflowEventForm = forwardRef<
   const handleSubmit = async (data: WebflowEventFormData) => {
     try {
       setIsLoading(true);
-      await onSubmit(data as IncomingEventData);
+      // map slug arrays back to reference objects for API
+      const toRefArray = (arr: string[]) =>
+        arr.map((slug) => ({ id: slug, slug }));
+      const payload: IncomingEventData = {
+        ...data,
+        relatedProgrammes: toRefArray(data.relatedProgrammes),
+        tags: toRefArray(data.tags),
+        relatedPeople: toRefArray(data.relatedPeople),
+        organisers: toRefArray(data.organisers),
+        partners: toRefArray(data.partners),
+        withRepresentativesFrom: toRefArray(data.withRepresentativesFrom)
+      } as any;
+      await onSubmit(payload);
     } catch (error) {
       console.error('Form submission error:', error);
     } finally {
@@ -882,50 +861,74 @@ export const WebflowEventForm = forwardRef<
                     </h3>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <WebflowTagsField
+                      <WebflowReferenceSelectField
                         control={form.control}
                         name="relatedProgrammes"
                         label="Related Programmes"
-                        helperText="Multiple programmes related to this event"
+                        collectionType="programme"
+                        multiple
+                        statusFilter="all"
+                        placeholder="Search programmes"
+                        helperText="Programmes related to this event"
                       />
 
-                      <WebflowTagsField
+                      <WebflowReferenceSelectField
                         control={form.control}
                         name="tags"
                         label="Tags"
-                        helperText="Categorization tags for the event"
+                        collectionType="tag"
+                        multiple
+                        statusFilter="all"
+                        placeholder="Search tags"
+                        helperText="Categorization tags"
                       />
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <WebflowTagsField
+                      <WebflowReferenceSelectField
                         control={form.control}
                         name="relatedPeople"
                         label="Related People"
-                        helperText="People involved in or speaking at this event"
+                        collectionType="people"
+                        multiple
+                        statusFilter="all"
+                        placeholder="Search people"
+                        helperText="People involved in this event"
                       />
 
-                      <WebflowTagsField
+                      <WebflowReferenceSelectField
                         control={form.control}
                         name="organisers"
                         label="Organisers"
-                        helperText="Organizations or people organizing the event"
+                        collectionType="partner" // changed from people to partner
+                        multiple
+                        statusFilter="all"
+                        placeholder="Search organising partners"
+                        helperText="Partner organisations acting as organisers"
                       />
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <WebflowTagsField
+                      <WebflowReferenceSelectField
                         control={form.control}
                         name="partners"
                         label="Partners"
-                        helperText="Partner organizations for this event"
+                        collectionType="partner"
+                        multiple
+                        statusFilter="all"
+                        placeholder="Search partners"
+                        helperText="Partner organizations"
                       />
 
-                      <WebflowTagsField
+                      <WebflowReferenceSelectField
                         control={form.control}
                         name="withRepresentativesFrom"
                         label="With Representatives From"
-                        helperText="Organizations with representatives at the event"
+                        collectionType="partner"
+                        multiple
+                        statusFilter="all"
+                        placeholder="Search organizations"
+                        helperText="Organizations with representatives"
                       />
                     </div>
                   </div>
