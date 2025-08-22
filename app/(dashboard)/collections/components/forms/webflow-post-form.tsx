@@ -315,20 +315,28 @@ export const WebflowPostForm = forwardRef<
     form.reset(newValues);
   }, [initialData, form]);
 
-  // Auto-generate slug from title
-  useEffect(() => {
-    const subscription = form.watch((value, { name }) => {
-      if (name === 'title' && value.title && !form.getValues('slug')) {
-        const timer = setTimeout(() => {
-          if (value.title) {
-            form.setValue('slug', generateSlug(value.title));
-          }
-        }, 500);
-        return () => clearTimeout(timer);
-      }
-    });
-    return subscription.unsubscribe;
-  }, [form]);
+  // Remove auto-generate-on-typing behavior in favor of explicit button like Team form
+  // useEffect(() => {
+  //   const subscription = form.watch((value, { name }) => {
+  //     if (name === 'title' && value.title && !form.getValues('slug')) {
+  //       const timer = setTimeout(() => {
+  //         if (value.title) {
+  //           form.setValue('slug', generateSlug(value.title));
+  //         }
+  //       }, 500);
+  //       return () => clearTimeout(timer);
+  //     }
+  //   });
+  //   return subscription.unsubscribe;
+  // }, [form]);
+
+  // Manual slug generation function (Team-style)
+  const handleGenerateSlug = () => {
+    const currentTitle = form.getValues('title');
+    if (currentTitle) {
+      form.setValue('slug', generateSlug(currentTitle));
+    }
+  };
 
   const handleSubmit = async (data: WebflowPostFormData) => {
     setIsLoading(true);
@@ -459,13 +467,21 @@ export const WebflowPostForm = forwardRef<
             )}
             <Button
               type="button"
-              onClick={() => form.setValue('status', 'draft')}
+              onClick={() => {
+                form.setValue('status', 'draft');
+                form.handleSubmit(handleSubmit)();
+              }}
               className="bg-gray-700 hover:bg-gray-600 text-white"
+              disabled={isLoading}
             >
-              Save Draft
+              {isLoading ? 'Saving...' : 'Save Draft'}
             </Button>
             <Button
-              type="submit"
+              type="button"
+              onClick={() => {
+                form.setValue('status', 'published');
+                form.handleSubmit(handleSubmit)();
+              }}
               disabled={isLoading}
               className="bg-blue-600 hover:bg-blue-700 text-white"
             >
@@ -501,6 +517,29 @@ export const WebflowPostForm = forwardRef<
                     label="Slug"
                     required
                   />
+                  {/* Team-style slug actions */}
+                  <div className="flex items-center gap-3">
+                    <Button
+                      type="button"
+                      variant="default"
+                      size="sm"
+                      onClick={handleGenerateSlug}
+                      disabled={!form.watch('title')}
+                      className="text-xs bg-blue-600 hover:bg-blue-700 text-white border-blue-600"
+                    >
+                      Generate Slug from Title
+                    </Button>
+                    {form.watch('title') && !form.watch('slug') && (
+                      <span className="text-xs text-yellow-400">
+                        💡 Enter a title to generate slug
+                      </span>
+                    )}
+                    {form.watch('title') && form.watch('slug') && (
+                      <span className="text-xs text-green-400">
+                        ✅ Slug ready
+                      </span>
+                    )}
+                  </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <WebflowSelectField
@@ -728,6 +767,8 @@ export const WebflowPostForm = forwardRef<
                         label="Thumbnail"
                         required
                         helperText="Small image for post listings (recommended: 400x300px)"
+                        collectionType="posts"
+                        slug={form.watch('slug')}
                       />
 
                       <WebflowImageField
@@ -736,6 +777,8 @@ export const WebflowPostForm = forwardRef<
                         label="Hero Image"
                         required
                         helperText="Large banner image (recommended: 1200x800px)"
+                        collectionType="posts"
+                        slug={form.watch('slug')}
                       />
 
                       <WebflowImageField
@@ -744,6 +787,8 @@ export const WebflowPostForm = forwardRef<
                         label="Main Image"
                         required
                         helperText="Primary post image (recommended: 1200x800px)"
+                        collectionType="posts"
+                        slug={form.watch('slug')}
                       />
 
                       <WebflowImageField
@@ -752,6 +797,8 @@ export const WebflowPostForm = forwardRef<
                         label="Open Graph Image"
                         required
                         helperText="Social sharing image (recommended: 1200x630px)"
+                        collectionType="posts"
+                        slug={form.watch('slug')}
                       />
                     </div>
 
@@ -800,6 +847,8 @@ export const WebflowPostForm = forwardRef<
                       multiple={true}
                       maxImages={10}
                       helperText="Multiple images for post gallery (up to 10 images)"
+                      collectionType="posts"
+                      slug={form.watch('slug')}
                     />
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
