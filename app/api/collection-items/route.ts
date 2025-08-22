@@ -5,6 +5,39 @@ const pool = new Pool({
   connectionString: process.env.LOCAL_POSTGRES_URL
 });
 
+// Helper to send webhooks for create/update events
+async function sendCollectionWebhook(
+  action: 'create' | 'update',
+  payload: any
+) {
+  const endpoints =
+    action === 'create'
+      ? [
+          'http://localhost:3000/api/mnemo/create-collection',
+          'https://www.communityjameel.org/api/mnemo/create-collection'
+        ]
+      : [
+          'http://localhost:3000/api/mnemo/update-collection',
+          'https://www.communityjameel.org/api/mnemo/update-collection'
+        ];
+  try {
+    await Promise.all(
+      endpoints.map((url) =>
+        fetch(url, {
+          method: 'POST',
+          // Send all data including status, type, timestamps
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        }).catch((e) => {
+          console.error(`Webhook failed (${action}) => ${url}:`, e);
+        })
+      )
+    );
+  } catch (e) {
+    console.error('Unexpected webhook dispatch error:', e);
+  }
+}
+
 // GET - Fetch all collection items or filter by type
 export async function GET(req: NextRequest) {
   try {
@@ -127,6 +160,14 @@ export async function POST(req: NextRequest) {
     client.release();
 
     console.log('✅ Successfully created collection item:', rows[0]);
+
+    // Fire webhooks (non-blocking but awaited here to ensure ordering; could be detached if needed)
+    sendCollectionWebhook('create', {
+      event: 'collectionItem.created',
+      action: 'create',
+      timestamp: new Date().toISOString(),
+      collectionItem: rows[0]
+    });
     return NextResponse.json({ success: true, collectionItem: rows[0] });
   } catch (error) {
     console.error('💥 Error creating collection item:', error);

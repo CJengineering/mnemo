@@ -20,6 +20,7 @@ import {
 import { IncomingTagData } from '../interfaces-incoming';
 import { generateSlug } from './base-form';
 import './compact-form.css';
+import { SaveConfirmation } from '@/components/ui/save-confirmation';
 
 const tagSchema = z.object({
   // Form fields
@@ -155,28 +156,16 @@ export const WebflowTagForm = forwardRef<
                 Delete
               </Button>
             )}
-            <Button
-              type="button"
-              onClick={() => {
-                form.setValue('status', 'draft');
-                form.handleSubmit(handleSubmit)();
+            <SaveConfirmation
+              onAction={async (status) => {
+                form.setValue('status', status);
+                await form.handleSubmit(handleSubmit)();
+                return { slug: form.getValues().slug };
               }}
-              className="bg-gray-700 hover:bg-gray-600 text-white"
               disabled={isLoading}
-            >
-              {isLoading ? 'Saving...' : 'Save Draft'}
-            </Button>
-            <Button
-              type="button"
-              onClick={() => {
-                form.setValue('status', 'published');
-                form.handleSubmit(handleSubmit)();
-              }}
-              className="bg-blue-600 hover:bg-blue-700 text-white"
-              disabled={isLoading}
-            >
-              {isLoading ? 'Publishing...' : 'Publish'}
-            </Button>
+              isSubmitting={isLoading}
+              itemLabel="Tag"
+            />
           </div>
         </div>
       </div>

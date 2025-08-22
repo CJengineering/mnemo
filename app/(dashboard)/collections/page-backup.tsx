@@ -6,27 +6,16 @@ import CollectionsList from './components/collection-list';
 import { Collection, CollectionItem } from './lib/types';
 import ItemsList from './components/items-list';
 import DynamicCollectionForm from './components/dynamic-collection-form';
+import { CollectionType } from './components/forms';
 
 // Updated types to match API response
 export interface APICollectionItem {
   id: string;
   title: string;
-  type:
-    | 'event'
-    | 'news'
-    | 'programme'
-    | 'post'
-    | 'source'
-    | 'team'
-    | 'innovation'
-    | 'award'
-    | 'publication'
-    | 'prize'
-    | 'partner';
+  type: CollectionType; // unified with central CollectionType to avoid mismatch
   slug: string;
   status: 'published' | 'draft'; // UI-friendly status values
   data: any;
-
 }
 
 // Status transformation utilities - Now using direct mapping since backend is fixed
@@ -183,8 +172,7 @@ export default function Home() {
               heroImage: { url: '', alt: '' },
               tags: [],
               richTextContent: ''
-            },
-        
+            }
           };
           setSelectedItem(mockApiItem);
           setIsCreatingNew(false);
@@ -215,8 +203,7 @@ export default function Home() {
             heroImage: { url: '', alt: '' },
             tags: [],
             richTextContent: ''
-          },
-        
+          }
         };
         setSelectedItem(mockApiItem);
         setIsCreatingNew(false);
