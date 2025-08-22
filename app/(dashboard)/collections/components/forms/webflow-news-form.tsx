@@ -21,7 +21,8 @@ import {
   WebflowDateField,
   WebflowImageField,
   WebflowTagsField,
-  WebflowRichTextField
+  WebflowRichTextField,
+  WebflowReferenceSelectField // added
 } from './webflow-form-fields';
 import { IncomingNewsData } from '../interfaces-incoming';
 import { generateSlug } from './base-form';
@@ -39,76 +40,16 @@ const webflowNewsSchema = z.object({
   excerpt: z.string().optional(),
   externalLink: z.string().url().optional().or(z.literal('')),
   datePublished: z.string(),
-
-  // Sources
-  sources: z
-    .object({
-      id: z.string(),
-      slug: z.string()
-    })
-    .optional(),
-
-  // Programme relationships
-  programmeLabel: z
-    .object({
-      id: z.string(),
-      slug: z.string()
-    })
-    .optional(),
-  relatedProgrammes: z
-    .array(
-      z.object({
-        id: z.string(),
-        slug: z.string()
-      })
-    )
-    .default([]),
-
-  // People relationships
-  people: z
-    .array(
-      z.object({
-        id: z.string(),
-        slug: z.string()
-      })
-    )
-    .default([]),
-  relatedCjTeamMembers: z
-    .array(
-      z.object({
-        id: z.string(),
-        slug: z.string()
-      })
-    )
-    .default([]),
-
-  // Innovation relationships
-  innovations: z
-    .array(
-      z.object({
-        id: z.string(),
-        slug: z.string()
-      })
-    )
-    .default([]),
-
-  // Event relationships
-  relatedEvent: z
-    .object({
-      id: z.string(),
-      slug: z.string()
-    })
-    .optional(),
-  relatedEvents: z
-    .array(
-      z.object({
-        id: z.string(),
-        slug: z.string()
-      })
-    )
-    .default([]),
-
-  // Images with alt text
+  // Relations now store only slugs
+  sources: z.string().optional(), // single reference slug
+  programmeLabel: z.string().optional(), // single reference slug
+  relatedProgrammes: z.array(z.string()).default([]),
+  people: z.array(z.string()).default([]),
+  relatedCjTeamMembers: z.array(z.string()).default([]),
+  innovations: z.array(z.string()).default([]),
+  relatedEvent: z.string().optional(),
+  relatedEvents: z.array(z.string()).default([]),
+  // Images
   thumbnail: z
     .object({
       url: z.string().optional(),
@@ -123,17 +64,8 @@ const webflowNewsSchema = z.object({
     .optional(),
   imageAltTextEnglish: z.string().optional(),
   imageAltTextArabic: z.string().optional(),
-
-  // Tags
-  tags: z
-    .array(
-      z.object({
-        id: z.string(),
-        slug: z.string()
-      })
-    )
-    .default([]),
-
+  // Tags (multi reference slugs)
+  tags: z.array(z.string()).default([]),
   // Settings
   featured: z.boolean().default(false),
   pushToGR: z.boolean().default(false),
@@ -174,25 +106,32 @@ export const WebflowNewsForm = forwardRef<
       externalLink: initialData?.externalLink || '',
       datePublished:
         initialData?.datePublished || new Date().toISOString().split('T')[0],
-
-      // New relationship fields
-      sources: initialData?.sources || undefined,
-      programmeLabel: initialData?.programmeLabel || undefined,
-      relatedProgrammes: initialData?.relatedProgrammes || [],
-      people: initialData?.people || [],
-      relatedCjTeamMembers: initialData?.relatedCjTeamMembers || [],
-      innovations: initialData?.innovations || [],
-      relatedEvent: initialData?.relatedEvent || undefined,
-      relatedEvents: initialData?.relatedEvents || [],
-
-      // Images and alt text
+      // Map incoming reference objects -> slugs
+      sources: (initialData?.sources as any)?.slug || undefined,
+      programmeLabel: (initialData?.programmeLabel as any)?.slug || undefined,
+      relatedProgrammes: Array.isArray(initialData?.relatedProgrammes)
+        ? (initialData?.relatedProgrammes as any[]).map((r) => r.slug)
+        : [],
+      people: Array.isArray(initialData?.people)
+        ? (initialData?.people as any[]).map((r) => r.slug)
+        : [],
+      relatedCjTeamMembers: Array.isArray(initialData?.relatedCjTeamMembers)
+        ? (initialData?.relatedCjTeamMembers as any[]).map((r) => r.slug)
+        : [],
+      innovations: Array.isArray(initialData?.innovations)
+        ? (initialData?.innovations as any[]).map((r) => r.slug)
+        : [],
+      relatedEvent: (initialData?.relatedEvent as any)?.slug || undefined,
+      relatedEvents: Array.isArray(initialData?.relatedEvents)
+        ? (initialData?.relatedEvents as any[]).map((r) => r.slug)
+        : [],
       thumbnail: initialData?.thumbnail || { url: '', alt: '' },
       heroImage: initialData?.heroImage || { url: '', alt: '' },
       imageAltTextEnglish: initialData?.imageAltTextEnglish || '',
       imageAltTextArabic: initialData?.imageAltTextArabic || '',
-
-      // Tags and settings
-      tags: initialData?.tags || [],
+      tags: Array.isArray(initialData?.tags)
+        ? (initialData?.tags as any[]).map((r) => r.slug)
+        : [],
       featured: initialData?.featured || false,
       pushToGR: initialData?.pushToGR || false,
       removeFromNewsGrid: initialData?.removeFromNewsGrid || false
@@ -249,30 +188,35 @@ export const WebflowNewsForm = forwardRef<
       externalLink: initialData?.externalLink || '',
       datePublished:
         initialData?.datePublished || new Date().toISOString().split('T')[0],
-
-      // New relationship fields
-      sources: initialData?.sources || undefined,
-      programmeLabel: initialData?.programmeLabel || undefined,
-      relatedProgrammes: initialData?.relatedProgrammes || [],
-      people: initialData?.people || [],
-      relatedCjTeamMembers: initialData?.relatedCjTeamMembers || [],
-      innovations: initialData?.innovations || [],
-      relatedEvent: initialData?.relatedEvent || undefined,
-      relatedEvents: initialData?.relatedEvents || [],
-
-      // Images and alt text
+      sources: (initialData?.sources as any)?.slug || undefined,
+      programmeLabel: (initialData?.programmeLabel as any)?.slug || undefined,
+      relatedProgrammes: Array.isArray(initialData?.relatedProgrammes)
+        ? (initialData?.relatedProgrammes as any[]).map((r) => r.slug)
+        : [],
+      people: Array.isArray(initialData?.people)
+        ? (initialData?.people as any[]).map((r) => r.slug)
+        : [],
+      relatedCjTeamMembers: Array.isArray(initialData?.relatedCjTeamMembers)
+        ? (initialData?.relatedCjTeamMembers as any[]).map((r) => r.slug)
+        : [],
+      innovations: Array.isArray(initialData?.innovations)
+        ? (initialData?.innovations as any[]).map((r) => r.slug)
+        : [],
+      relatedEvent: (initialData?.relatedEvent as any)?.slug || undefined,
+      relatedEvents: Array.isArray(initialData?.relatedEvents)
+        ? (initialData?.relatedEvents as any[]).map((r) => r.slug)
+        : [],
       thumbnail: initialData?.thumbnail || { url: '', alt: '' },
       heroImage: initialData?.heroImage || { url: '', alt: '' },
       imageAltTextEnglish: initialData?.imageAltTextEnglish || '',
       imageAltTextArabic: initialData?.imageAltTextArabic || '',
-
-      // Tags and settings
-      tags: initialData?.tags || [],
+      tags: Array.isArray(initialData?.tags)
+        ? (initialData?.tags as any[]).map((r) => r.slug)
+        : [],
       featured: initialData?.featured || false,
       pushToGR: initialData?.pushToGR || false,
       removeFromNewsGrid: initialData?.removeFromNewsGrid || false
-    };
-
+    } as WebflowNewsFormData;
     form.reset(newValues);
   }, [initialData, form]);
 
@@ -300,11 +244,60 @@ export const WebflowNewsForm = forwardRef<
   };
 
   const handleSubmit = async (data: WebflowNewsFormData) => {
-    console.log('📋 News Form Raw Data:', JSON.stringify(data, null, 2));
-
+    console.log(
+      '📋 News Form Raw Data (slug state):',
+      JSON.stringify(data, null, 2)
+    );
+    // Transform slug fields back into reference object structures
+    const transformed: IncomingNewsData = {
+      title: data.title,
+      slug: data.slug,
+      status: data.status,
+      description: data.description,
+      arabicTitle: data.arabicTitle,
+      summary: data.summary,
+      summaryArabic: data.summaryArabic,
+      excerpt: data.excerpt,
+      externalLink: data.externalLink || '',
+      datePublished: data.datePublished,
+      thumbnail: data.thumbnail?.url
+        ? { url: data.thumbnail.url, alt: data.thumbnail.alt || '' }
+        : undefined,
+      heroImage: data.heroImage?.url
+        ? { url: data.heroImage.url, alt: data.heroImage.alt || '' }
+        : undefined,
+      imageAltTextEnglish: data.imageAltTextEnglish,
+      imageAltTextArabic: data.imageAltTextArabic,
+      featured: data.featured,
+      pushToGR: data.pushToGR,
+      removeFromNewsGrid: data.removeFromNewsGrid,
+      // Reconstruct single refs
+      sources: data.sources
+        ? { id: data.sources, slug: data.sources }
+        : undefined,
+      programmeLabel: data.programmeLabel
+        ? { id: data.programmeLabel, slug: data.programmeLabel }
+        : undefined,
+      relatedEvent: data.relatedEvent
+        ? { id: data.relatedEvent, slug: data.relatedEvent }
+        : undefined,
+      // Reconstruct arrays
+      relatedProgrammes: data.relatedProgrammes.map((s) => ({
+        id: s,
+        slug: s
+      })),
+      people: data.people.map((s) => ({ id: s, slug: s })),
+      relatedCjTeamMembers: data.relatedCjTeamMembers.map((s) => ({
+        id: s,
+        slug: s
+      })),
+      innovations: data.innovations.map((s) => ({ id: s, slug: s })),
+      relatedEvents: data.relatedEvents.map((s) => ({ id: s, slug: s })),
+      tags: data.tags.map((s) => ({ id: s, slug: s }))
+    };
     try {
       setIsLoading(true);
-      await onSubmit(data as IncomingNewsData);
+      await onSubmit(transformed);
     } catch (error) {
       console.error('Form submission error:', error);
     } finally {
@@ -522,10 +515,14 @@ export const WebflowNewsForm = forwardRef<
                   </div>
 
                   {/* Tags */}
-                  <WebflowTagsField
+                  <WebflowReferenceSelectField
                     control={form.control}
                     name="tags"
                     label="Tags"
+                    collectionType="tag"
+                    multiple
+                    statusFilter="all"
+                    placeholder="Search tags"
                   />
 
                   {/* Settings */}
@@ -563,69 +560,87 @@ export const WebflowNewsForm = forwardRef<
                     </h3>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <WebflowSelectField
+                      <WebflowReferenceSelectField
                         control={form.control}
                         name="sources"
                         label="Sources"
-                        options={sourcesOptions}
-                        placeholder="Select a source"
+                        collectionType="source"
+                        placeholder="Select source"
+                        allowClear
                       />
 
-                      <WebflowSelectField
+                      <WebflowReferenceSelectField
                         control={form.control}
                         name="programmeLabel"
                         label="Programme Label"
-                        options={programmeLabelOptions}
-                        placeholder="Select a programme"
+                        collectionType="programme"
+                        placeholder="Select programme"
+                        allowClear
                       />
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <WebflowTagsField
+                      <WebflowReferenceSelectField
                         control={form.control}
                         name="relatedProgrammes"
                         label="Related Programmes"
-                        helperText="Multiple programmes related to this news (multi-select)"
+                        collectionType="programme"
+                        multiple
+                        placeholder="Search programmes"
+                        helperText="Multiple programmes related to this news"
                       />
 
-                      <WebflowSelectField
+                      <WebflowReferenceSelectField
                         control={form.control}
                         name="relatedEvent"
                         label="Related Event"
-                        options={relatedEventOptions}
-                        placeholder="Select a related event"
+                        collectionType="event"
+                        placeholder="Select related event"
+                        allowClear
                       />
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <WebflowTagsField
+                      <WebflowReferenceSelectField
                         control={form.control}
                         name="relatedEvents"
                         label="Related Events"
-                        helperText="Multiple events related to this news (multi-select)"
+                        collectionType="event"
+                        multiple
+                        placeholder="Search events"
+                        helperText="Multiple events related to this news"
                       />
 
-                      <WebflowTagsField
+                      <WebflowReferenceSelectField
                         control={form.control}
                         name="people"
                         label="People"
-                        helperText="People featured or mentioned in this news (multi-select)"
+                        collectionType="people"
+                        multiple
+                        placeholder="Search people"
+                        helperText="People featured or mentioned"
                       />
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <WebflowTagsField
+                      <WebflowReferenceSelectField
                         control={form.control}
                         name="relatedCjTeamMembers"
                         label="Related CJ Team Members"
-                        helperText="Community Jameel team members related to this news (multi-select)"
+                        collectionType="team" // switched from 'people' to correct internal team collection
+                        multiple
+                        placeholder="Search team"
+                        helperText="CJ team members related to this news"
                       />
 
-                      <WebflowTagsField
+                      <WebflowReferenceSelectField
                         control={form.control}
                         name="innovations"
                         label="Innovations"
-                        helperText="Innovations featured in this news (multi-select)"
+                        collectionType="innovation"
+                        multiple
+                        placeholder="Search innovations"
+                        helperText="Innovations featured in this news"
                       />
                     </div>
                   </div>

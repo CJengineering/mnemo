@@ -20,8 +20,8 @@ import {
   WebflowSwitchField,
   WebflowDateField,
   WebflowImageField,
-  WebflowTagsField,
-  WebflowRichTextField
+  WebflowRichTextField,
+  WebflowReferenceSelectField // added for unified reference handling
 } from './webflow-form-fields';
 import { IncomingPostData } from '../interfaces-incoming';
 import { generateSlug } from './base-form';
@@ -96,57 +96,14 @@ const webflowPostSchema = z.object({
   heroVideoYoutubeId: z.string().optional(),
   heroVideoArabicYoutubeId: z.string().optional(),
 
-  // Multi-reference relationships
-  programmeLabel: z
-    .object({
-      id: z.string(),
-      slug: z.string()
-    })
-    .optional(),
-  relatedProgrammes: z
-    .array(
-      z.object({
-        id: z.string(),
-        slug: z.string()
-      })
-    )
-    .default([]),
-  blogCategory: z
-    .object({
-      id: z.string(),
-      slug: z.string()
-    })
-    .optional(),
-  relatedEvent: z
-    .object({
-      id: z.string(),
-      slug: z.string()
-    })
-    .optional(),
-  people: z
-    .array(
-      z.object({
-        id: z.string(),
-        slug: z.string()
-      })
-    )
-    .default([]),
-  innovations: z
-    .array(
-      z.object({
-        id: z.string(),
-        slug: z.string()
-      })
-    )
-    .default([]),
-  tags: z
-    .array(
-      z.object({
-        id: z.string(),
-        slug: z.string()
-      })
-    )
-    .default([]),
+  // Unified Relations now slug-only in form state
+  programmeLabel: z.string().optional(),
+  relatedProgrammes: z.array(z.string()).default([]),
+  blogCategory: z.string().optional(),
+  relatedEvent: z.string().optional(),
+  people: z.array(z.string()).default([]),
+  innovations: z.array(z.string()).default([]),
+  tags: z.array(z.string()).default([]),
 
   // Flags
   featured: z.boolean().default(false),
@@ -182,62 +139,60 @@ export const WebflowPostForm = forwardRef<
       slug: initialData?.slug || '',
       status: (initialData?.status as 'draft' | 'published') || 'draft',
       description: initialData?.description || '',
-
-      // Bilingual content
       arabicTitle: initialData?.arabicTitle || '',
       arabicCompleteIncomplete: initialData?.arabicCompleteIncomplete || false,
-
-      // Publication details
       datePublished:
         initialData?.datePublished || new Date().toISOString().split('T')[0],
       location: initialData?.location || '',
       locationArabic: initialData?.locationArabic || '',
-
-      // SEO
       seoTitle: initialData?.seoTitle || '',
       seoTitleArabic: initialData?.seoTitleArabic || '',
       seoMeta: initialData?.seoMeta || '',
       seoMetaArabic: initialData?.seoMetaArabic || '',
-
-      // Content
       bodyEnglish: initialData?.bodyEnglish || '',
       bodyArabic: initialData?.bodyArabic || '',
       bulletPointsEnglish: initialData?.bulletPointsEnglish || '',
       bulletPointsArabic: initialData?.bulletPointsArabic || '',
-
-      // Images
       thumbnail: initialData?.thumbnail || { url: '', alt: '' },
       heroImage: initialData?.heroImage || { url: '', alt: '' },
       mainImage: initialData?.mainImage || { url: '', alt: '' },
       openGraphImage: initialData?.openGraphImage || { url: '', alt: '' },
-
-      // Image metadata
       altTextHeroImageEnglish: initialData?.altTextHeroImageEnglish || '',
       altTextHeroImageArabic: initialData?.altTextHeroImageArabic || '',
       photoCreditHeroImageEnglish:
         initialData?.photoCreditHeroImageEnglish || '',
       photoCreditHeroImageArabic: initialData?.photoCreditHeroImageArabic || '',
-
-      // Image gallery
       imageCarousel: initialData?.imageCarousel || [],
       imageGalleryCredits: initialData?.imageGalleryCredits || '',
       imageGalleryCreditsArabic: initialData?.imageGalleryCreditsArabic || '',
-
-      // Video
       videoAsHero: initialData?.videoAsHero || false,
       heroVideoYoutubeId: initialData?.heroVideoYoutubeId || '',
       heroVideoArabicYoutubeId: initialData?.heroVideoArabicYoutubeId || '',
-
-      // Relationships
-      programmeLabel: initialData?.programmeLabel || undefined,
-      relatedProgrammes: initialData?.relatedProgrammes || [],
-      blogCategory: initialData?.blogCategory || undefined,
-      relatedEvent: initialData?.relatedEvent || undefined,
-      people: initialData?.people || [],
-      innovations: initialData?.innovations || [],
-      tags: initialData?.tags || [],
-
-      // Flags
+      // Map incoming reference objects -> slugs
+      programmeLabel:
+        (initialData?.programmeLabel as any)?.slug ||
+        (initialData?.programmeLabel as any)?.id ||
+        undefined,
+      relatedProgrammes: Array.isArray(initialData?.relatedProgrammes)
+        ? (initialData?.relatedProgrammes as any[]).map((r) => r.slug || r.id)
+        : [],
+      blogCategory:
+        (initialData?.blogCategory as any)?.slug ||
+        (initialData?.blogCategory as any)?.id ||
+        undefined,
+      relatedEvent:
+        (initialData?.relatedEvent as any)?.slug ||
+        (initialData?.relatedEvent as any)?.id ||
+        undefined,
+      people: Array.isArray(initialData?.people)
+        ? (initialData?.people as any[]).map((r) => r.slug || r.id)
+        : [],
+      innovations: Array.isArray(initialData?.innovations)
+        ? (initialData?.innovations as any[]).map((r) => r.slug || r.id)
+        : [],
+      tags: Array.isArray(initialData?.tags)
+        ? (initialData?.tags as any[]).map((r) => r.slug || r.id)
+        : [],
       featured: initialData?.featured || false,
       pushToGR: initialData?.pushToGR || false,
       sitemapIndexing: initialData?.sitemapIndexing || true
@@ -251,62 +206,59 @@ export const WebflowPostForm = forwardRef<
       slug: initialData?.slug || '',
       status: (initialData?.status as 'draft' | 'published') || 'draft',
       description: initialData?.description || '',
-
-      // Bilingual content
       arabicTitle: initialData?.arabicTitle || '',
       arabicCompleteIncomplete: initialData?.arabicCompleteIncomplete || false,
-
-      // Publication details
       datePublished:
         initialData?.datePublished || new Date().toISOString().split('T')[0],
       location: initialData?.location || '',
       locationArabic: initialData?.locationArabic || '',
-
-      // SEO
       seoTitle: initialData?.seoTitle || '',
       seoTitleArabic: initialData?.seoTitleArabic || '',
       seoMeta: initialData?.seoMeta || '',
       seoMetaArabic: initialData?.seoMetaArabic || '',
-
-      // Content
       bodyEnglish: initialData?.bodyEnglish || '',
       bodyArabic: initialData?.bodyArabic || '',
       bulletPointsEnglish: initialData?.bulletPointsEnglish || '',
       bulletPointsArabic: initialData?.bulletPointsArabic || '',
-
-      // Images
       thumbnail: initialData?.thumbnail || { url: '', alt: '' },
       heroImage: initialData?.heroImage || { url: '', alt: '' },
       mainImage: initialData?.mainImage || { url: '', alt: '' },
       openGraphImage: initialData?.openGraphImage || { url: '', alt: '' },
-
-      // Image metadata
       altTextHeroImageEnglish: initialData?.altTextHeroImageEnglish || '',
       altTextHeroImageArabic: initialData?.altTextHeroImageArabic || '',
       photoCreditHeroImageEnglish:
         initialData?.photoCreditHeroImageEnglish || '',
       photoCreditHeroImageArabic: initialData?.photoCreditHeroImageArabic || '',
-
-      // Image gallery
       imageCarousel: initialData?.imageCarousel || [],
       imageGalleryCredits: initialData?.imageGalleryCredits || '',
       imageGalleryCreditsArabic: initialData?.imageGalleryCreditsArabic || '',
-
-      // Video
       videoAsHero: initialData?.videoAsHero || false,
       heroVideoYoutubeId: initialData?.heroVideoYoutubeId || '',
       heroVideoArabicYoutubeId: initialData?.heroVideoArabicYoutubeId || '',
-
-      // Relationships
-      programmeLabel: initialData?.programmeLabel || undefined,
-      relatedProgrammes: initialData?.relatedProgrammes || [],
-      blogCategory: initialData?.blogCategory || undefined,
-      relatedEvent: initialData?.relatedEvent || undefined,
-      people: initialData?.people || [],
-      innovations: initialData?.innovations || [],
-      tags: initialData?.tags || [],
-
-      // Flags
+      programmeLabel:
+        (initialData?.programmeLabel as any)?.slug ||
+        (initialData?.programmeLabel as any)?.id ||
+        undefined,
+      relatedProgrammes: Array.isArray(initialData?.relatedProgrammes)
+        ? (initialData?.relatedProgrammes as any[]).map((r) => r.slug || r.id)
+        : [],
+      blogCategory:
+        (initialData?.blogCategory as any)?.slug ||
+        (initialData?.blogCategory as any)?.id ||
+        undefined,
+      relatedEvent:
+        (initialData?.relatedEvent as any)?.slug ||
+        (initialData?.relatedEvent as any)?.id ||
+        undefined,
+      people: Array.isArray(initialData?.people)
+        ? (initialData?.people as any[]).map((r) => r.slug || r.id)
+        : [],
+      innovations: Array.isArray(initialData?.innovations)
+        ? (initialData?.innovations as any[]).map((r) => r.slug || r.id)
+        : [],
+      tags: Array.isArray(initialData?.tags)
+        ? (initialData?.tags as any[]).map((r) => r.slug || r.id)
+        : [],
       featured: initialData?.featured || false,
       pushToGR: initialData?.pushToGR || false,
       sitemapIndexing: initialData?.sitemapIndexing || true
@@ -341,7 +293,65 @@ export const WebflowPostForm = forwardRef<
   const handleSubmit = async (data: WebflowPostFormData) => {
     setIsLoading(true);
     try {
-      await onSubmit(data as IncomingPostData);
+      // Reconstruct reference objects for API consumption
+      const transformed: IncomingPostData = {
+        title: data.title,
+        slug: data.slug,
+        status: data.status,
+        description: data.description,
+        arabicTitle: data.arabicTitle,
+        arabicCompleteIncomplete: data.arabicCompleteIncomplete,
+        datePublished: data.datePublished,
+        location: data.location,
+        locationArabic: data.locationArabic,
+        seoTitle: data.seoTitle,
+        seoTitleArabic: data.seoTitleArabic,
+        seoMeta: data.seoMeta,
+        seoMetaArabic: data.seoMetaArabic,
+        bodyEnglish: data.bodyEnglish,
+        bodyArabic: data.bodyArabic,
+        bulletPointsEnglish: data.bulletPointsEnglish,
+        bulletPointsArabic: data.bulletPointsArabic,
+        thumbnail: { url: data.thumbnail.url, alt: data.thumbnail.alt || '' },
+        heroImage: { url: data.heroImage.url, alt: data.heroImage.alt || '' },
+        mainImage: { url: data.mainImage.url, alt: data.mainImage.alt || '' },
+        openGraphImage: {
+          url: data.openGraphImage.url,
+          alt: data.openGraphImage.alt || ''
+        },
+        altTextHeroImageEnglish: data.altTextHeroImageEnglish,
+        altTextHeroImageArabic: data.altTextHeroImageArabic,
+        photoCreditHeroImageEnglish: data.photoCreditHeroImageEnglish,
+        photoCreditHeroImageArabic: data.photoCreditHeroImageArabic,
+        videoAsHero: data.videoAsHero,
+        heroVideoYoutubeId: data.heroVideoYoutubeId,
+        heroVideoArabicYoutubeId: data.heroVideoArabicYoutubeId,
+        programmeLabel: data.programmeLabel
+          ? { id: data.programmeLabel, slug: data.programmeLabel }
+          : undefined,
+        relatedProgrammes: data.relatedProgrammes.map((s) => ({
+          id: s,
+          slug: s
+        })),
+        blogCategory: data.blogCategory
+          ? { id: data.blogCategory, slug: data.blogCategory }
+          : undefined,
+        relatedEvent: data.relatedEvent
+          ? { id: data.relatedEvent, slug: data.relatedEvent }
+          : undefined,
+        people: data.people.map((s) => ({ id: s, slug: s })),
+        innovations: data.innovations.map((s) => ({ id: s, slug: s })),
+        tags: data.tags.map((s) => ({ id: s, slug: s })),
+        imageCarousel: data.imageCarousel
+          ?.filter((img) => img.url)
+          .map((img) => ({ url: img.url, alt: img.alt || '' })),
+        imageGalleryCredits: data.imageGalleryCredits,
+        imageGalleryCreditsArabic: data.imageGalleryCreditsArabic,
+        featured: data.featured,
+        pushToGR: data.pushToGR,
+        sitemapIndexing: data.sitemapIndexing
+      };
+      await onSubmit(transformed as any);
     } catch (error) {
       console.error('Form submission error:', error);
     } finally {
@@ -362,79 +372,6 @@ export const WebflowPostForm = forwardRef<
   const statusOptions = [
     { value: 'draft', label: 'Draft' },
     { value: 'published', label: 'Published' }
-  ];
-
-  // Dropdown options for multi-reference fields
-  const programmeLabelOptions = [
-    { id: 'prog-1', slug: 'water-security', label: 'Water Security' },
-    { id: 'prog-2', slug: 'climate-change', label: 'Climate Change' },
-    { id: 'prog-3', slug: 'education', label: 'Education' },
-    { id: 'prog-4', slug: 'healthcare', label: 'Healthcare' },
-    { id: 'prog-5', slug: 'innovation', label: 'Innovation' }
-  ];
-
-  const relatedProgrammesOptions = [
-    { id: 'prog-1', slug: 'water-security', label: 'Water Security' },
-    { id: 'prog-2', slug: 'climate-change', label: 'Climate Change' },
-    { id: 'prog-3', slug: 'education', label: 'Education' },
-    { id: 'prog-4', slug: 'healthcare', label: 'Healthcare' },
-    { id: 'prog-5', slug: 'innovation', label: 'Innovation' },
-    { id: 'prog-6', slug: 'food-security', label: 'Food Security' },
-    { id: 'prog-7', slug: 'poverty-alleviation', label: 'Poverty Alleviation' }
-  ];
-
-  const blogCategoryOptions = [
-    { id: 'cat-1', slug: 'news', label: 'News' },
-    { id: 'cat-2', slug: 'research', label: 'Research' },
-    { id: 'cat-3', slug: 'insights', label: 'Insights' },
-    { id: 'cat-4', slug: 'events', label: 'Events' },
-    { id: 'cat-5', slug: 'announcements', label: 'Announcements' }
-  ];
-
-  const relatedEventOptions = [
-    { id: 'event-1', slug: 'water-summit-2024', label: 'Water Summit 2024' },
-    { id: 'event-2', slug: 'climate-conference', label: 'Climate Conference' },
-    { id: 'event-3', slug: 'innovation-forum', label: 'Innovation Forum' },
-    {
-      id: 'event-4',
-      slug: 'education-symposium',
-      label: 'Education Symposium'
-    },
-    { id: 'event-5', slug: 'health-workshop', label: 'Health Workshop' }
-  ];
-
-  const peopleOptions = [
-    { id: 'person-1', slug: 'dr-john-smith', label: 'Dr. John Smith' },
-    { id: 'person-2', slug: 'prof-sarah-jones', label: 'Prof. Sarah Jones' },
-    { id: 'person-3', slug: 'ahmed-hassan', label: 'Ahmed Hassan' },
-    { id: 'person-4', slug: 'fatima-al-zahra', label: 'Fatima Al-Zahra' },
-    { id: 'person-5', slug: 'dr-mohammed-ali', label: 'Dr. Mohammed Ali' },
-    { id: 'person-6', slug: 'laura-wilson', label: 'Laura Wilson' }
-  ];
-
-  const innovationsOptions = [
-    {
-      id: 'innov-1',
-      slug: 'water-purification-tech',
-      label: 'Water Purification Technology'
-    },
-    {
-      id: 'innov-2',
-      slug: 'solar-desalination',
-      label: 'Solar Desalination System'
-    },
-    { id: 'innov-3', slug: 'ai-healthcare', label: 'AI Healthcare Platform' },
-    { id: 'innov-4', slug: 'education-app', label: 'Digital Education App' },
-    {
-      id: 'innov-5',
-      slug: 'climate-monitoring',
-      label: 'Climate Monitoring System'
-    },
-    {
-      id: 'innov-6',
-      slug: 'food-production',
-      label: 'Sustainable Food Production'
-    }
   ];
 
   return (
@@ -696,61 +633,64 @@ export const WebflowPostForm = forwardRef<
                     </h3>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <WebflowSelectField
+                      <WebflowReferenceSelectField
                         control={form.control}
                         name="programmeLabel"
                         label="Programme Label"
-                        options={programmeLabelOptions.map((opt) => ({
-                          value: opt.id,
-                          label: opt.label
-                        }))}
+                        collectionType="programme"
                         placeholder="Select programme"
+                        allowClear
                       />
 
-                      <WebflowSelectField
+                      <WebflowReferenceSelectField
                         control={form.control}
                         name="blogCategory"
                         label="Blog Category"
-                        options={blogCategoryOptions.map((opt) => ({
-                          value: opt.id,
-                          label: opt.label
-                        }))}
+                        collectionType="blogCategory" // TODO: confirm collection type key
                         placeholder="Select category"
+                        allowClear
                       />
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <WebflowTagsField
+                      <WebflowReferenceSelectField
                         control={form.control}
                         name="relatedProgrammes"
                         label="Related Programmes"
+                        collectionType="programme"
+                        multiple
+                        placeholder="Search & select programmes"
                         helperText="Multiple programmes related to this post"
                       />
 
-                      <WebflowSelectField
+                      <WebflowReferenceSelectField
                         control={form.control}
                         name="relatedEvent"
                         label="Related Event"
-                        options={relatedEventOptions.map((opt) => ({
-                          value: opt.id,
-                          label: opt.label
-                        }))}
+                        collectionType="event"
                         placeholder="Select event"
+                        allowClear
                       />
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <WebflowTagsField
+                      <WebflowReferenceSelectField
                         control={form.control}
                         name="people"
                         label="People"
+                        collectionType="people"
+                        multiple
+                        placeholder="Search people"
                         helperText="People featured or mentioned in this post"
                       />
 
-                      <WebflowTagsField
+                      <WebflowReferenceSelectField
                         control={form.control}
                         name="innovations"
                         label="Innovations"
+                        collectionType="innovation"
+                        multiple
+                        placeholder="Search innovations"
                         helperText="Innovations featured in this post"
                       />
                     </div>
@@ -897,10 +837,13 @@ export const WebflowPostForm = forwardRef<
                   </div>
 
                   {/* Tags */}
-                  <WebflowTagsField
+                  <WebflowReferenceSelectField
                     control={form.control}
                     name="tags"
                     label="Tags"
+                    collectionType="tag"
+                    multiple
+                    placeholder="Search tags"
                   />
 
                   {/* Settings */}

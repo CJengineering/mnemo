@@ -20,7 +20,8 @@ import {
   WebflowSwitchField,
   WebflowImageField,
   WebflowTagsField,
-  WebflowRichTextField
+  WebflowRichTextField,
+  WebflowReferenceSelectField // added
 } from './webflow-form-fields';
 import { IncomingPersonData } from '../interfaces-incoming';
 import { generateSlug } from './base-form';
@@ -46,9 +47,9 @@ const webflowPeopleSchema = z.object({
   pushToGr: z.boolean().default(false),
   hero: z.boolean().default(false),
 
-  // Programme relations
-  relatedProgramme: referenceItemSchema.optional(),
-  relatedProgrammes: z.array(referenceItemSchema).default([]),
+  // Programme relations (store slug(s) only in form state)
+  relatedProgramme: z.string().optional(),
+  relatedProgrammes: z.array(z.string()).default([]),
 
   // Appearance
   color: z.string().optional(),
@@ -139,8 +140,13 @@ function toIncoming(data: WebflowPeopleFormData): IncomingPersonData {
     'arabic-on-off': data.arabicOnOff,
     'push-to-gr': data.pushToGr,
     hero: data.hero,
-    'related-programme': data.relatedProgramme,
-    'related-programmes': data.relatedProgrammes,
+    // bridge slug(s) -> reference object(s)
+    'related-programme': data.relatedProgramme
+      ? ({ id: data.relatedProgramme, slug: data.relatedProgramme } as any)
+      : undefined,
+    'related-programmes': data.relatedProgrammes?.length
+      ? (data.relatedProgrammes.map((slug) => ({ id: slug, slug })) as any)
+      : [],
     color: data.color,
     role: data.role,
     'role-arabic': data.roleArabic,
@@ -200,9 +206,12 @@ export const WebflowPeopleForm = forwardRef<
       pushToGr: Boolean(initialData?.['push-to-gr']) || false,
       hero: Boolean(initialData?.hero) || false,
 
+      // extract slug(s) from reference object(s)
       relatedProgramme:
-        (initialData?.['related-programme'] as any) || undefined,
-      relatedProgrammes: (initialData?.['related-programmes'] as any) || [],
+        (initialData?.['related-programme'] as any)?.slug || undefined,
+      relatedProgrammes: Array.isArray(initialData?.['related-programmes'])
+        ? (initialData?.['related-programmes'] as any[]).map((r) => r.slug)
+        : [],
 
       color: (initialData?.color as string) || '',
 
@@ -275,8 +284,10 @@ export const WebflowPeopleForm = forwardRef<
       pushToGr: Boolean(initialData?.['push-to-gr']) || false,
       hero: Boolean(initialData?.hero) || false,
       relatedProgramme:
-        (initialData?.['related-programme'] as any) || undefined,
-      relatedProgrammes: (initialData?.['related-programmes'] as any) || [],
+        (initialData?.['related-programme'] as any)?.slug || undefined,
+      relatedProgrammes: Array.isArray(initialData?.['related-programmes'])
+        ? (initialData?.['related-programmes'] as any[]).map((r) => r.slug)
+        : [],
       color: (initialData?.color as string) || '',
       role: (initialData?.role as string) || '',
       roleArabic: (initialData?.['role-arabic'] as string) || '',
@@ -350,13 +361,6 @@ export const WebflowPeopleForm = forwardRef<
   const statusOptions = [
     { value: 'draft', label: 'Draft' },
     { value: 'published', label: 'Published' }
-  ];
-
-  // Mock select options (replace with real data later)
-  const programmeOptions = [
-    { value: 'prog-1', label: 'Water Security' },
-    { value: 'prog-2', label: 'Climate Change' },
-    { value: 'prog-3', label: 'Education' }
   ];
 
   return (
@@ -587,18 +591,22 @@ export const WebflowPeopleForm = forwardRef<
                   Relationships
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <WebflowSelectField
+                  <WebflowReferenceSelectField
                     control={form.control}
                     name="relatedProgramme"
                     label="Related Programme"
-                    options={programmeOptions}
+                    collectionType="programme"
                     placeholder="Select programme"
+                    helperText="Single programme reference"
                   />
-                  <WebflowTagsField
+                  <WebflowReferenceSelectField
                     control={form.control}
                     name="relatedProgrammes"
                     label="Related Programmes"
-                    helperText="Multiple programmes (multi-select)"
+                    collectionType="programme"
+                    multiple
+                    placeholder="Search & select programmes"
+                    helperText="Multiple programme references"
                   />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

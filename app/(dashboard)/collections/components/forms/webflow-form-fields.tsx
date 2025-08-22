@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Control, useWatch } from 'react-hook-form';
 import {
   FormControl,
@@ -1054,6 +1054,468 @@ export function WebflowTagsField({
           <FormMessage className="text-red-400 text-xs" />
         </FormItem>
       )}
+    />
+  );
+}
+
+// New: Dynamic reference selector (fetches collection items and stores only slugs)
+interface WebflowReferenceSelectFieldProps {
+  control: Control<any>;
+  name: string; // form field name
+  label: string; // UI label
+  collectionType: string; // e.g. 'programme', 'event', 'people', 'tag', 'source'
+  multiple?: boolean; // multi-select
+  required?: boolean;
+  placeholder?: string;
+  helperText?: string;
+  statusFilter?: 'published' | 'all'; // default published
+  disabled?: boolean;
+  maxSelections?: number; // optional cap for multi
+  allowClear?: boolean; // single select clear
+  allowCreatePlaceholderItem?: boolean; // future option
+}
+
+interface FetchedCollectionItem {
+  id: string;
+  slug: string;
+  title?: string;
+  data?: Record<string, any>;
+}
+
+// Simple in-memory cache per session (type+status -> items)
+const referenceCache: Record<string, FetchedCollectionItem[]> = {};
+// External API base (must point to deployed backend with the database)
+const EXTERNAL_API_BASE =
+  process.env.NEXT_PUBLIC_EXTERNAL_API_BASE_URL ||
+  'https://mnemo-app-e4f6j5kdsq-ew.a.run.app';
+
+// Webflow Reference Select Field Component
+export function WebflowReferenceSelectField({
+  control,
+  name,
+  label,
+  collectionType,
+  multiple = false,
+  required = false,
+  placeholder = 'Select...',
+  helperText,
+  statusFilter = 'published',
+  disabled = false,
+  maxSelections,
+  allowClear = true,
+  allowCreatePlaceholderItem = false
+}: WebflowReferenceSelectFieldProps) {
+  const [open, setOpen] = useState(false);
+  const [search, setSearch] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [items, setItems] = useState<FetchedCollectionItem[]>([]);
+  const [emptyMessage, setEmptyMessage] = useState<string | null>(null);
+  const containerRef = React.useRef<HTMLDivElement | null>(null);
+  const lastFetchedQuery = React.useRef<string>('');
+
+  const cacheKey = `${collectionType}|${statusFilter}`;
+
+  const mergeItems = React.useCallback((incoming: FetchedCollectionItem[]) => {
+    setItems((prev) => {
+      const map = new Map<string, FetchedCollectionItem>();
+      [...prev, ...incoming].forEach((i) => {
+        if (!map.has(i.slug)) map.set(i.slug, i);
+        else {
+          // prefer item with title/data
+          const existing = map.get(i.slug)!;
+          if (
+            (!existing.title && i.title) ||
+            (!existing.data && i.data) ||
+            (JSON.stringify(existing.data || {}) === '{}' && i.data)
+          ) {
+            map.set(i.slug, i);
+          }
+        }
+      });
+      return Array.from(map.values());
+    });
+  }, []);
+
+  // Map slug -> label for quick lookup
+  const labelFor = React.useCallback(
+    (slug: string): string => {
+      const found = items.find((i) => i.slug === slug);
+      if (!found) return slug; // fallback
+      return (
+        found.title ||
+        (found.data && (found.data.name || found.data.title)) ||
+        found.slug
+      );
+    },
+    [items]
+  );
+
+  // Initial fetch with caching
+  useEffect(() => {
+    let active = true;
+    async function load() {
+      setLoading(true);
+      setError(null);
+      setEmptyMessage(null);
+      try {
+        if (referenceCache[cacheKey]) {
+          mergeItems(referenceCache[cacheKey]);
+          setLoading(false);
+          return;
+        }
+        const qs = new URLSearchParams();
+        qs.append('type', collectionType);
+        if (statusFilter === 'published') qs.append('status', 'published');
+        const res = await fetch(
+          `${EXTERNAL_API_BASE}/api/collection-items?${qs.toString()}`
+        );
+        if (!res.ok) throw new Error('Failed to load items');
+        const json = await res.json();
+        if (!active) return;
+        if (json.success && Array.isArray(json.collectionItems)) {
+          const list = json.collectionItems as FetchedCollectionItem[];
+          if (list.length === 0) {
+            setEmptyMessage(
+              `No items found for type "${collectionType}"${statusFilter === 'published' ? ' (published only)' : ''}.`
+            );
+          }
+          setItems(list);
+          referenceCache[cacheKey] = list;
+        } else {
+          throw new Error(json.error || 'Invalid response');
+        }
+      } catch (e: any) {
+        if (!active) return;
+        if (
+          e.message.includes('relation') ||
+          e.message.includes('does not exist')
+        ) {
+          setEmptyMessage(
+            `Collection type "${collectionType}" is not implemented.`
+          );
+        } else {
+          setError(e.message || 'Error fetching items');
+        }
+      } finally {
+        if (active) setLoading(false);
+      }
+    }
+    load();
+    return () => {
+      active = false;
+    };
+  }, [collectionType, statusFilter, cacheKey, mergeItems]);
+
+  // When field has selected slugs that are not yet in items, fetch them by slug list
+  const preloadMissing = React.useCallback(
+    async (slugs: string[]) => {
+      const missing = slugs.filter((s) => !items.some((i) => i.slug === s));
+      if (missing.length === 0) return;
+      try {
+        const qs = new URLSearchParams();
+        qs.append('type', collectionType);
+        qs.append('slugs', missing.join(','));
+        if (statusFilter === 'published') qs.append('status', 'published');
+        const res = await fetch(
+          `${EXTERNAL_API_BASE}/api/collection-items?${qs.toString()}`
+        );
+        if (!res.ok) return;
+        const json = await res.json();
+        if (json.success && Array.isArray(json.collectionItems)) {
+          mergeItems(json.collectionItems as FetchedCollectionItem[]);
+        }
+      } catch (err) {
+        // silent
+      }
+    },
+    [collectionType, statusFilter, items, mergeItems]
+  );
+
+  // Server-side search (debounced)
+  useEffect(() => {
+    if (!open) return; // only search when dropdown open
+    const term = search.trim();
+    if (term.length === 0) return; // skip empty -> rely on cached initial list
+    const key = `${cacheKey}|search:${term}`;
+    if (lastFetchedQuery.current === key) return; // avoid duplicates
+    const handle = setTimeout(async () => {
+      lastFetchedQuery.current = key;
+      setLoading(true);
+      try {
+        const qs = new URLSearchParams();
+        qs.append('type', collectionType);
+        qs.append('search', term);
+        if (statusFilter === 'published') qs.append('status', 'published');
+        const res = await fetch(
+          `${EXTERNAL_API_BASE}/api/collection-items?${qs.toString()}`
+        );
+        if (!res.ok) throw new Error('Search failed');
+        const json = await res.json();
+        if (json.success && Array.isArray(json.collectionItems)) {
+          mergeItems(json.collectionItems as FetchedCollectionItem[]);
+        }
+      } catch (e) {
+        // ignore search errors silently
+      } finally {
+        setLoading(false);
+      }
+    }, 300);
+    return () => clearTimeout(handle);
+  }, [search, open, cacheKey, collectionType, statusFilter, mergeItems]);
+
+  // Close on outside click
+  useEffect(() => {
+    if (!open) return;
+    const handler = (e: MouseEvent) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(e.target as Node)
+      ) {
+        setOpen(false);
+      }
+    };
+    window.addEventListener('mousedown', handler);
+    return () => window.removeEventListener('mousedown', handler);
+  }, [open]);
+
+  // Filter items client-side for instant feedback (includes searched merges)
+  const filtered = items.filter((i) => {
+    const label = labelFor(i.slug).toLowerCase();
+    const term = search.toLowerCase();
+    return !term || label.includes(term) || i.slug.toLowerCase().includes(term);
+  });
+
+  const toggleSlug = (value: string[], slug: string): string[] => {
+    if (value.includes(slug)) {
+      return value.filter((s) => s !== slug);
+    }
+    if (maxSelections && value.length >= maxSelections) return value; // cap
+    return [...value, slug];
+  };
+
+  return (
+    <FormField
+      control={control}
+      name={name}
+      render={({ field }) => {
+        const currentValue = field.value || (multiple ? [] : '');
+        const selectedSlugs: string[] = multiple
+          ? (currentValue as string[])
+          : currentValue
+            ? [currentValue as string]
+            : [];
+
+        // Preload any missing selected slugs
+        useEffect(() => {
+          if (selectedSlugs.length > 0) preloadMissing(selectedSlugs);
+        }, [selectedSlugs, preloadMissing]);
+
+        return (
+          <FormItem className="space-y-3" ref={containerRef}>
+            <FormLabel className="text-sm font-medium text-white flex items-center gap-1">
+              {label}
+              {required && <span className="text-red-500">*</span>}
+            </FormLabel>
+            <FormControl>
+              <div className="relative">
+                {/* Display area */}
+                <div
+                  className={
+                    'min-h-[46px] w-full flex items-center flex-wrap gap-2 rounded-lg border px-3 py-2 cursor-pointer bg-gray-800 border-gray-600 hover:border-gray-500 ' +
+                    (disabled ? 'opacity-60 cursor-not-allowed' : '')
+                  }
+                  onClick={() => !disabled && setOpen((o) => !o)}
+                >
+                  {multiple ? (
+                    selectedSlugs.length > 0 ? (
+                      selectedSlugs.map((slug) => (
+                        <Badge
+                          key={slug}
+                          variant="secondary"
+                          className="bg-blue-900 text-blue-100 hover:bg-blue-800 px-2 py-1 flex items-center gap-1"
+                        >
+                          {labelFor(slug)}
+                          <button
+                            type="button"
+                            className="ml-1 text-blue-300 hover:text-white"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              const newVal = selectedSlugs.filter(
+                                (s) => s !== slug
+                              );
+                              field.onChange(newVal);
+                            }}
+                          >
+                            <X className="h-3 w-3" />
+                          </button>
+                        </Badge>
+                      ))
+                    ) : (
+                      <span className="text-xs text-gray-400">
+                        {placeholder}
+                      </span>
+                    )
+                  ) : selectedSlugs.length === 1 ? (
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm text-white truncate">
+                        {labelFor(selectedSlugs[0])}
+                      </span>
+                      {allowClear && !disabled && (
+                        <button
+                          type="button"
+                          className="text-gray-400 hover:text-white"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            field.onChange('');
+                          }}
+                        >
+                          <X className="h-4 w-4" />
+                        </button>
+                      )}
+                    </div>
+                  ) : (
+                    <span className="text-xs text-gray-400">{placeholder}</span>
+                  )}
+
+                  <div className="ml-auto flex items-center gap-2 text-gray-400">
+                    {loading && (
+                      <svg
+                        className="animate-spin h-4 w-4"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          strokeWidth="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          d="M4 12a8 8 0 018-8"
+                          strokeWidth="4"
+                          strokeLinecap="round"
+                        ></path>
+                      </svg>
+                    )}
+                    <svg
+                      className={`h-4 w-4 transition-transform ${open ? 'rotate-180' : ''}`}
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  </div>
+                </div>
+
+                {/* Dropdown */}
+                {open && !disabled && (
+                  <div className="absolute z-50 mt-1 w-full rounded-lg border border-gray-700 bg-gray-800 shadow-lg max-h-80 overflow-hidden">
+                    <div className="p-2 border-b border-gray-700">
+                      <input
+                        autoFocus
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        placeholder="Search..."
+                        className="w-full bg-gray-700 border border-gray-600 rounded px-2 py-1 text-sm text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                      />
+                    </div>
+                    <div className="max-h-64 overflow-y-auto custom-scrollbar">
+                      {error && (
+                        <div className="px-3 py-2 text-xs text-red-400">
+                          {error}
+                        </div>
+                      )}
+                      {emptyMessage && !error && (
+                        <div className="px-3 py-2 text-xs text-amber-400 whitespace-pre-line">
+                          {emptyMessage}
+                        </div>
+                      )}
+                      {!error &&
+                        !emptyMessage &&
+                        filtered.length === 0 &&
+                        !loading && (
+                          <div className="px-3 py-2 text-xs text-gray-400">
+                            No results
+                          </div>
+                        )}
+                      {!error &&
+                        !emptyMessage &&
+                        filtered.map((item) => {
+                          const slug = item.slug;
+                          const selected = selectedSlugs.includes(slug);
+                          return (
+                            <button
+                              type="button"
+                              key={slug}
+                              className={`w-full text-left px-3 py-2 text-sm flex items-center gap-2 hover:bg-gray-700 focus:bg-gray-700 transition-colors ${selected ? 'bg-gray-700' : ''}`}
+                              onClick={() => {
+                                if (multiple) {
+                                  const newArray = toggleSlug(
+                                    selectedSlugs,
+                                    slug
+                                  );
+                                  field.onChange(newArray);
+                                } else {
+                                  field.onChange(slug);
+                                  setOpen(false);
+                                }
+                              }}
+                            >
+                              {multiple && (
+                                <span
+                                  className={`h-3 w-3 rounded-sm border flex items-center justify-center text-[10px] ${selected ? 'bg-blue-600 border-blue-500' : 'border-gray-500'}`}
+                                >
+                                  {selected && '✓'}
+                                </span>
+                              )}
+                              <span className="truncate flex-1 text-white">
+                                {labelFor(slug)}
+                              </span>
+                              <span className="text-xs text-gray-500">
+                                {slug}
+                              </span>
+                            </button>
+                          );
+                        })}
+                    </div>
+                    {multiple && !error && !emptyMessage && (
+                      <div className="p-2 border-t border-gray-700 flex justify-between text-xs text-gray-400">
+                        <span>
+                          {selectedSlugs.length} selected
+                          {maxSelections && ` / ${maxSelections}`}
+                        </span>
+                        <button
+                          type="button"
+                          className="hover:text-white"
+                          onClick={() => field.onChange([])}
+                        >
+                          Clear
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            </FormControl>
+            {helperText && (
+              <p className="text-xs text-gray-400 leading-relaxed">
+                {helperText}
+              </p>
+            )}
+            <FormMessage className="text-red-400 text-xs" />
+          </FormItem>
+        );
+      }}
     />
   );
 }

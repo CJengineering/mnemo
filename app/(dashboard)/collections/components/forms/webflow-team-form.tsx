@@ -19,8 +19,9 @@ import {
   WebflowSelectField,
   WebflowSwitchField,
   WebflowImageField,
-  WebflowTagsField,
-  WebflowRichTextField
+  // WebflowTagsField, // removed legacy tags field
+  WebflowRichTextField,
+  WebflowReferenceSelectField // added unified reference selector
 } from './webflow-form-fields';
 import { IncomingTeamData } from '../interfaces-incoming';
 import { generateSlug } from './base-form';
@@ -57,14 +58,8 @@ const webflowTeamSchema = z.object({
     .optional(),
   order: z.number().min(0, 'Order must be a positive number'),
   newsOnOff: z.boolean().default(false),
-  tags: z
-    .array(
-      z.object({
-        id: z.string(),
-        slug: z.string()
-      })
-    )
-    .default([])
+  // Tags now store only slugs
+  tags: z.array(z.string()).default([])
 });
 
 type WebflowTeamFormData = z.infer<typeof webflowTeamSchema>;
@@ -108,7 +103,8 @@ export const WebflowTeamForm = forwardRef<
       filter: initialData?.filter || undefined,
       order: initialData?.order || 0,
       newsOnOff: initialData?.newsOnOff || false,
-      tags: initialData?.tags || []
+      // map incoming tag objects -> slug[]
+      tags: (initialData?.tags || []).map((t) => t.slug)
     }
   });
 
@@ -141,7 +137,7 @@ export const WebflowTeamForm = forwardRef<
       filter: initialData?.filter || undefined,
       order: initialData?.order || 0,
       newsOnOff: initialData?.newsOnOff || false,
-      tags: initialData?.tags || []
+      tags: (initialData?.tags || []).map((t) => t.slug)
     };
 
     form.reset(newValues);
@@ -166,11 +162,46 @@ export const WebflowTeamForm = forwardRef<
   }, [form]);
 
   const handleSubmit = async (data: WebflowTeamFormData) => {
-    console.log('📋 Team Form Raw Data:', JSON.stringify(data, null, 2));
+    console.log(
+      '📋 Team Form Raw Data (slug-based tags):',
+      JSON.stringify(data, null, 2)
+    );
+
+    // Reconstruct reference objects for API consumption
+    const reconstructedTags =
+      data.tags?.map((slug) => ({ id: '', slug })) || [];
+
+    const outgoing: IncomingTeamData = {
+      // direct mappings
+      title: data.name, // keep title synced with name
+      slug: data.slug,
+      status: data.status,
+      name: data.name,
+      nameArabic: data.nameArabic || undefined,
+      position: data.position || undefined,
+      positionArabic: data.positionArabic || undefined,
+      photo: { url: data.photo.url, alt: data.photo.alt || '' },
+      photoHires: data.photoHires || undefined,
+      paragraphDescription: data.paragraphDescription,
+      biographyArabic: data.biographyArabic || undefined,
+      metaDescription: data.metaDescription || undefined,
+      metaDescriptionArabic: data.metaDescriptionArabic || undefined,
+      altTextImage: data.altTextImage || undefined,
+      altTextImageArabic: data.altTextImageArabic || undefined,
+      filter: data.filter || undefined,
+      order: data.order,
+      newsOnOff: data.newsOnOff,
+      tags: reconstructedTags
+    };
+
+    console.log(
+      '⬆️ Team Form Outgoing (reconstructed):',
+      JSON.stringify(outgoing, null, 2)
+    );
 
     try {
       setIsLoading(true);
-      await onSubmit(data as IncomingTeamData);
+      await onSubmit(outgoing);
     } catch (error) {
       console.error('Form submission error:', error);
     } finally {
@@ -462,10 +493,13 @@ export const WebflowTeamForm = forwardRef<
                   </div>
 
                   {/* Tags */}
-                  <WebflowTagsField
+                  <WebflowReferenceSelectField
                     control={form.control}
                     name="tags"
                     label="Tags"
+                    collectionType="tag"
+                    multiple
+                    placeholder="Search & select tags"
                     helperText="Add relevant tags for categorization"
                   />
 
