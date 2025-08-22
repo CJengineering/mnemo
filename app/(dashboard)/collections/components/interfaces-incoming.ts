@@ -90,17 +90,17 @@ export interface IncomingProgrammeData {
   title: string;
   description?: string;
   slug: string;
-  status?: "published" | "draft";
+  status?: 'published' | 'draft';
 
   // Programme specific fields
   type?:
-    | "Centre"
-    | "Fund"
-    | "Scholarship"
-    | "Project"
-    | "Programme"
-    | "Lab"
-    | "Community Jameel";
+    | 'Centre'
+    | 'Fund'
+    | 'Scholarship'
+    | 'Project'
+    | 'Programme'
+    | 'Lab'
+    | 'Community Jameel';
   nameArabic?: string;
   shortNameEnglish?: string;
   shortNameArabic?: string;
@@ -302,6 +302,38 @@ export interface IncomingSourceData {
   logoNative?: IncomingImageField;
 }
 
+// Minimal Incoming Innovation Data
+export interface IncomingInnovationData {
+  title: string;
+  description?: string;
+  slug: string;
+  status?: 'published' | 'draft';
+}
+
+// Minimal Incoming Award Data
+export interface IncomingAwardData {
+  title: string;
+  description?: string;
+  slug: string;
+  status?: 'published' | 'draft';
+}
+
+// Minimal Incoming Publication Data
+export interface IncomingPublicationData {
+  title: string;
+  description?: string;
+  slug: string;
+  status?: 'published' | 'draft';
+}
+
+// Minimal Incoming Prize Data
+export interface IncomingPrizeData {
+  title: string;
+  description?: string;
+  slug: string;
+  status?: 'published' | 'draft';
+}
+
 // Incoming Team Data from Frontend Form
 export interface IncomingTeamData {
   title: string; // maps to name
@@ -342,6 +374,119 @@ export interface IncomingTeamData {
   tags?: IncomingReferenceItem[];
 }
 
+// Incoming Partner Data from Frontend Form
+export interface IncomingPartnerData {
+  title: string; // maps to partner name
+  slug: string;
+  status?: 'published' | 'draft';
+
+  // Partner fields
+  nameArabic?: string;
+  shortDescription?: string;
+  shortDescriptionArabic?: string;
+  website?: string;
+
+  // Media
+  logo?: IncomingImageField;
+
+  // Relations
+  group?: IncomingReferenceItem;
+  tags?: IncomingReferenceItem[];
+}
+
+// New: Incoming People Data from Frontend Form
+export interface IncomingPersonData {
+  title: string;
+  slug: string;
+  status?: 'published' | 'draft';
+
+  // Core information (matching JSON field names)
+  name: string; // Required - from "name" field
+  'name-arabic'?: string; // Optional - from "name-arabic" field
+  'arabic-on-off'?: boolean; // Optional - from "arabic-on-off" field
+  'push-to-gr'?: boolean; // Optional - from "push-to-gr" field
+  hero?: boolean; // Optional - from "hero" field
+
+  // Programme relations
+  'related-programme'?: IncomingReferenceItem; // Optional - from "related-programme" field
+  'related-programmes'?: IncomingReferenceItem[]; // Optional - from "related-programmes" field
+
+  // Appearance
+  color?: string; // Optional - from "color" field
+
+  // Role information
+  role?: string; // Optional - from "role" field (English)
+  'role-arabic'?: string; // Optional - from "role-arabic" field
+
+  // Descriptions
+  'short-description'?: string; // Optional - from "short-description" field (English)
+  'short-description-arabic'?: string; // Optional - from "short-description-arabic" field
+
+  // Biographies (RichText)
+  biography?: string; // Optional - from "biography" field (English)
+  'biography-arabic'?: string; // Optional - from "biography-arabic" field
+
+  // Events (RichText)
+  events?: string; // Optional - from "events" field (English)
+  'events-arabic'?: string; // Optional - from "events-arabic" field
+
+  // Research areas (RichText)
+  'research-area-english'?: string; // Optional - from "research-area-english" field
+  'research-areas-arabic'?: string; // Optional - from "research-areas-arabic" field
+
+  // Type classification
+  type?: string; // Optional - from "type" field (Professor, Doctor, etc.)
+
+  // Images
+  'hero-image'?: IncomingImageField; // Optional - from "hero-image" field
+  'profile-picture'?: IncomingImageField; // Optional - from "profile-picture" field
+
+  // Video
+  'feature-video'?: string; // Optional - from "feature-video" field (YouTube ID)
+
+  // Relations
+  'related-people-s'?: IncomingReferenceItem[]; // Optional - from "related-people-s" field
+  'partner-organisation'?: IncomingReferenceItem[]; // Optional - from "partner-organisation" field
+
+  // Social links
+  'instagram-link'?: string; // Optional - from "instagram-link" field
+  'linkedin-link'?: string; // Optional - from "linkedin-link" field
+  'twitter-link'?: string; // Optional - from "twitter-link" field
+  facebook?: string; // Optional - from "facebook" field
+  'youtube-link'?: string; // Optional - from "youtube-link" field
+  github?: string; // Optional - from "github" field
+  'website-link'?: string; // Optional - from "website-link" field
+  shop?: string; // Optional - from "shop" field
+
+  // Gallery
+  photos?: IncomingImageField[]; // Optional - from "photos" field (MultiImage)
+
+  // Visibility toggles
+  'hide-news'?: boolean; // Optional - from "hide-news" field
+  'hide-multimedia'?: boolean; // Optional - from "hide-multimedia" field
+  'hide-events'?: boolean; // Optional - from "hide-events" field
+  'hide-publications'?: boolean; // Optional - from "hide-publications" field
+  'hide-photos'?: boolean; // Optional - from "hide-photos" field
+  'hide-events-rich-text'?: boolean; // Optional - from "hide-events-rich-text" field
+
+  // Additional relations
+  multimedia?: IncomingReferenceItem[]; // Optional - from "multimedia" field
+  tag?: IncomingReferenceItem[]; // Optional - from "tag" field (Tags)
+
+  // Ordering and location
+  order?: number; // Optional - from "order" field
+  country?: string; // Optional - from "country" field
+}
+
+// New: Incoming Tag Data from Frontend Form
+export interface IncomingTagData {
+  title: string;
+  slug: string;
+  status?: 'published' | 'draft';
+  name: string;
+  'name-arabic'?: string;
+}
+
 // Union type for all incoming data types
 export type IncomingCollectionItemData =
   | IncomingEventData
@@ -349,10 +494,30 @@ export type IncomingCollectionItemData =
   | IncomingNewsData
   | IncomingPostData
   | IncomingSourceData
-  | IncomingTeamData;
+  | IncomingInnovationData
+  | IncomingAwardData
+  | IncomingPublicationData
+  | IncomingPrizeData
+  | IncomingTeamData
+  | IncomingPartnerData
+  | IncomingPersonData
+  | IncomingTagData;
 
 // Type discriminator for the frontend to specify which type they're sending
 export interface IncomingCollectionItem {
-  type: 'event' | 'programme' | 'news' | 'post' | 'source' | 'team';
+  type:
+    | 'event'
+    | 'programme'
+    | 'news'
+    | 'post'
+    | 'source'
+    | 'team'
+    | 'innovation'
+    | 'award'
+    | 'publication'
+    | 'prize'
+    | 'partner'
+    | 'people'
+    | 'tag';
   data: IncomingCollectionItemData;
 }

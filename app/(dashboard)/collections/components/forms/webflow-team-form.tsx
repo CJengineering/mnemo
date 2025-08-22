@@ -86,6 +86,7 @@ export const WebflowTeamForm = forwardRef<
   WebflowTeamFormRef,
   WebflowTeamFormProps
 >(({ initialData, onSubmit, onCancel, onDelete, isEditing = false }, ref) => {
+  const [isLoading, setIsLoading] = useState(false);
   const form = useForm<WebflowTeamFormData>({
     resolver: zodResolver(webflowTeamSchema),
     defaultValues: {
@@ -168,9 +169,12 @@ export const WebflowTeamForm = forwardRef<
     console.log('📋 Team Form Raw Data:', JSON.stringify(data, null, 2));
 
     try {
+      setIsLoading(true);
       await onSubmit(data as IncomingTeamData);
     } catch (error) {
       console.error('Form submission error:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -217,8 +221,12 @@ export const WebflowTeamForm = forwardRef<
             )}
             <Button
               type="button"
-              onClick={() => form.setValue('status', 'draft')}
+              onClick={() => {
+                form.setValue('status', 'draft');
+                form.handleSubmit(handleSubmit)();
+              }}
               className="bg-gray-700 hover:bg-gray-600 text-white"
+              disabled={isLoading}
             >
               Save Draft
             </Button>
@@ -229,8 +237,9 @@ export const WebflowTeamForm = forwardRef<
                 form.handleSubmit(handleSubmit)();
               }}
               className="bg-blue-600 hover:bg-blue-700 text-white"
+              disabled={isLoading}
             >
-              Publish
+              {isLoading ? 'Publishing...' : 'Publish'}
             </Button>
           </div>
         </div>
@@ -479,7 +488,7 @@ export const WebflowTeamForm = forwardRef<
           </div>
 
           {/* Hidden Submit Button - The form is submitted via the header buttons */}
-          <button type="submit" className="hidden">
+          <button type="submit" className="hidden" disabled={isLoading}>
             {isEditing ? 'Update Team Member' : 'Create Team Member'}
           </button>
         </form>

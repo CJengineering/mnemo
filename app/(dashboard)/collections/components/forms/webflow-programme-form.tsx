@@ -358,20 +358,28 @@ export const WebflowProgrammeForm = forwardRef<
     form.reset(newValues);
   }, [initialData, form]);
 
-  // Auto-generate slug from title
-  useEffect(() => {
-    const subscription = form.watch((value, { name }) => {
-      if (name === 'title' && value.title && !form.getValues('slug')) {
-        const timer = setTimeout(() => {
-          if (value.title) {
-            form.setValue('slug', generateSlug(value.title));
-          }
-        }, 500);
-        return () => clearTimeout(timer);
-      }
-    });
-    return subscription.unsubscribe;
-  }, [form]);
+  // Disable auto-generate-on-typing in favor of explicit Team-style button
+  // useEffect(() => {
+  //   const subscription = form.watch((value, { name }) => {
+  //     if (name === 'title' && value.title && !form.getValues('slug')) {
+  //       const timer = setTimeout(() => {
+  //         if (value.title) {
+  //           form.setValue('slug', generateSlug(value.title));
+  //         }
+  //       }, 500);
+  //       return () => clearTimeout(timer);
+  //     }
+  //   });
+  //   return subscription.unsubscribe;
+  // }, [form]);
+
+  // Manual slug generation function (Team-style)
+  const handleGenerateSlug = () => {
+    const currentTitle = form.getValues('title');
+    if (currentTitle) {
+      form.setValue('slug', generateSlug(currentTitle));
+    }
+  };
 
   // Debug: Log schema fields and form structure on mount
   useEffect(() => {
@@ -610,13 +618,21 @@ export const WebflowProgrammeForm = forwardRef<
             )}
             <Button
               type="button"
-              onClick={() => form.setValue('status', 'draft')}
+              onClick={() => {
+                form.setValue('status', 'draft');
+                form.handleSubmit(handleSubmit)();
+              }}
               className="bg-gray-700 hover:bg-gray-600 text-white"
+              disabled={isLoading}
             >
               Save Draft
             </Button>
             <Button
-              type="submit"
+              type="button"
+              onClick={() => {
+                form.setValue('status', 'published');
+                form.handleSubmit(handleSubmit)();
+              }}
               disabled={isLoading}
               className="bg-blue-600 hover:bg-blue-700 text-white"
             >
@@ -652,6 +668,29 @@ export const WebflowProgrammeForm = forwardRef<
                     label="Slug"
                     required
                   />
+                  {/* Team-style slug actions */}
+                  <div className="flex items-center gap-3">
+                    <Button
+                      type="button"
+                      variant="default"
+                      size="sm"
+                      onClick={handleGenerateSlug}
+                      disabled={!form.watch('title')}
+                      className="text-xs bg-blue-600 hover:bg-blue-700 text-white border-blue-600"
+                    >
+                      Generate Slug from Title
+                    </Button>
+                    {form.watch('title') && !form.watch('slug') && (
+                      <span className="text-xs text-yellow-400">
+                        💡 Enter a title to generate slug
+                      </span>
+                    )}
+                    {form.watch('title') && form.watch('slug') && (
+                      <span className="text-xs text-green-400">
+                        ✅ Slug ready
+                      </span>
+                    )}
+                  </div>
 
                   <WebflowSelectField
                     control={form.control}
@@ -931,6 +970,8 @@ export const WebflowProgrammeForm = forwardRef<
                         name="logoSvgDark"
                         label="Logo (Dark Mode)"
                         helperText="Programme logo for dark backgrounds (SVG preferred)"
+                        collectionType="programmes"
+                        slug={form.watch('slug')}
                       />
 
                       <WebflowImageField
@@ -938,6 +979,8 @@ export const WebflowProgrammeForm = forwardRef<
                         name="logoSvgLight"
                         label="Logo (Light Mode)"
                         helperText="Programme logo for light backgrounds (SVG preferred)"
+                        collectionType="programmes"
+                        slug={form.watch('slug')}
                       />
                     </div>
 
@@ -947,6 +990,8 @@ export const WebflowProgrammeForm = forwardRef<
                         name="logoSvgDarkOriginal"
                         label="Logo Dark (Original)"
                         helperText="Original ratio dark logo"
+                        collectionType="programmes"
+                        slug={form.watch('slug')}
                       />
 
                       <WebflowImageField
@@ -954,6 +999,8 @@ export const WebflowProgrammeForm = forwardRef<
                         name="logoSvgLightOriginal"
                         label="Logo Light (Original)"
                         helperText="Original ratio light logo"
+                        collectionType="programmes"
+                        slug={form.watch('slug')}
                       />
                     </div>
 
@@ -963,6 +1010,8 @@ export const WebflowProgrammeForm = forwardRef<
                         name="heroSquare"
                         label="Hero Image (Square)"
                         helperText="Square format hero image (recommended: 600x600px)"
+                        collectionType="programmes"
+                        slug={form.watch('slug')}
                       />
 
                       <WebflowImageField
@@ -970,6 +1019,8 @@ export const WebflowProgrammeForm = forwardRef<
                         name="heroWide"
                         label="Hero Image (Wide)"
                         helperText="Wide format hero image (recommended: 1200x600px)"
+                        collectionType="programmes"
+                        slug={form.watch('slug')}
                       />
                     </div>
 
@@ -979,6 +1030,8 @@ export const WebflowProgrammeForm = forwardRef<
                         name="hero1x1"
                         label="Hero Image (1:1)"
                         helperText="1:1 aspect ratio hero image"
+                        collectionType="programmes"
+                        slug={form.watch('slug')}
                       />
 
                       <WebflowImageField
@@ -986,6 +1039,8 @@ export const WebflowProgrammeForm = forwardRef<
                         name="hero16x9"
                         label="Hero Image (16:9)"
                         helperText="16:9 aspect ratio hero image"
+                        collectionType="programmes"
+                        slug={form.watch('slug')}
                       />
                     </div>
 
@@ -995,6 +1050,8 @@ export const WebflowProgrammeForm = forwardRef<
                         name="heroImage"
                         label="Hero Image"
                         helperText="Main hero image"
+                        collectionType="programmes"
+                        slug={form.watch('slug')}
                       />
 
                       <WebflowImageField
@@ -1002,6 +1059,8 @@ export const WebflowProgrammeForm = forwardRef<
                         name="thumbnail"
                         label="Thumbnail"
                         helperText="Small preview image"
+                        collectionType="programmes"
+                        slug={form.watch('slug')}
                       />
 
                       <WebflowImageField
@@ -1009,6 +1068,8 @@ export const WebflowProgrammeForm = forwardRef<
                         name="openGraph"
                         label="Open Graph Image"
                         helperText="Social sharing image (1200x630px)"
+                        collectionType="programmes"
+                        slug={form.watch('slug')}
                       />
                     </div>
                   </div>

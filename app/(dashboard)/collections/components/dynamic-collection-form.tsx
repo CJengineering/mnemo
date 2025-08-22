@@ -3,7 +3,14 @@
 import React, { useState } from 'react';
 import { CollectionFormRouter, CollectionType } from './forms';
 import { IncomingCollectionItemData } from './interfaces-incoming';
-import { Calendar, Globe, BookOpen, Check, AlertCircle } from 'lucide-react';
+import {
+  Calendar,
+  Globe,
+  BookOpen,
+  Check,
+  AlertCircle,
+  Users
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 // Types
@@ -29,6 +36,8 @@ const getIconForType = (type: CollectionType) => {
       return Calendar;
     case 'programme':
       return BookOpen;
+    case 'people':
+      return Users;
     case 'news':
     case 'post':
     case 'source':
