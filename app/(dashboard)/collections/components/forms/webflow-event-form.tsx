@@ -28,6 +28,7 @@ import { IncomingEventData } from '../interfaces-incoming';
 import { generateSlug } from './base-form';
 import { WebflowFormWrapper } from './webflow-form-wrapper';
 import './compact-form.css';
+import { SaveConfirmation } from '@/components/ui/save-confirmation';
 
 // Webflow CMS Event Schema
 const webflowEventSchema = z.object({
@@ -406,28 +407,16 @@ export const WebflowEventForm = forwardRef<
                 Delete
               </Button>
             )}
-            <Button
-              type="button"
-              onClick={() => {
-                form.setValue('status', 'draft');
-                form.handleSubmit(handleSubmit)();
-              }}
-              className="bg-gray-700 hover:bg-gray-600 text-white"
-              disabled={isLoading}
-            >
-              Save Draft
-            </Button>
-            <Button
-              type="button"
-              onClick={() => {
-                form.setValue('status', 'published');
-                form.handleSubmit(handleSubmit)();
+            <SaveConfirmation
+              onAction={async (status) => {
+                form.setValue('status', status);
+                await form.handleSubmit(handleSubmit)();
+                return { slug: form.getValues().slug };
               }}
               disabled={isLoading}
-              className="bg-blue-600 hover:bg-blue-700 text-white"
-            >
-              {isLoading ? 'Publishing...' : 'Publish'}
-            </Button>
+              isSubmitting={isLoading}
+              itemLabel="Event"
+            />
           </div>
         </div>
       </div>

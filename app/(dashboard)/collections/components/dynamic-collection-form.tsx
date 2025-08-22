@@ -12,6 +12,8 @@ import {
   Users
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { SaveConfirmation } from '@/components/ui/save-confirmation';
+import { toast } from 'react-hot-toast';
 
 // Types
 export interface Collection {
@@ -169,27 +171,23 @@ const DynamicCollectionForm: React.FC<DynamicCollectionFormProps> = ({
     }
   };
 
-  const handlePublishNow = () => {
-    setPendingStatus('published');
-    // Update form status field for visual feedback
-    if (formRef.current?.setStatus) {
-      formRef.current.setStatus('published');
-    }
-    // Trigger form submission through the ref
-    if (formRef.current) {
-      formRef.current.triggerSubmit();
-    }
-  };
-
-  const handleSaveDraft = () => {
-    setPendingStatus('draft');
-    // Update form status field for visual feedback
-    if (formRef.current?.setStatus) {
-      formRef.current.setStatus('draft');
-    }
-    // Trigger form submission through the ref
-    if (formRef.current) {
-      formRef.current.triggerSubmit();
+  // New unified save handler triggered from SaveConfirmation
+  const handleUnifiedSave = async (
+    status: 'draft' | 'published'
+  ): Promise<{ slug?: string; error?: string } | void> => {
+    try {
+      if (formRef.current?.setStatus) {
+        formRef.current.setStatus(status);
+      }
+      setPendingStatus(status);
+      if (formRef.current) {
+        await formRef.current.triggerSubmit();
+      }
+      return { slug: formRef.current?.getValues?.().slug };
+    } catch (e: any) {
+      return { error: e?.message || 'Failed' };
+    } finally {
+      setPendingStatus(null);
     }
   };
 
@@ -256,30 +254,18 @@ const DynamicCollectionForm: React.FC<DynamicCollectionFormProps> = ({
           <div className="flex items-center gap-2 flex-shrink-0">
             <Button
               type="button"
-              onClick={handleSaveDraft}
+              onClick={onCancel}
               disabled={isLoading || isRedirecting}
-              className="bg-gray-700 hover:bg-gray-600 text-white text-sm px-3 py-1.5 h-auto"
+              className="bg-gray-800 border border-gray-700 text-gray-300 hover:bg-gray-700"
             >
-              {isLoading
-                ? 'Saving...'
-                : isRedirecting
-                  ? 'Redirecting...'
-                  : 'Save Draft'}
+              Cancel
             </Button>
-            <Button
-              type="button"
-              onClick={handlePublishNow}
+            <SaveConfirmation
+              onAction={handleUnifiedSave}
               disabled={isLoading || isRedirecting}
-              className="bg-blue-600 hover:bg-blue-700 text-white text-sm px-3 py-1.5 h-auto"
-            >
-              {isLoading
-                ? 'Publishing...'
-                : isRedirecting
-                  ? 'Redirecting...'
-                  : isEditing
-                    ? 'Update'
-                    : 'Publish'}
-            </Button>
+              isSubmitting={isLoading}
+              itemLabel={collection.name.slice(0, -1)}
+            />
           </div>
         </div>
       </div>

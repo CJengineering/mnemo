@@ -7,6 +7,7 @@ import { Form } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Link, ExternalLink, Check, AlertCircle, Trash2 } from 'lucide-react';
+import { SaveConfirmation } from '@/components/ui/save-confirmation';
 
 interface BaseFormData {
   title: string;
@@ -165,30 +166,19 @@ export function WebflowFormWrapper<T extends BaseFormData>({
                 Delete
               </Button>
             )}
-            <Button
-              type="button"
-              onClick={() =>
-                form.handleSubmit((data) => handleSubmit(data, 'draft'))()
-              }
+            <SaveConfirmation
+              onAction={async (status) => {
+                return new Promise(async (resolve) => {
+                  await form.handleSubmit((data) =>
+                    handleSubmit(data, status)
+                  )();
+                  resolve({ slug: (form.getValues() as any).slug });
+                });
+              }}
               disabled={isSubmitting}
-              className="bg-gray-700 hover:bg-gray-600 text-white"
-            >
-              {isSubmitting ? 'Saving...' : 'Save Draft'}
-            </Button>
-            <Button
-              type="button"
-              onClick={() =>
-                form.handleSubmit((data) => handleSubmit(data, 'published'))()
-              }
-              disabled={isSubmitting}
-              className="bg-blue-600 hover:bg-blue-700 text-white"
-            >
-              {isSubmitting
-                ? 'Publishing...'
-                : isEditing
-                  ? 'Update & Publish'
-                  : 'Publish'}
-            </Button>
+              isSubmitting={isSubmitting}
+              itemLabel={collectionName}
+            />
           </div>
         </div>
       </div>

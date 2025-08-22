@@ -10,6 +10,38 @@ function getIdFromRequest(req: NextRequest) {
   return req.nextUrl.pathname.split('/').pop() || '';
 }
 
+// Helper to send webhooks for create/update events
+async function sendCollectionWebhook(
+  action: 'create' | 'update',
+  payload: any
+) {
+  const endpoints =
+    action === 'create'
+      ? [
+          'http://localhost:3000/api/mnemo/create-collection',
+          'https://www.communityjameel.org/api/mnemo/create-collection'
+        ]
+      : [
+          'http://localhost:3000/api/mnemo/update-collection',
+          'https://www.communityjameel.org/api/mnemo/update-collection'
+        ];
+  try {
+    await Promise.all(
+      endpoints.map((url) =>
+        fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        }).catch((e) => {
+          console.error(`Webhook failed (${action}) => ${url}:`, e);
+        })
+      )
+    );
+  } catch (e) {
+    console.error('Unexpected webhook dispatch error:', e);
+  }
+}
+
 // GET - Fetch a specific collection item by ID
 export async function GET(req: NextRequest) {
   const id = getIdFromRequest(req);
@@ -72,6 +104,14 @@ export async function PUT(req: NextRequest) {
       );
     }
 
+    // Send update webhook
+    sendCollectionWebhook('update', {
+      event: 'collectionItem.updated',
+      action: 'update',
+      timestamp: new Date().toISOString(),
+      collectionItem: rows[0]
+    });
+
     return NextResponse.json({ success: true, collectionItem: rows[0] });
   } catch (error) {
     console.error('Error updating collection item:', error);
@@ -100,6 +140,8 @@ export async function DELETE(req: NextRequest) {
         { status: 404 }
       );
     }
+
+    // Optionally could send a delete webhook if desired (spec not requested)
 
     return NextResponse.json({
       success: true,
