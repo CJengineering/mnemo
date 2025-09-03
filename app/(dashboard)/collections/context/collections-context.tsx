@@ -310,6 +310,49 @@ const CollectionsContext = createContext<CollectionsContextType | undefined>(
 const API_URL =
   'https://mnemo-app-e4f6j5kdsq-ew.a.run.app/api/collection-items';
 
+// Webhook helper (client-side) to mirror server-side webhooks when using external API directly
+async function fireCollectionWebhook(
+  action: 'create' | 'update' | 'delete',
+  collectionItem: any
+) {
+  const endpoints =
+    action === 'create'
+      ? [
+          'http://localhost:3000/api/mnemo/create-collection',
+          'https://www.communityjameel.org/api/mnemo/create-collection'
+        ]
+      : action === 'update'
+        ? [
+            'http://localhost:3000/api/mnemo/update-collection',
+            'https://www.communityjameel.org/api/mnemo/update-collection'
+          ]
+        : [
+            'http://localhost:3000/api/mnemo/delete-collection',
+            'https://www.communityjameel.org/api/mnemo/delete-collection'
+          ];
+  const payload = {
+    event: `collectionItem.${action}d`,
+    action,
+    timestamp: new Date().toISOString(),
+    collectionItem
+  };
+  try {
+    await Promise.all(
+      endpoints.map((url) =>
+        fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        }).catch((e) =>
+          console.error(`Client webhook ${action} failed -> ${url}`, e)
+        )
+      )
+    );
+  } catch (e) {
+    console.error('Client webhook dispatch unexpected error:', e);
+  }
+}
+
 // Status transformation utilities
 const transformStatusToAPI = (uiStatus: 'published' | 'draft'): string => {
   return uiStatus;
@@ -486,6 +529,9 @@ export function CollectionsProvider({
           payload: { collectionType, item: newItem }
         });
 
+        // Fire create webhook client-side (since using external API)
+        fireCollectionWebhook('create', createdItemData);
+
         // Refresh collections to ensure UI is in sync with server
         await fetchCollections();
 
@@ -557,6 +603,9 @@ export function CollectionsProvider({
         dispatch({ type: 'UPDATE_ITEM', payload: updatedItem });
         dispatch({ type: 'REVERT_OPTIMISTIC', payload: id });
 
+        // Fire update webhook client-side
+        fireCollectionWebhook('update', updatedItemData);
+
         // Refresh collections to ensure UI is in sync with server
         await fetchCollections();
 
@@ -592,6 +641,9 @@ export function CollectionsProvider({
 
         console.log('✅ DELETE request successful, updating local state...');
         dispatch({ type: 'DELETE_ITEM', payload: id });
+
+        // Fire delete webhook client-side (include minimal data)
+        fireCollectionWebhook('delete', { id });
 
         console.log('🔄 Refreshing collections from server...');
         // Refresh collections to ensure UI is in sync with server
@@ -696,7 +748,7 @@ export function CollectionsProvider({
 // Hook to use the context
 export function useCollections() {
   const context = useContext(CollectionsContext);
-  if (context === undefined) {
+  if (!context) {
     throw new Error('useCollections must be used within a CollectionsProvider');
   }
   return context;

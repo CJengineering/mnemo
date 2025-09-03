@@ -21,7 +21,8 @@ import {
   WebflowDateField,
   WebflowImageField,
   WebflowRichTextField,
-  WebflowTagsField
+  WebflowTagsField,
+  WebflowReferenceSelectField // added for unified reference handling
 } from './webflow-form-fields';
 import { IncomingProgrammeData } from '../interfaces-incoming';
 import { generateSlug } from './base-form';
@@ -464,74 +465,27 @@ export const WebflowProgrammeForm = forwardRef<
 
   const handleSubmit = async (data: WebflowProgrammeFormData) => {
     setIsLoading(true);
-
-    console.log('🚀 Programme Form Submission Data:');
-    console.log('=====================================');
-    console.log('📋 Full form data:', JSON.stringify(data, null, 2));
-    console.log('');
-    console.log('🔍 Form fields analysis:');
-    console.log('Basic Info:', {
-      title: data.title,
-      slug: data.slug,
-      status: data.status,
-      type: data.type
-    });
-    console.log('');
-    console.log('🌐 Multilingual fields:', {
-      nameArabic: data.nameArabic,
-      shortNameEnglish: data.shortNameEnglish,
-      shortNameArabic: data.shortNameArabic,
-      missionEnglish: data.missionEnglish?.substring(0, 50) + '...',
-      missionArabic: data.missionArabic?.substring(0, 50) + '...',
-      summaryEnglish: data.summaryEnglish?.substring(0, 50) + '...',
-      summaryArabic: data.summaryArabic?.substring(0, 50) + '...',
-      researchEnglish: data.researchEnglish?.substring(0, 50) + '...',
-      researchArabic: data.researchArabic?.substring(0, 50) + '...',
-      headquartersEnglish: data.headquartersEnglish,
-      headquartersArabic: data.headquartersArabic
-    });
-    console.log('');
-    console.log('📅 Timeline & Location:', {
-      yearEstablished: data.yearEstablished,
-      yearClosed: data.yearClosed,
-      latitude: data.latitude,
-      longitude: data.longitude,
-      order: data.order
-    });
-    console.log('');
-    console.log('🖼️ Images:', {
-      logoSvgDark: data.logoSvgDark,
-      logoSvgLight: data.logoSvgLight,
-      heroSquare: data.heroSquare,
-      heroWide: data.heroWide
-    });
-    console.log('');
-    console.log('🔗 Social Links:', {
-      website: data.website,
-      linkedin: data.linkedin,
-      instagram: data.instagram,
-      twitter: data.twitter
-    });
-    console.log('');
-    console.log('👥 Relationships:', {
-      features: data.features,
-      partners: data.partners,
-      leadership: data.leadership,
-      relatedProgrammes: data.relatedProgrammes
-    });
-    console.log('');
-    console.log('⚙️ Settings:', {
-      lab: data.lab,
-      pushToGR: data.pushToGR,
-      description: data.description?.substring(0, 50) + '...'
-    });
-    console.log('');
-    console.log('📊 Total fields in form data:', Object.keys(data).length);
-    console.log('📋 All field names:', Object.keys(data).sort());
-    console.log('=====================================');
-
+    // Reconstruct relational slug arrays into objects {id, slug} if they are currently plain strings
+    const normalizeRefs = (value: any) => {
+      if (!value) return [];
+      if (Array.isArray(value)) {
+        return value.map((v) =>
+          typeof v === 'string'
+            ? { id: v, slug: v }
+            : { id: v.id || v.slug, slug: v.slug }
+        );
+      }
+      return [];
+    };
+    const submitData: any = {
+      ...data,
+      features: normalizeRefs((data as any).features),
+      partners: normalizeRefs((data as any).partners),
+      leadership: normalizeRefs((data as any).leadership),
+      relatedProgrammes: normalizeRefs((data as any).relatedProgrammes)
+    };
     try {
-      await onSubmit(data as IncomingProgrammeData);
+      await onSubmit(submitData as IncomingProgrammeData);
     } catch (error) {
       console.error('Form submission error:', error);
     } finally {
@@ -562,31 +516,6 @@ export const WebflowProgrammeForm = forwardRef<
     { value: 'Programme', label: 'Programme' },
     { value: 'Lab', label: 'Lab' },
     { value: 'Community Jameel', label: 'Community Jameel' }
-  ];
-
-  // Hardcoded options for now - will be replaced with real data later
-  const featuresOptions = [
-    { value: 'feature-1', label: 'Feature 1' },
-    { value: 'feature-2', label: 'Feature 2' },
-    { value: 'feature-3', label: 'Feature 3' }
-  ];
-
-  const partnersOptions = [
-    { value: 'mit', label: 'MIT' },
-    { value: 'harvard', label: 'Harvard University' },
-    { value: 'oxford', label: 'Oxford University' }
-  ];
-
-  const leadershipOptions = [
-    { value: 'john-doe', label: 'John Doe' },
-    { value: 'jane-smith', label: 'Jane Smith' },
-    { value: 'ahmed-hassan', label: 'Ahmed Hassan' }
-  ];
-
-  const relatedProgrammesOptions = [
-    { value: 'j-pal', label: 'J-PAL' },
-    { value: 'j-wafs', label: 'J-WAFS' },
-    { value: 'jameel-clinic', label: 'Jameel Clinic' }
   ];
 
   return (
@@ -701,36 +630,40 @@ export const WebflowProgrammeForm = forwardRef<
                     <h3 className="text-base font-medium text-white">
                       Relationships
                     </h3>
-
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <WebflowTagsField
+                      <WebflowReferenceSelectField
                         control={form.control}
                         name="features"
                         label="Features"
-                        helperText="Add programme features (multi-select)"
+                        collectionType="feature"
+                        multiple
+                        placeholder="Search features"
                       />
-
-                      <WebflowTagsField
+                      <WebflowReferenceSelectField
                         control={form.control}
                         name="partners"
                         label="Partners"
-                        helperText="Add partner organizations (multi-select)"
+                        collectionType="partner"
+                        multiple
+                        placeholder="Search partners"
                       />
                     </div>
-
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <WebflowTagsField
+                      <WebflowReferenceSelectField
                         control={form.control}
                         name="leadership"
                         label="Leadership"
-                        helperText="Add leadership team members (multi-select)"
+                        collectionType="people"
+                        multiple
+                        placeholder="Search people"
                       />
-
-                      <WebflowTagsField
+                      <WebflowReferenceSelectField
                         control={form.control}
                         name="relatedProgrammes"
                         label="Related Programmes"
-                        helperText="Add related programmes (multi-select)"
+                        collectionType="programme"
+                        multiple
+                        placeholder="Search programmes"
                       />
                     </div>
                   </div>

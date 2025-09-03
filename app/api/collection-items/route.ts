@@ -5,9 +5,9 @@ const pool = new Pool({
   connectionString: process.env.LOCAL_POSTGRES_URL
 });
 
-// Helper to send webhooks for create/update events
+// Helper to send webhooks for create/update/delete events
 async function sendCollectionWebhook(
-  action: 'create' | 'update',
+  action: 'create' | 'update' | 'delete',
   payload: any
 ) {
   const endpoints =
@@ -16,21 +16,31 @@ async function sendCollectionWebhook(
           'http://localhost:3000/api/mnemo/create-collection',
           'https://www.communityjameel.org/api/mnemo/create-collection'
         ]
-      : [
-          'http://localhost:3000/api/mnemo/update-collection',
-          'https://www.communityjameel.org/api/mnemo/update-collection'
-        ];
+      : action === 'update'
+        ? [
+            'http://localhost:3000/api/mnemo/update-collection',
+            'https://www.communityjameel.org/api/mnemo/update-collection'
+          ]
+        : [
+            'http://localhost:3000/api/mnemo/delete-collection',
+            'https://www.communityjameel.org/api/mnemo/delete-collection'
+          ];
   try {
     await Promise.all(
       endpoints.map((url) =>
         fetch(url, {
           method: 'POST',
-          // Send all data including status, type, timestamps
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
-        }).catch((e) => {
-          console.error(`Webhook failed (${action}) => ${url}:`, e);
         })
+          .then((r) => {
+            if (!r.ok) {
+              console.error(`Webhook ${action} failed ${r.status} -> ${url}`);
+            }
+          })
+          .catch((e) => {
+            console.error(`Webhook network error (${action}) => ${url}:`, e);
+          })
       )
     );
   } catch (e) {
@@ -161,8 +171,7 @@ export async function POST(req: NextRequest) {
 
     console.log('✅ Successfully created collection item:', rows[0]);
 
-    // Fire webhooks (non-blocking but awaited here to ensure ordering; could be detached if needed)
-    sendCollectionWebhook('create', {
+    await sendCollectionWebhook('create', {
       event: 'collectionItem.created',
       action: 'create',
       timestamp: new Date().toISOString(),
