@@ -57,7 +57,7 @@ const webflowTeamSchema = z.object({
       'COP27 Youth Delegate'
     ])
     .optional(),
-  order: z.number().min(0, 'Order must be a positive number'),
+  order: z.coerce.number().min(0, 'Order must be a positive number'),
   newsOnOff: z.boolean().default(false),
   // Tags now store only slugs
   tags: z.array(z.string()).default([])
