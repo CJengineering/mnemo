@@ -46,15 +46,27 @@ function createStorage() {
 }
 
 export async function GET(req: NextRequest) {
-  const { mode, storage } = createStorage();
-  const bucket = storage.bucket(bucketName);
-  const now = new Date();
-  const testPathPrefix = (
-    new URL(req.url).searchParams.get('prefix') || '_selftest/'
-  ).replace(/^\/+/, '');
-  const testObject = `${testPathPrefix}delete-check-${now.getTime()}.txt`;
+  try {
+    // Environment debug info
+    console.log('🔧 Environment debug:');
+    console.log('- NODE_ENV:', process.env.NODE_ENV);
+    console.log('- GCP_PROJECT_ID:', process.env.GCP_PROJECT_ID);
+    console.log('- GCS_BUCKET:', process.env.GCS_BUCKET);
+    console.log('- Has GCP_CLIENT_EMAIL:', !!process.env.GCP_CLIENT_EMAIL);
+    console.log('- Has PRIVATE_GCL:', !!process.env.PRIVATE_GCL);
+    console.log('- PRIVATE_GCL length:', process.env.PRIVATE_GCL?.length || 0);
 
-  const checks: Array<{ name: string; ok: boolean; detail?: any }> = [];
+    const { mode, storage } = createStorage();
+    const bucket = storage.bucket(bucketName);
+    const now = new Date();
+    const testPathPrefix = (
+      new URL(req.url).searchParams.get('prefix') || '_selftest/'
+    ).replace(/^\/+/, '');
+    const testObject = `${testPathPrefix}delete-check-${now.getTime()}.txt`;
+
+    const checks: Array<{ name: string; ok: boolean; detail?: any }> = [];
+  
+    console.log('🚀 Starting selftest with authMode:', mode);
 
   // 1) Bucket exists
   try {
@@ -164,4 +176,16 @@ export async function GET(req: NextRequest) {
     object: testObject,
     checks
   });
+  } catch (error) {
+    console.error('🔴 Unexpected error in selftest:', error);
+    return NextResponse.json(
+      {
+        success: false,
+        error: 'Unexpected error occurred',
+        details: error instanceof Error ? error.message : 'Unknown error',
+        stack: error instanceof Error ? error.stack : undefined
+      },
+      { status: 500 }
+    );
+  }
 }
