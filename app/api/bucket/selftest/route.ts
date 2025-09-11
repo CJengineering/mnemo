@@ -8,18 +8,20 @@ const bucketName = process.env.GCS_BUCKET || 'mnemo';
 
 function createStorage() {
   // Try different credential approaches in order of preference
-  
+
   // Approach 1: Base64 encoded JSON credentials (most reliable for serverless)
   const base64Creds = process.env.GOOGLE_CREDENTIALS_BASE64;
   if (base64Creds) {
     try {
       console.log('🔧 Attempting base64 JSON credentials...');
-      const credentials = JSON.parse(Buffer.from(base64Creds, 'base64').toString());
+      const credentials = JSON.parse(
+        Buffer.from(base64Creds, 'base64').toString()
+      );
       const storage = new Storage({
         projectId,
         credentials
       });
-      
+
       console.log('✅ Storage created with base64 JSON credentials');
       return {
         mode: 'base64-json' as const,
@@ -29,7 +31,7 @@ function createStorage() {
       console.error('❌ Base64 JSON credentials failed:', error.message);
     }
   }
-  
+
   // Approach 2: Explicit credentials (existing approach with enhancements)
   const rawKey = process.env.PRIVATE_GCL || '';
   const client_email = process.env.GCP_CLIENT_EMAIL || '';
