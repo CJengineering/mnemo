@@ -5,6 +5,7 @@ export const runtime = 'nodejs';
 
 const projectId = process.env.GCP_PROJECT_ID || 'cj-tech-381914';
 const bucketName = process.env.GCS_BUCKET || 'mnemo';
+const cdnBaseUrl = process.env.CDN_BASE_URL || 'https://cdn.communityjameel.io';
 
 function createStorage() {
   const rawKey = process.env.PRIVATE_GCL || '';
@@ -28,31 +29,51 @@ function createStorage() {
   return new Storage({ projectId });
 }
 
+function normalizeObjectPath(input: string) {
+  let p = input.trim();
+  // If a full URL is provided, strip origin and query
+  try {
+    const u = new URL(p);
+    if (u.protocol === 'http:' || u.protocol === 'https:') {
+      p = u.pathname;
+    }
+  } catch {
+    // not a URL, continue
+  }
+  // Strip configured CDN base if embedded in the path string
+  if (p.startsWith(cdnBaseUrl)) {
+    p = p.slice(cdnBaseUrl.length);
+  }
+  // Remove leading slashes
+  p = p.replace(/^\/+/, '');
+  return p;
+}
+
 const storage = createStorage();
 const bucket = storage.bucket(bucketName);
 
 export async function DELETE(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const filePath = searchParams.get('path');
+    const rawPath = searchParams.get('path');
 
-    if (!filePath) {
+    if (!rawPath) {
       return NextResponse.json(
         { success: false, error: 'No file path provided' },
         { status: 400 }
       );
     }
 
-    console.log(`🗑️ Deleting file: ${filePath}`);
-
-    // Check if it's a folder (ends with /)
+    const filePath = normalizeObjectPath(rawPath);
     const isFolder = filePath.endsWith('/');
+
+    console.log(
+      `🗑️ Deleting path raw="${rawPath}" normalized="${filePath}" isFolder=${isFolder}`
+    );
 
     if (isFolder) {
       // Delete all files in the folder
-      const [files] = await bucket.getFiles({
-        prefix: filePath
-      });
+      const [files] = await bucket.getFiles({ prefix: filePath });
 
       if (files.length === 0) {
         return NextResponse.json(
