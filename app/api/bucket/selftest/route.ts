@@ -14,9 +14,26 @@ function createStorage() {
 
   if (hasKey && hasEmail) {
     let private_key = rawKey.replace(/\\n/g, '\n');
+
+    // Debug logging
+    console.log('🔍 Private key debug:');
+    console.log('- Raw key length:', rawKey.length);
+    console.log(
+      '- Has BEGIN header:',
+      private_key.includes('BEGIN PRIVATE KEY')
+    );
+    console.log('- Has END footer:', private_key.includes('END PRIVATE KEY'));
+    console.log('- First 50 chars:', private_key.substring(0, 50));
+    console.log(
+      '- Last 50 chars:',
+      private_key.substring(private_key.length - 50)
+    );
+
     if (!private_key.includes('BEGIN PRIVATE KEY')) {
       private_key = `-----BEGIN PRIVATE KEY-----\n${private_key}\n-----END PRIVATE KEY-----\n`;
+      console.log('✅ Added PEM headers to private key');
     }
+
     return {
       mode: 'explicit' as const,
       storage: new Storage({
