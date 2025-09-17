@@ -77,6 +77,7 @@ const DynamicCollectionForm: React.FC<DynamicCollectionFormProps> = ({
     'published' | 'draft' | null
   >(null);
   const IconComponent = getIconForType(collection.id as CollectionType);
+  const isTeam = (collection.id as CollectionType) === 'team';
 
   // Convert API item data to form data
   const getInitialFormData = (): Partial<IncomingCollectionItemData> => {
@@ -136,25 +137,36 @@ const DynamicCollectionForm: React.FC<DynamicCollectionFormProps> = ({
       const statusText =
         finalStatus === 'published' ? 'published' : 'saved as draft';
       const actionText = isEditing ? 'updated' : 'created';
-      setSubmissionStatus({
-        type: 'success',
-        message: `Successfully ${actionText} and ${statusText}! Redirecting to list...`
-      });
 
-      // Clear pending status
-      setPendingStatus(null);
+      if (isTeam) {
+        // For Team flow, do not redirect. Let the inner Team form handle toasts.
+        setSubmissionStatus({
+          type: 'success',
+          message: `Successfully ${actionText} and ${statusText}!`
+        });
+        // Clear pending status
+        setPendingStatus(null);
+      } else {
+        setSubmissionStatus({
+          type: 'success',
+          message: `Successfully ${actionText} and ${statusText}! Redirecting to list...`
+        });
 
-      // Redirect after 1.5 seconds to give user time to see success message and allow data to refresh
-      setIsRedirecting(true);
-      setTimeout(() => {
-        console.log('🔄 Redirecting back to items view...');
-        if (onBackToCollections) {
-          onBackToCollections(); // Navigate back to items view with fresh data
-        } else {
-          onCancel(); // Fallback
-        }
-        setIsRedirecting(false);
-      }, 1500);
+        // Clear pending status
+        setPendingStatus(null);
+
+        // Redirect after 1.5 seconds to give user time to see success message and allow data to refresh
+        setIsRedirecting(true);
+        setTimeout(() => {
+          console.log('🔄 Redirecting back to items view...');
+          if (onBackToCollections) {
+            onBackToCollections(); // Navigate back to items view with fresh data
+          } else {
+            onCancel(); // Fallback
+          }
+          setIsRedirecting(false);
+        }, 1500);
+      }
     } catch (error) {
       console.error('Form submission error:', error);
       setSubmissionStatus({
@@ -201,25 +213,27 @@ const DynamicCollectionForm: React.FC<DynamicCollectionFormProps> = ({
         <div className="flex items-center justify-between px-6 py-4">
           {/* Left side - Back button + Title */}
           <div className="flex items-center gap-3 min-w-0 flex-1">
-            <button
-              onClick={onBackToCollections || onCancel}
-              className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors p-1 rounded"
-            >
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+            {!isTeam && (
+              <button
+                onClick={onBackToCollections || onCancel}
+                className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors p-1 rounded"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M15 19l-7-7 7-7"
-                />
-              </svg>
-              <span className="text-sm">Back</span>
-            </button>
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 19l-7-7 7-7"
+                  />
+                </svg>
+                <span className="text-sm">Back</span>
+              </button>
+            )}
 
             <div className="flex items-center space-x-3 min-w-0">
               <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-600 flex-shrink-0">
@@ -232,7 +246,7 @@ const DynamicCollectionForm: React.FC<DynamicCollectionFormProps> = ({
               </div>
             </div>
 
-            {submissionStatus.type && (
+            {submissionStatus.type && !isTeam && (
               <div
                 className={`hidden sm:flex items-center gap-2 px-2 py-1 rounded-full text-xs flex-shrink-0 ${
                   submissionStatus.type === 'success'
@@ -251,22 +265,24 @@ const DynamicCollectionForm: React.FC<DynamicCollectionFormProps> = ({
           </div>
 
           {/* Right side - Action buttons */}
-          <div className="flex items-center gap-2 flex-shrink-0">
-            <Button
-              type="button"
-              onClick={onCancel}
-              disabled={isLoading || isRedirecting}
-              className="bg-gray-800 border border-gray-700 text-gray-300 hover:bg-gray-700"
-            >
-              Cancel
-            </Button>
-            <SaveConfirmation
-              onAction={handleUnifiedSave}
-              disabled={isLoading || isRedirecting}
-              isSubmitting={isLoading}
-              itemLabel={collection.name.slice(0, -1)}
-            />
-          </div>
+          {!isTeam && (
+            <div className="flex items-center gap-2 flex-shrink-0">
+              <Button
+                type="button"
+                onClick={onCancel}
+                disabled={isLoading || isRedirecting}
+                className="bg-gray-800 border border-gray-700 text-gray-300 hover:bg-gray-700"
+              >
+                Cancel
+              </Button>
+              <SaveConfirmation
+                onAction={handleUnifiedSave}
+                disabled={isLoading || isRedirecting}
+                isSubmitting={isLoading}
+                itemLabel={collection.name.slice(0, -1)}
+              />
+            </div>
+          )}
         </div>
       </div>
 

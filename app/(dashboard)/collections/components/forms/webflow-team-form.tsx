@@ -27,6 +27,14 @@ import { IncomingTeamData } from '../interfaces-incoming';
 import { generateSlug } from './base-form';
 import './compact-form.css';
 import { SaveConfirmation } from '@/components/ui/save-confirmation';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter
+} from '@/components/ui/dialog';
 
 // Webflow CMS Team Schema
 const webflowTeamSchema = z.object({
@@ -83,6 +91,10 @@ export const WebflowTeamForm = forwardRef<
   WebflowTeamFormProps
 >(({ initialData, onSubmit, onCancel, onDelete, isEditing = false }, ref) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [busyAction, setBusyAction] = useState<null | 'draft' | 'published'>(
+    null
+  );
+  const [showCancelConfirm, setShowCancelConfirm] = useState(false);
   const form = useForm<WebflowTeamFormData>({
     resolver: zodResolver(webflowTeamSchema),
     defaultValues: {
@@ -207,13 +219,9 @@ export const WebflowTeamForm = forwardRef<
       console.error('Form submission error:', error);
     } finally {
       setIsLoading(false);
+      setBusyAction(null);
     }
   };
-
-  const statusOptions = [
-    { value: 'draft', label: 'Draft' },
-    { value: 'published', label: 'Published' }
-  ];
 
   const filterOptions = [
     { value: 'Leadership', label: 'Leadership' },
@@ -222,6 +230,11 @@ export const WebflowTeamForm = forwardRef<
     { value: 'Alumnus', label: 'Alumnus' },
     { value: 'COP27 Youth Delegate', label: 'COP27 Youth Delegate' }
   ];
+
+  const handleCancelClick = () => {
+    // Always ask for confirmation on Cancel to avoid accidental navigation
+    setShowCancelConfirm(true);
+  };
 
   return (
     <div className="h-full flex flex-col bg-gray-900 prevent-layout-shift">
@@ -235,8 +248,9 @@ export const WebflowTeamForm = forwardRef<
             <Button
               type="button"
               variant="outline"
-              onClick={onCancel}
+              onClick={handleCancelClick}
               className="bg-gray-800 border-gray-600 text-gray-300 hover:bg-gray-700"
+              disabled={isLoading || !!busyAction}
             >
               Cancel
             </Button>
@@ -251,15 +265,37 @@ export const WebflowTeamForm = forwardRef<
                 Delete
               </Button>
             )}
+            {/* Save as Draft */}
             <SaveConfirmation
+              mode="confirm"
+              preset="draft"
+              triggerLabel="Save as Draft"
+              triggerClassName="bg-gray-700 hover:bg-gray-600 text-white"
+              disabled={isLoading}
+              isSubmitting={busyAction === 'draft'}
+              itemLabel="Team Member"
               onAction={async (status) => {
+                setBusyAction('draft');
                 form.setValue('status', status);
                 await form.handleSubmit(handleSubmit)();
                 return { slug: form.getValues().slug };
               }}
+            />
+            {/* Publish */}
+            <SaveConfirmation
+              mode="confirm"
+              preset="published"
+              triggerLabel="Publish"
+              triggerClassName="bg-blue-600 hover:bg-blue-700 text-white"
               disabled={isLoading}
-              isSubmitting={isLoading}
+              isSubmitting={busyAction === 'published'}
               itemLabel="Team Member"
+              onAction={async (status) => {
+                setBusyAction('published');
+                form.setValue('status', status);
+                await form.handleSubmit(handleSubmit)();
+                return { slug: form.getValues().slug };
+              }}
             />
           </div>
         </div>
@@ -317,13 +353,7 @@ export const WebflowTeamForm = forwardRef<
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <WebflowSelectField
-                      control={form.control}
-                      name="status"
-                      label="Status"
-                      options={statusOptions}
-                      required
-                    />
+                    <div className="hidden" />
 
                     <WebflowSelectField
                       control={form.control}
@@ -516,6 +546,43 @@ export const WebflowTeamForm = forwardRef<
           </button>
         </form>
       </Form>
+
+      {/* Cancel Confirmation Dialog */}
+      {showCancelConfirm && (
+        <Dialog open={showCancelConfirm} onOpenChange={setShowCancelConfirm}>
+          <DialogContent className="max-w-md">
+            <DialogHeader>
+              <DialogTitle>Discard changes?</DialogTitle>
+              <DialogDescription>
+                You have unsaved changes. Are you sure you want to cancel? Your
+                edits will be lost.
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter className="flex gap-2 justify-end">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setShowCancelConfirm(false)}
+                className="bg-gray-700 border-gray-600 text-gray-200 hover:bg-gray-600"
+                disabled={isLoading || !!busyAction}
+              >
+                Continue editing
+              </Button>
+              <Button
+                type="button"
+                onClick={() => {
+                  setShowCancelConfirm(false);
+                  onCancel();
+                }}
+                className="bg-gray-500 hover:bg-gray-400 text-white"
+                disabled={isLoading || !!busyAction}
+              >
+                Discard changes
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 });

@@ -8,48 +8,21 @@ const bucketName = process.env.GCS_BUCKET || 'mnemo';
 const cdnBaseUrl = process.env.CDN_BASE_URL || 'https://cdn.communityjameel.io';
 
 function createStorage() {
-  // Approach 1: Base64 encoded JSON credentials (most reliable for serverless)
-  const base64Creds = process.env.GOOGLE_CREDENTIALS_BASE64;
-  if (base64Creds) {
-    try {
-      console.log('🔐 GCS auth: using base64 JSON credentials');
-      const credentials = JSON.parse(
-        Buffer.from(base64Creds, 'base64').toString()
-      );
-      return new Storage({
-        projectId,
-        credentials
-      });
-    } catch (error: any) {
-      console.error('❌ Base64 JSON credentials failed:', error.message);
-    }
-  }
-
-  // Approach 2: Explicit credentials with PEM headers
   const rawKey = process.env.PRIVATE_GCL || '';
   const client_email = process.env.GCP_CLIENT_EMAIL || '';
   const hasKey = rawKey && rawKey.trim().length > 0;
   const hasEmail = client_email && client_email.trim().length > 0;
-
   if (hasKey && hasEmail) {
-    try {
-      let private_key = rawKey.replace(/\\n/g, '\n');
-      if (!private_key.includes('BEGIN PRIVATE KEY')) {
-        private_key = `-----BEGIN PRIVATE KEY-----\n${private_key}\n-----END PRIVATE KEY-----\n`;
-      }
-      console.log('🔐 GCS auth: using explicit service account credentials');
-      return new Storage({
-        projectId,
-        credentials: { client_email, private_key }
-      });
-    } catch (error: any) {
-      console.error(
-        '❌ Explicit credentials failed, falling back to ADC:',
-        error.message
-      );
+    let private_key = rawKey.replace(/\\n/g, '\n');
+    if (!private_key.includes('BEGIN PRIVATE KEY')) {
+      private_key = `-----BEGIN PRIVATE KEY-----\n${private_key}\n-----END PRIVATE KEY-----\n`;
     }
+    console.log('🔐 GCS auth: using explicit service account credentials');
+    return new Storage({
+      projectId,
+      credentials: { client_email, private_key }
+    });
   }
-
   console.warn(
     '⚠️ GCS auth: using Application Default Credentials (no env creds found)'
   );

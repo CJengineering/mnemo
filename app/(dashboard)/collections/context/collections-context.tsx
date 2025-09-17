@@ -75,7 +75,7 @@ interface CollectionsContextType {
   state: CollectionsState;
 
   // Actions
-  fetchCollections: () => Promise<void>;
+  fetchCollections: (opts?: { silent?: boolean }) => Promise<void>;
   selectCollection: (collection: Collection | null) => void;
   selectItem: (item: APICollectionItem | null) => void;
   setCreatingNew: (creating: boolean) => void;
@@ -400,9 +400,14 @@ export function CollectionsProvider({
   const [state, dispatch] = useReducer(collectionsReducer, initialState);
 
   // Fetch collections data
-  const fetchCollections = useCallback(async () => {
-    dispatch({ type: 'SET_LOADING', payload: true });
-    dispatch({ type: 'SET_ERROR', payload: null });
+  const fetchCollections = useCallback(async (opts?: { silent?: boolean }) => {
+    const silent = !!opts?.silent;
+
+    // Only show global loading and clear error for non-silent (initial/explicit) loads
+    if (!silent) {
+      dispatch({ type: 'SET_LOADING', payload: true });
+      dispatch({ type: 'SET_ERROR', payload: null });
+    }
 
     try {
       const response = await fetch(API_URL);
@@ -450,7 +455,10 @@ export function CollectionsProvider({
       dispatch({ type: 'SET_COLLECTIONS', payload: collectionsArray });
     } catch (error: any) {
       console.error('Failed to fetch collections:', error);
-      dispatch({ type: 'SET_ERROR', payload: error.message });
+      // For silent refreshes, avoid pushing an error that would render the full-screen error UI
+      if (!silent) {
+        dispatch({ type: 'SET_ERROR', payload: error.message });
+      }
     }
   }, []);
 
@@ -532,8 +540,8 @@ export function CollectionsProvider({
         // Fire create webhook client-side (since using external API)
         fireCollectionWebhook('create', createdItemData);
 
-        // Refresh collections to ensure UI is in sync with server
-        await fetchCollections();
+        // Refresh collections to ensure UI is in sync with server (silent)
+        await fetchCollections({ silent: true });
 
         return newItem;
       } catch (error: any) {
@@ -606,8 +614,8 @@ export function CollectionsProvider({
         // Fire update webhook client-side
         fireCollectionWebhook('update', updatedItemData);
 
-        // Refresh collections to ensure UI is in sync with server
-        await fetchCollections();
+        // Refresh collections to ensure UI is in sync with server (silent)
+        await fetchCollections({ silent: true });
 
         return updatedItem;
       } catch (error: any) {
@@ -646,8 +654,8 @@ export function CollectionsProvider({
         fireCollectionWebhook('delete', { id });
 
         console.log('🔄 Refreshing collections from server...');
-        // Refresh collections to ensure UI is in sync with server
-        await fetchCollections();
+        // Refresh collections to ensure UI is in sync with server (silent)
+        await fetchCollections({ silent: true });
         console.log('✅ Collections refreshed after delete');
       } catch (error: any) {
         console.error('❌ Delete item error:', error);
@@ -699,7 +707,7 @@ export function CollectionsProvider({
 
   // Refresh data
   const refreshData = useCallback(async () => {
-    await fetchCollections();
+    await fetchCollections({ silent: true });
   }, [fetchCollections]);
 
   // Clear error
@@ -716,7 +724,7 @@ export function CollectionsProvider({
   useEffect(() => {
     const interval = setInterval(
       () => {
-        fetchCollections();
+        fetchCollections({ silent: true });
       },
       5 * 60 * 1000
     ); // Check and refresh every 5 minutes
