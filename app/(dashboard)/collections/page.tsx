@@ -88,9 +88,13 @@ function CollectionsContent() {
     setCreatingNew(true);
   };
 
-  const handleSubmitItem = async (formData: any) => {
+  const handleSubmitItem = async (
+    formData: any,
+    options?: { statusOnly?: boolean; minimalUpdate?: boolean }
+  ) => {
     console.log('🎯 handleSubmitItem called with:', {
       formData,
+      options,
       selectedCollection,
       isCreatingNew,
       selectedItem
@@ -108,7 +112,7 @@ function CollectionsContent() {
         console.log('✅ Create item result:', result);
       } else if (selectedItem) {
         console.log('✏️ Updating existing item...');
-        const result = await updateItem(selectedItem.id, formData);
+        const result = await updateItem(selectedItem.id, formData, options);
         console.log('✅ Update item result:', result);
       }
 

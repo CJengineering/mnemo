@@ -13,6 +13,14 @@ import { Form } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { Trash2 } from 'lucide-react';
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle
+} from '@/components/ui/dialog';
+import {
   WebflowTextField,
   WebflowSlugField,
   WebflowTextareaField,
@@ -166,6 +174,10 @@ export const WebflowEventForm = forwardRef<
   WebflowEventFormProps
 >(({ initialData, onSubmit, onCancel, onDelete, isEditing = false }, ref) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [busyAction, setBusyAction] = useState<null | 'draft' | 'published'>(
+    null
+  );
+  const [showCancelConfirm, setShowCancelConfirm] = useState(false);
 
   const form = useForm<WebflowEventFormData>({
     resolver: zodResolver(webflowEventSchema),
@@ -320,15 +332,23 @@ export const WebflowEventForm = forwardRef<
   //   return subscription.unsubscribe;
   // }, [form]);
 
-  // Manual slug generation function (Team-style)
+  // Manual slug generation function with collection type suffix
   const handleGenerateSlug = () => {
     const currentTitle = form.getValues('title');
     if (currentTitle) {
-      form.setValue('slug', generateSlug(currentTitle));
+      let baseSlug = generateSlug(currentTitle);
+
+      // Add collection type suffix to reduce chance of conflicts
+      const uniqueSlug = `${baseSlug}-event`;
+
+      form.setValue('slug', uniqueSlug);
     }
   };
 
   const handleSubmit = async (data: WebflowEventFormData) => {
+    const status = data.status;
+    setBusyAction(status);
+
     try {
       setIsLoading(true);
       // map slug arrays back to reference objects for API
@@ -346,8 +366,21 @@ export const WebflowEventForm = forwardRef<
       await onSubmit(payload);
     } catch (error) {
       console.error('Form submission error:', error);
+      if (error instanceof Error) {
+        if (
+          error.message.includes('slug') &&
+          error.message.includes('already')
+        ) {
+          throw new Error(
+            `This slug is already in use. Please choose a different slug.`
+          );
+        }
+        throw error;
+      }
+      throw new Error('An unexpected error occurred while saving the event.');
     } finally {
       setIsLoading(false);
+      setBusyAction(null);
     }
   };
 
@@ -391,7 +424,7 @@ export const WebflowEventForm = forwardRef<
           <div className="flex items-center gap-3">
             <Button
               type="button"
-              onClick={onCancel}
+              onClick={() => setShowCancelConfirm(true)}
               className="bg-gray-800 border-gray-600 text-gray-300 hover:bg-gray-700"
             >
               Cancel
@@ -408,13 +441,33 @@ export const WebflowEventForm = forwardRef<
               </Button>
             )}
             <SaveConfirmation
+              mode="confirm"
+              preset="draft"
+              triggerLabel="Save as Draft"
+              triggerClassName="bg-gray-700 hover:bg-gray-600 text-white"
               onAction={async (status) => {
+                setBusyAction('draft');
                 form.setValue('status', status);
                 await form.handleSubmit(handleSubmit)();
                 return { slug: form.getValues().slug };
               }}
               disabled={isLoading}
-              isSubmitting={isLoading}
+              isSubmitting={busyAction === 'draft'}
+              itemLabel="Event"
+            />
+            <SaveConfirmation
+              mode="confirm"
+              preset="published"
+              triggerLabel="Publish"
+              triggerClassName="bg-blue-600 hover:bg-blue-700 text-white"
+              onAction={async (status) => {
+                setBusyAction('published');
+                form.setValue('status', status);
+                await form.handleSubmit(handleSubmit)();
+                return { slug: form.getValues().slug };
+              }}
+              disabled={isLoading}
+              isSubmitting={busyAction === 'published'}
               itemLabel="Event"
             />
           </div>
@@ -978,6 +1031,29 @@ export const WebflowEventForm = forwardRef<
           </button>
         </form>
       </Form>
+
+      {/* Cancel Confirmation Dialog */}
+      <Dialog open={showCancelConfirm} onOpenChange={setShowCancelConfirm}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Cancel Event</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to cancel? Any unsaved changes will be lost.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setShowCancelConfirm(false)}
+            >
+              Continue Editing
+            </Button>
+            <Button variant="destructive" onClick={onCancel}>
+              Yes, Cancel
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 });

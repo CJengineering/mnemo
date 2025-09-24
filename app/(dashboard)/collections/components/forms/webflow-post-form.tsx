@@ -27,11 +27,29 @@ import { IncomingPostData } from '../interfaces-incoming';
 import { generateSlug } from './base-form';
 import './compact-form.css';
 import { SaveConfirmation } from '@/components/ui/save-confirmation';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter
+} from '@/components/ui/dialog';
 
 // Webflow CMS Post Schema
 const webflowPostSchema = z.object({
   title: z.string().min(1, 'Title is required'),
-  slug: z.string().min(1, 'Slug is required'),
+  slug: z
+    .string()
+    .min(1, 'Slug is required')
+    .regex(
+      /^[a-z0-9-]+$/,
+      'Slug can only contain lowercase letters, numbers, and hyphens'
+    )
+    .refine(
+      (val) => !val.startsWith('-') && !val.endsWith('-'),
+      'Slug cannot start or end with a hyphen'
+    ),
   status: z.enum(['draft', 'published']).default('draft'),
   description: z.string().optional(),
 
@@ -56,23 +74,31 @@ const webflowPostSchema = z.object({
   bulletPointsEnglish: z.string().optional(),
   bulletPointsArabic: z.string().optional(),
 
-  // Images (required)
-  thumbnail: z.object({
-    url: z.string().min(1, 'Thumbnail is required'),
-    alt: z.string().optional()
-  }),
-  heroImage: z.object({
-    url: z.string().min(1, 'Hero image is required'),
-    alt: z.string().optional()
-  }),
-  mainImage: z.object({
-    url: z.string().min(1, 'Main image is required'),
-    alt: z.string().optional()
-  }),
-  openGraphImage: z.object({
-    url: z.string().min(1, 'Open Graph image is required'),
-    alt: z.string().optional()
-  }),
+  // Images (optional)
+  thumbnail: z
+    .object({
+      url: z.string().optional(),
+      alt: z.string().optional()
+    })
+    .optional(),
+  heroImage: z
+    .object({
+      url: z.string().optional(),
+      alt: z.string().optional()
+    })
+    .optional(),
+  mainImage: z
+    .object({
+      url: z.string().optional(),
+      alt: z.string().optional()
+    })
+    .optional(),
+  openGraphImage: z
+    .object({
+      url: z.string().optional(),
+      alt: z.string().optional()
+    })
+    .optional(),
 
   // Image metadata
   altTextHeroImageEnglish: z.string().optional(),
@@ -132,6 +158,10 @@ export const WebflowPostForm = forwardRef<
   WebflowPostFormProps
 >(({ initialData, onSubmit, onCancel, onDelete, isEditing = false }, ref) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [busyAction, setBusyAction] = useState<null | 'draft' | 'published'>(
+    null
+  );
+  const [showCancelConfirm, setShowCancelConfirm] = useState(false);
 
   const form = useForm<WebflowPostFormData>({
     resolver: zodResolver(webflowPostSchema),
@@ -154,10 +184,10 @@ export const WebflowPostForm = forwardRef<
       bodyArabic: initialData?.bodyArabic || '',
       bulletPointsEnglish: initialData?.bulletPointsEnglish || '',
       bulletPointsArabic: initialData?.bulletPointsArabic || '',
-      thumbnail: initialData?.thumbnail || { url: '', alt: '' },
-      heroImage: initialData?.heroImage || { url: '', alt: '' },
-      mainImage: initialData?.mainImage || { url: '', alt: '' },
-      openGraphImage: initialData?.openGraphImage || { url: '', alt: '' },
+      thumbnail: initialData?.thumbnail || undefined,
+      heroImage: initialData?.heroImage || undefined,
+      mainImage: initialData?.mainImage || undefined,
+      openGraphImage: initialData?.openGraphImage || undefined,
       altTextHeroImageEnglish: initialData?.altTextHeroImageEnglish || '',
       altTextHeroImageArabic: initialData?.altTextHeroImageArabic || '',
       photoCreditHeroImageEnglish:
@@ -221,10 +251,10 @@ export const WebflowPostForm = forwardRef<
       bodyArabic: initialData?.bodyArabic || '',
       bulletPointsEnglish: initialData?.bulletPointsEnglish || '',
       bulletPointsArabic: initialData?.bulletPointsArabic || '',
-      thumbnail: initialData?.thumbnail || { url: '', alt: '' },
-      heroImage: initialData?.heroImage || { url: '', alt: '' },
-      mainImage: initialData?.mainImage || { url: '', alt: '' },
-      openGraphImage: initialData?.openGraphImage || { url: '', alt: '' },
+      thumbnail: initialData?.thumbnail || undefined,
+      heroImage: initialData?.heroImage || undefined,
+      mainImage: initialData?.mainImage || undefined,
+      openGraphImage: initialData?.openGraphImage || undefined,
       altTextHeroImageEnglish: initialData?.altTextHeroImageEnglish || '',
       altTextHeroImageArabic: initialData?.altTextHeroImageArabic || '',
       photoCreditHeroImageEnglish:
@@ -283,80 +313,140 @@ export const WebflowPostForm = forwardRef<
   //   return subscription.unsubscribe;
   // }, [form]);
 
-  // Manual slug generation function (Team-style)
+  // Manual slug generation function with better conflict handling
   const handleGenerateSlug = () => {
     const currentTitle = form.getValues('title');
     if (currentTitle) {
-      form.setValue('slug', generateSlug(currentTitle));
+      let baseSlug = generateSlug(currentTitle);
+
+      // Add collection type suffix to reduce chance of conflicts
+      const uniqueSlug = `${baseSlug}-post`;
+
+      form.setValue('slug', uniqueSlug);
     }
   };
 
   const handleSubmit = async (data: WebflowPostFormData) => {
-    setIsLoading(true);
+    console.log(
+      '📋 Post Form Raw Data (slug-based references):',
+      JSON.stringify(data, null, 2)
+    );
+
+    // Reconstruct reference objects for API consumption
+    const transformed: IncomingPostData = {
+      title: data.title,
+      slug: data.slug,
+      status: data.status,
+      description: data.description,
+      arabicTitle: data.arabicTitle,
+      arabicCompleteIncomplete: data.arabicCompleteIncomplete,
+      datePublished: data.datePublished,
+      location: data.location,
+      locationArabic: data.locationArabic,
+      seoTitle: data.seoTitle,
+      seoTitleArabic: data.seoTitleArabic,
+      seoMeta: data.seoMeta,
+      seoMetaArabic: data.seoMetaArabic,
+      bodyEnglish: data.bodyEnglish,
+      bodyArabic: data.bodyArabic,
+      bulletPointsEnglish: data.bulletPointsEnglish,
+      bulletPointsArabic: data.bulletPointsArabic,
+      thumbnail: data.thumbnail?.url
+        ? {
+            url: data.thumbnail.url,
+            alt: data.thumbnail.alt || ''
+          }
+        : undefined,
+      heroImage: data.heroImage?.url
+        ? {
+            url: data.heroImage.url,
+            alt: data.heroImage.alt || ''
+          }
+        : undefined,
+      mainImage: data.mainImage?.url
+        ? {
+            url: data.mainImage.url,
+            alt: data.mainImage.alt || ''
+          }
+        : undefined,
+      openGraphImage: data.openGraphImage?.url
+        ? {
+            url: data.openGraphImage.url,
+            alt: data.openGraphImage.alt || ''
+          }
+        : undefined,
+      altTextHeroImageEnglish: data.altTextHeroImageEnglish,
+      altTextHeroImageArabic: data.altTextHeroImageArabic,
+      photoCreditHeroImageEnglish: data.photoCreditHeroImageEnglish,
+      photoCreditHeroImageArabic: data.photoCreditHeroImageArabic,
+      videoAsHero: data.videoAsHero,
+      heroVideoYoutubeId: data.heroVideoYoutubeId,
+      heroVideoArabicYoutubeId: data.heroVideoArabicYoutubeId,
+      programmeLabel: data.programmeLabel
+        ? { id: data.programmeLabel, slug: data.programmeLabel }
+        : undefined,
+      relatedProgrammes: data.relatedProgrammes.map((s) => ({
+        id: s,
+        slug: s
+      })),
+      blogCategory: data.blogCategory
+        ? { id: data.blogCategory, slug: data.blogCategory }
+        : undefined,
+      relatedEvent: data.relatedEvent
+        ? { id: data.relatedEvent, slug: data.relatedEvent }
+        : undefined,
+      people: data.people.map((s) => ({ id: s, slug: s })),
+      innovations: data.innovations.map((s) => ({ id: s, slug: s })),
+      tags: data.tags.map((s) => ({ id: s, slug: s })),
+      imageCarousel: data.imageCarousel
+        ?.filter((img) => img.url)
+        .map((img) => ({ url: img.url, alt: img.alt || '' })),
+      imageGalleryCredits: data.imageGalleryCredits,
+      imageGalleryCreditsArabic: data.imageGalleryCreditsArabic,
+      featured: data.featured,
+      pushToGR: data.pushToGR,
+      sitemapIndexing: data.sitemapIndexing
+    };
+
+    console.log(
+      '⬆️ Post Form Outgoing (reconstructed):',
+      JSON.stringify(transformed, null, 2)
+    );
+
     try {
-      // Reconstruct reference objects for API consumption
-      const transformed: IncomingPostData = {
-        title: data.title,
-        slug: data.slug,
-        status: data.status,
-        description: data.description,
-        arabicTitle: data.arabicTitle,
-        arabicCompleteIncomplete: data.arabicCompleteIncomplete,
-        datePublished: data.datePublished,
-        location: data.location,
-        locationArabic: data.locationArabic,
-        seoTitle: data.seoTitle,
-        seoTitleArabic: data.seoTitleArabic,
-        seoMeta: data.seoMeta,
-        seoMetaArabic: data.seoMetaArabic,
-        bodyEnglish: data.bodyEnglish,
-        bodyArabic: data.bodyArabic,
-        bulletPointsEnglish: data.bulletPointsEnglish,
-        bulletPointsArabic: data.bulletPointsArabic,
-        thumbnail: { url: data.thumbnail.url, alt: data.thumbnail.alt || '' },
-        heroImage: { url: data.heroImage.url, alt: data.heroImage.alt || '' },
-        mainImage: { url: data.mainImage.url, alt: data.mainImage.alt || '' },
-        openGraphImage: {
-          url: data.openGraphImage.url,
-          alt: data.openGraphImage.alt || ''
-        },
-        altTextHeroImageEnglish: data.altTextHeroImageEnglish,
-        altTextHeroImageArabic: data.altTextHeroImageArabic,
-        photoCreditHeroImageEnglish: data.photoCreditHeroImageEnglish,
-        photoCreditHeroImageArabic: data.photoCreditHeroImageArabic,
-        videoAsHero: data.videoAsHero,
-        heroVideoYoutubeId: data.heroVideoYoutubeId,
-        heroVideoArabicYoutubeId: data.heroVideoArabicYoutubeId,
-        programmeLabel: data.programmeLabel
-          ? { id: data.programmeLabel, slug: data.programmeLabel }
-          : undefined,
-        relatedProgrammes: data.relatedProgrammes.map((s) => ({
-          id: s,
-          slug: s
-        })),
-        blogCategory: data.blogCategory
-          ? { id: data.blogCategory, slug: data.blogCategory }
-          : undefined,
-        relatedEvent: data.relatedEvent
-          ? { id: data.relatedEvent, slug: data.relatedEvent }
-          : undefined,
-        people: data.people.map((s) => ({ id: s, slug: s })),
-        innovations: data.innovations.map((s) => ({ id: s, slug: s })),
-        tags: data.tags.map((s) => ({ id: s, slug: s })),
-        imageCarousel: data.imageCarousel
-          ?.filter((img) => img.url)
-          .map((img) => ({ url: img.url, alt: img.alt || '' })),
-        imageGalleryCredits: data.imageGalleryCredits,
-        imageGalleryCreditsArabic: data.imageGalleryCreditsArabic,
-        featured: data.featured,
-        pushToGR: data.pushToGR,
-        sitemapIndexing: data.sitemapIndexing
-      };
+      setIsLoading(true);
       await onSubmit(transformed as any);
     } catch (error) {
       console.error('Form submission error:', error);
+
+      // Re-throw with better message for slug issues
+      if (error instanceof Error) {
+        if (
+          error.message.includes('slug') &&
+          error.message.includes('already')
+        ) {
+          throw new Error(
+            `This slug is already in use. Please choose a different slug.`
+          );
+        } else if (
+          error.message.includes('duplicate') ||
+          error.message.includes('unique')
+        ) {
+          throw new Error(
+            `This slug already exists. Please modify the slug field and try again.`
+          );
+        } else if (error.message.includes('500')) {
+          throw new Error(
+            `Server error: This may be due to a duplicate slug. Please check your slug and try again.`
+          );
+        }
+      }
+
+      // Re-throw original error if no specific handling
+      throw error;
     } finally {
       setIsLoading(false);
+      setBusyAction(null);
     }
   };
 
@@ -370,13 +460,18 @@ export const WebflowPostForm = forwardRef<
     }
   }));
 
+  const handleCancelClick = () => {
+    // Always ask for confirmation on Cancel to avoid accidental navigation
+    setShowCancelConfirm(true);
+  };
+
   const statusOptions = [
     { value: 'draft', label: 'Draft' },
     { value: 'published', label: 'Published' }
   ];
 
   return (
-    <div className="h-full flex flex-col prevent-layout-shift">
+    <div className="h-full flex flex-col bg-gray-900 prevent-layout-shift">
       {/* Action Bar with Delete Button */}
       <div className="sticky top-0 z-10 bg-gray-900 border-b border-gray-700 p-4 -mx-6 -mt-6 mb-6">
         <div className="flex items-center justify-between">
@@ -387,8 +482,9 @@ export const WebflowPostForm = forwardRef<
             <Button
               type="button"
               variant="outline"
-              onClick={onCancel}
+              onClick={handleCancelClick}
               className="bg-gray-800 border-gray-600 text-gray-300 hover:bg-gray-700"
+              disabled={isLoading || !!busyAction}
             >
               Cancel
             </Button>
@@ -403,15 +499,37 @@ export const WebflowPostForm = forwardRef<
                 Delete
               </Button>
             )}
+            {/* Save as Draft */}
             <SaveConfirmation
+              mode="confirm"
+              preset="draft"
+              triggerLabel="Save as Draft"
+              triggerClassName="bg-gray-700 hover:bg-gray-600 text-white"
+              disabled={isLoading}
+              isSubmitting={busyAction === 'draft'}
+              itemLabel="Post"
               onAction={async (status) => {
+                setBusyAction('draft');
                 form.setValue('status', status);
                 await form.handleSubmit(handleSubmit)();
                 return { slug: form.getValues().slug };
               }}
+            />
+            {/* Publish */}
+            <SaveConfirmation
+              mode="confirm"
+              preset="published"
+              triggerLabel="Publish"
+              triggerClassName="bg-blue-600 hover:bg-blue-700 text-white"
               disabled={isLoading}
-              isSubmitting={isLoading}
+              isSubmitting={busyAction === 'published'}
               itemLabel="Post"
+              onAction={async (status) => {
+                setBusyAction('published');
+                form.setValue('status', status);
+                await form.handleSubmit(handleSubmit)();
+                return { slug: form.getValues().slug };
+              }}
             />
           </div>
         </div>
@@ -443,6 +561,10 @@ export const WebflowPostForm = forwardRef<
                     label="Slug"
                     required
                   />
+                  <p className="text-xs text-gray-400 -mt-2">
+                    URL-friendly version (lowercase letters, numbers, hyphens
+                    only). Must be unique.
+                  </p>
                   {/* Team-style slug actions */}
                   <div className="flex items-center gap-3">
                     <Button
@@ -694,7 +816,6 @@ export const WebflowPostForm = forwardRef<
                         control={form.control}
                         name="thumbnail"
                         label="Thumbnail"
-                        required
                         helperText="Small image for post listings (recommended: 400x300px)"
                         collectionType="posts"
                         slug={form.watch('slug')}
@@ -704,7 +825,6 @@ export const WebflowPostForm = forwardRef<
                         control={form.control}
                         name="heroImage"
                         label="Hero Image"
-                        required
                         helperText="Large banner image (recommended: 1200x800px)"
                         collectionType="posts"
                         slug={form.watch('slug')}
@@ -714,7 +834,6 @@ export const WebflowPostForm = forwardRef<
                         control={form.control}
                         name="mainImage"
                         label="Main Image"
-                        required
                         helperText="Primary post image (recommended: 1200x800px)"
                         collectionType="posts"
                         slug={form.watch('slug')}
@@ -724,7 +843,6 @@ export const WebflowPostForm = forwardRef<
                         control={form.control}
                         name="openGraphImage"
                         label="Open Graph Image"
-                        required
                         helperText="Social sharing image (recommended: 1200x630px)"
                         collectionType="posts"
                         slug={form.watch('slug')}
@@ -869,14 +987,47 @@ export const WebflowPostForm = forwardRef<
 
           {/* Hidden Submit Button - The form is submitted via the header buttons */}
           <button type="submit" className="hidden" disabled={isLoading}>
-            {isLoading
-              ? 'Saving...'
-              : isEditing
-                ? 'Update Post'
-                : 'Create Post'}
+            {isEditing ? 'Update Post' : 'Create Post'}
           </button>
         </form>
       </Form>
+
+      {/* Cancel Confirmation Dialog */}
+      {showCancelConfirm && (
+        <Dialog open={showCancelConfirm} onOpenChange={setShowCancelConfirm}>
+          <DialogContent className="max-w-md">
+            <DialogHeader>
+              <DialogTitle>Discard changes?</DialogTitle>
+              <DialogDescription>
+                You have unsaved changes. Are you sure you want to cancel? Your
+                edits will be lost.
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter className="flex gap-2 justify-end">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setShowCancelConfirm(false)}
+                className="bg-gray-700 border-gray-600 text-gray-200 hover:bg-gray-600"
+                disabled={isLoading || !!busyAction}
+              >
+                Continue editing
+              </Button>
+              <Button
+                type="button"
+                onClick={() => {
+                  setShowCancelConfirm(false);
+                  onCancel();
+                }}
+                className="bg-gray-500 hover:bg-gray-400 text-white"
+                disabled={isLoading || !!busyAction}
+              >
+                Discard changes
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 });

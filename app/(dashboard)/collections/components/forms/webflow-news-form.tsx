@@ -28,6 +28,14 @@ import { IncomingNewsData } from '../interfaces-incoming';
 import { generateSlug } from './base-form';
 import './compact-form.css';
 import { SaveConfirmation } from '@/components/ui/save-confirmation';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter
+} from '@/components/ui/dialog';
 
 // Webflow CMS News Schema
 const webflowNewsSchema = z.object({
@@ -93,6 +101,10 @@ export const WebflowNewsForm = forwardRef<
   WebflowNewsFormProps
 >(({ initialData, onSubmit, onCancel, onDelete, isEditing = false }, ref) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [busyAction, setBusyAction] = useState<null | 'draft' | 'published'>(
+    null
+  );
+  const [showCancelConfirm, setShowCancelConfirm] = useState(false);
   const form = useForm<WebflowNewsFormData>({
     resolver: zodResolver(webflowNewsSchema),
     defaultValues: {
@@ -236,11 +248,16 @@ export const WebflowNewsForm = forwardRef<
   //   return subscription.unsubscribe;
   // }, [form]);
 
-  // Manual slug generation function (Team-style)
+  // Manual slug generation function with collection type suffix
   const handleGenerateSlug = () => {
     const currentTitle = form.getValues('title');
     if (currentTitle) {
-      form.setValue('slug', generateSlug(currentTitle));
+      let baseSlug = generateSlug(currentTitle);
+
+      // Add collection type suffix to reduce chance of conflicts
+      const uniqueSlug = `${baseSlug}-news`;
+
+      form.setValue('slug', uniqueSlug);
     }
   };
 
@@ -296,14 +313,47 @@ export const WebflowNewsForm = forwardRef<
       relatedEvents: data.relatedEvents.map((s) => ({ id: s, slug: s })),
       tags: data.tags.map((s) => ({ id: s, slug: s }))
     };
+
     try {
       setIsLoading(true);
       await onSubmit(transformed);
     } catch (error) {
       console.error('Form submission error:', error);
+
+      // Re-throw with better message for slug issues
+      if (error instanceof Error) {
+        if (
+          error.message.includes('slug') &&
+          error.message.includes('already')
+        ) {
+          throw new Error(
+            `This slug is already in use. Please choose a different slug.`
+          );
+        } else if (
+          error.message.includes('duplicate') ||
+          error.message.includes('unique')
+        ) {
+          throw new Error(
+            `This slug already exists. Please modify the slug field and try again.`
+          );
+        } else if (error.message.includes('500')) {
+          throw new Error(
+            `Server error: This may be due to a duplicate slug. Please check your slug and try again.`
+          );
+        }
+      }
+
+      // Re-throw original error if no specific handling
+      throw error;
     } finally {
       setIsLoading(false);
+      setBusyAction(null);
     }
+  };
+
+  const handleCancelClick = () => {
+    // Always ask for confirmation on Cancel to avoid accidental navigation
+    setShowCancelConfirm(true);
   };
 
   const statusOptions = [
@@ -323,8 +373,9 @@ export const WebflowNewsForm = forwardRef<
             <Button
               type="button"
               variant="outline"
-              onClick={onCancel}
+              onClick={handleCancelClick}
               className="bg-gray-800 border-gray-600 text-gray-300 hover:bg-gray-700"
+              disabled={isLoading || !!busyAction}
             >
               Cancel
             </Button>
@@ -339,15 +390,37 @@ export const WebflowNewsForm = forwardRef<
                 Delete
               </Button>
             )}
+            {/* Save as Draft */}
             <SaveConfirmation
+              mode="confirm"
+              preset="draft"
+              triggerLabel="Save as Draft"
+              triggerClassName="bg-gray-700 hover:bg-gray-600 text-white"
+              disabled={isLoading}
+              isSubmitting={busyAction === 'draft'}
+              itemLabel="News"
               onAction={async (status) => {
+                setBusyAction('draft');
                 form.setValue('status', status);
                 await form.handleSubmit(handleSubmit)();
                 return { slug: form.getValues().slug };
               }}
+            />
+            {/* Publish */}
+            <SaveConfirmation
+              mode="confirm"
+              preset="published"
+              triggerLabel="Publish"
+              triggerClassName="bg-blue-600 hover:bg-blue-700 text-white"
               disabled={isLoading}
-              isSubmitting={isLoading}
+              isSubmitting={busyAction === 'published'}
               itemLabel="News"
+              onAction={async (status) => {
+                setBusyAction('published');
+                form.setValue('status', status);
+                await form.handleSubmit(handleSubmit)();
+                return { slug: form.getValues().slug };
+              }}
             />
           </div>
         </div>
@@ -673,6 +746,45 @@ export const WebflowNewsForm = forwardRef<
           </button>
         </form>
       </Form>
+
+      {/* Cancel Confirmation Dialog */}
+      {showCancelConfirm && (
+        <Dialog open={showCancelConfirm} onOpenChange={setShowCancelConfirm}>
+          <DialogContent className="max-w-md">
+            <DialogHeader>
+              <DialogTitle>Discard changes?</DialogTitle>
+              <DialogDescription>
+                You have unsaved changes. Are you sure you want to cancel? Your
+                edits will be lost.
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter className="flex gap-2 justify-end">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setShowCancelConfirm(false)}
+                className="bg-gray-700 border-gray-600 text-gray-200 hover:bg-gray-600"
+                disabled={isLoading || !!busyAction}
+              >
+                Continue editing
+              </Button>
+              <Button
+                type="button"
+                onClick={() => {
+                  setShowCancelConfirm(false);
+                  onCancel();
+                }}
+                className="bg-gray-500 hover:bg-gray-400 text-white"
+                disabled={isLoading || !!busyAction}
+              >
+                Discard changes
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 });
+
+WebflowNewsForm.displayName = 'WebflowNewsForm';

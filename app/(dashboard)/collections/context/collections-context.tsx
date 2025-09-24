@@ -8,6 +8,7 @@ import React, {
   useEffect
 } from 'react';
 import { Collection, CollectionItem } from '../lib/types';
+import { buildUpdatePayload, normalizeApiType } from './update-payload';
 
 // API Collection Item interface (matching your existing structure)
 export interface APICollectionItem {
@@ -87,7 +88,8 @@ interface CollectionsContextType {
   ) => Promise<APICollectionItem>;
   updateItem: (
     id: string,
-    data: Partial<APICollectionItem>
+    data: Partial<APICollectionItem>,
+    options?: { statusOnly?: boolean; minimalUpdate?: boolean }
   ) => Promise<APICollectionItem>;
   deleteItem: (id: string) => Promise<void>;
   fetchItemById: (id: string) => Promise<APICollectionItem>;
@@ -308,49 +310,25 @@ const CollectionsContext = createContext<CollectionsContextType | undefined>(
 
 // API utilities
 const API_URL =
-  'https://mnemo-app-e4f6j5kdsq-ew.a.run.app/api/collection-items';
+  process.env.NEXT_PUBLIC_COLLECTIONS_API_URL ||
+  'https://mnemo-app-100166227581.europe-west1.run.app/api/collection-items';
+
+console.log('🔧 Collections API URL:', API_URL);
 
 // Webhook helper (client-side) to mirror server-side webhooks when using external API directly
+// DISABLED: These internal webhook endpoints don't exist in this Next.js app
+// The external API handles its own webhooks, so we don't need to call local ones
 async function fireCollectionWebhook(
   action: 'create' | 'update' | 'delete',
   collectionItem: any
 ) {
-  const endpoints =
-    action === 'create'
-      ? [
-          'http://localhost:3000/api/mnemo/create-collection',
-          'https://www.communityjameel.org/api/mnemo/create-collection'
-        ]
-      : action === 'update'
-        ? [
-            'http://localhost:3000/api/mnemo/update-collection',
-            'https://www.communityjameel.org/api/mnemo/update-collection'
-          ]
-        : [
-            'http://localhost:3000/api/mnemo/delete-collection',
-            'https://www.communityjameel.org/api/mnemo/delete-collection'
-          ];
-  const payload = {
-    event: `collectionItem.${action}d`,
-    action,
-    timestamp: new Date().toISOString(),
-    collectionItem
-  };
-  try {
-    await Promise.all(
-      endpoints.map((url) =>
-        fetch(url, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        }).catch((e) =>
-          console.error(`Client webhook ${action} failed -> ${url}`, e)
-        )
-      )
-    );
-  } catch (e) {
-    console.error('Client webhook dispatch unexpected error:', e);
-  }
+  console.log(
+    `🔗 Webhook ${action} would be called for:`,
+    collectionItem.id,
+    '(disabled)'
+  );
+  // Webhooks disabled - external API handles this
+  return;
 }
 
 // Status transformation utilities
@@ -410,7 +388,9 @@ export function CollectionsProvider({
     }
 
     try {
-      const response = await fetch(API_URL);
+      const response = await fetch(API_URL, {
+        headers: { Accept: 'application/json' }
+      });
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -496,17 +476,25 @@ export function CollectionsProvider({
         }
 
         const apiStatus = transformStatusToAPI(formData.status || 'draft');
-        const payload = {
-          type: formData.type || collectionType,
+        const normalizedType =
+          normalizeApiType(formData.type || collectionType) || collectionType;
+        const payload: any = {
           status: apiStatus,
           slug: formData.slug.trim(),
           title: formData.title.trim(),
           data: formData.data
         };
+        if (normalizeApiType(normalizedType)) {
+          payload.type = normalizeApiType(normalizedType);
+        }
+        console.log('🧭 Create normalized type:', payload.type);
 
         const response = await fetch(API_URL, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json'
+          },
           body: JSON.stringify(payload)
         });
 
@@ -559,7 +547,8 @@ export function CollectionsProvider({
   const updateItem = useCallback(
     async (
       id: string,
-      formData: Partial<APICollectionItem>
+      formData: Partial<APICollectionItem>,
+      options?: { statusOnly?: boolean; minimalUpdate?: boolean }
     ): Promise<APICollectionItem> => {
       dispatch({ type: 'SET_SUBMITTING', payload: true });
       dispatch({ type: 'SET_ERROR', payload: null });
@@ -571,31 +560,37 @@ export function CollectionsProvider({
       }
 
       try {
-        const apiStatus = transformStatusToAPI(formData.status || 'draft');
-        const payload = {
-          type: formData.type || state.selectedItem?.type,
-          status: apiStatus,
-          slug: formData.slug?.trim(),
-          title: formData.title?.trim(),
-          data: formData.data
-        };
+        const payload = buildUpdatePayload(
+          formData as any,
+          options,
+          state.selectedItem?.type
+        );
+        console.log('📤 Computed update payload:', payload);
 
-        const response = await fetch(`${API_URL}/${id}`, {
+        const url = `${API_URL}/${id}`;
+        console.log('📡 PUT', url);
+        const response = await fetch(url, {
           method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json'
+          },
           body: JSON.stringify(payload)
         });
 
         if (!response.ok) {
-          const errorData = await response.json().catch(() => ({}));
+          const errorText = await response.text().catch(() => '');
+          let errorData: any = {};
+          try {
+            errorData = JSON.parse(errorText);
+          } catch {}
           throw new Error(
-            errorData.message ||
-              `API Error: ${response.status} ${response.statusText}`
+            (errorData && errorData.message) ||
+              `API Error: ${response.status} ${response.statusText} ${errorText ? '- ' + errorText : ''}`
           );
         }
 
         const responseData = await response.json();
-        // The API returns the updated item nested under 'collectionItem'
         const updatedItemData = responseData.collectionItem;
         const updatedItem: APICollectionItem = {
           id,
@@ -610,11 +605,7 @@ export function CollectionsProvider({
 
         dispatch({ type: 'UPDATE_ITEM', payload: updatedItem });
         dispatch({ type: 'REVERT_OPTIMISTIC', payload: id });
-
-        // Fire update webhook client-side
         fireCollectionWebhook('update', updatedItemData);
-
-        // Refresh collections to ensure UI is in sync with server (silent)
         await fetchCollections({ silent: true });
 
         return updatedItem;
@@ -640,7 +631,8 @@ export function CollectionsProvider({
       try {
         console.log('📡 Sending DELETE request to:', `${API_URL}/${id}`);
         const response = await fetch(`${API_URL}/${id}`, {
-          method: 'DELETE'
+          method: 'DELETE',
+          headers: { Accept: 'application/json' }
         });
 
         if (!response.ok) {
@@ -674,7 +666,9 @@ export function CollectionsProvider({
       dispatch({ type: 'SET_ERROR', payload: null });
 
       try {
-        const response = await fetch(`${API_URL}/${id}`);
+        const response = await fetch(`${API_URL}/${id}`, {
+          headers: { Accept: 'application/json' }
+        });
 
         if (!response.ok) {
           throw new Error(`Failed to fetch item: ${response.status}`);

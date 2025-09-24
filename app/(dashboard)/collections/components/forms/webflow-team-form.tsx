@@ -156,11 +156,16 @@ export const WebflowTeamForm = forwardRef<
     form.reset(newValues);
   }, [initialData, form]);
 
-  // Manual slug generation function
+  // Manual slug generation function with collection type suffix
   const handleGenerateSlug = () => {
     const currentName = form.getValues('name');
     if (currentName) {
-      form.setValue('slug', generateSlug(currentName));
+      let baseSlug = generateSlug(currentName);
+
+      // Add collection type suffix to reduce chance of conflicts
+      const uniqueSlug = `${baseSlug}-team`;
+
+      form.setValue('slug', uniqueSlug);
     }
   };
 

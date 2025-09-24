@@ -22,6 +22,14 @@ import { IncomingAwardData } from '../interfaces-incoming';
 import { generateSlug } from './base-form';
 import './compact-form.css';
 import { SaveConfirmation } from '@/components/ui/save-confirmation';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle
+} from '@/components/ui/dialog';
 
 const awardSchema = z.object({
   title: z.string().min(1, 'Title is required'),
@@ -59,6 +67,10 @@ export const WebflowAwardForm = forwardRef<
   WebflowAwardFormProps
 >(({ initialData, onSubmit, onCancel, onDelete, isEditing = false }, ref) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [busyAction, setBusyAction] = useState<null | 'draft' | 'published'>(
+    null
+  );
+  const [showCancelConfirm, setShowCancelConfirm] = useState(false);
 
   const form = useForm<WebflowAwardFormData>({
     resolver: zodResolver(awardSchema),
@@ -87,17 +99,40 @@ export const WebflowAwardForm = forwardRef<
 
   const handleGenerateSlug = () => {
     const currentTitle = form.getValues('title');
-    if (currentTitle) form.setValue('slug', generateSlug(currentTitle));
+    if (currentTitle) {
+      let baseSlug = generateSlug(currentTitle);
+
+      // Add collection type suffix to reduce chance of conflicts
+      const uniqueSlug = `${baseSlug}-award`;
+
+      form.setValue('slug', uniqueSlug);
+    }
   };
 
   const handleSubmit = async (data: WebflowAwardFormData) => {
-    setIsLoading(true);
+    const status = data.status;
+    setBusyAction(status);
+
     try {
+      setIsLoading(true);
       await onSubmit(toIncoming(data));
-    } catch (e) {
-      console.error('Award form submit error:', e);
+    } catch (error) {
+      console.error('Award form submit error:', error);
+      if (error instanceof Error) {
+        if (
+          error.message.includes('slug') &&
+          error.message.includes('already')
+        ) {
+          throw new Error(
+            `This slug is already in use. Please choose a different slug.`
+          );
+        }
+        throw error;
+      }
+      throw new Error('An unexpected error occurred while saving the award.');
     } finally {
       setIsLoading(false);
+      setBusyAction(null);
     }
   };
 
@@ -118,7 +153,7 @@ export const WebflowAwardForm = forwardRef<
             <Button
               type="button"
               variant="outline"
-              onClick={onCancel}
+              onClick={() => setShowCancelConfirm(true)}
               className="bg-gray-800 border-gray-600 text-gray-300 hover:bg-gray-700"
             >
               Cancel
@@ -135,13 +170,25 @@ export const WebflowAwardForm = forwardRef<
               </Button>
             )}
             <SaveConfirmation
+              preset="draft"
               onAction={async (status) => {
                 form.setValue('status', status);
                 await form.handleSubmit(handleSubmit)();
                 return { slug: form.getValues().slug };
               }}
               disabled={isLoading}
-              isSubmitting={isLoading}
+              isSubmitting={busyAction === 'draft'}
+              itemLabel="Award"
+            />
+            <SaveConfirmation
+              preset="published"
+              onAction={async (status) => {
+                form.setValue('status', status);
+                await form.handleSubmit(handleSubmit)();
+                return { slug: form.getValues().slug };
+              }}
+              disabled={isLoading}
+              isSubmitting={busyAction === 'published'}
               itemLabel="Award"
             />
           </div>
@@ -223,6 +270,29 @@ export const WebflowAwardForm = forwardRef<
           </button>
         </form>
       </Form>
+
+      {/* Cancel Confirmation Dialog */}
+      <Dialog open={showCancelConfirm} onOpenChange={setShowCancelConfirm}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Cancel Award</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to cancel? Any unsaved changes will be lost.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setShowCancelConfirm(false)}
+            >
+              Continue Editing
+            </Button>
+            <Button variant="destructive" onClick={onCancel}>
+              Yes, Cancel
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 });

@@ -14,6 +14,14 @@ import { Form } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { Trash2 } from 'lucide-react';
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle
+} from '@/components/ui/dialog';
+import {
   WebflowTextField,
   WebflowTextareaField,
   WebflowSlugField,
@@ -92,6 +100,10 @@ export const WebflowSourceForm = forwardRef<
   WebflowSourceFormProps
 >(({ initialData, onSubmit, onCancel, onDelete, isEditing = false }, ref) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [busyAction, setBusyAction] = useState<null | 'draft' | 'published'>(
+    null
+  );
+  const [showCancelConfirm, setShowCancelConfirm] = useState(false);
 
   const form = useForm<WebflowSourceFormData>({
     resolver: zodResolver(sourceSchema),
@@ -130,17 +142,40 @@ export const WebflowSourceForm = forwardRef<
 
   const handleGenerateSlug = () => {
     const currentTitle = form.getValues('title');
-    if (currentTitle) form.setValue('slug', generateSlug(currentTitle));
+    if (currentTitle) {
+      let baseSlug = generateSlug(currentTitle);
+
+      // Add collection type suffix to reduce chance of conflicts
+      const uniqueSlug = `${baseSlug}-source`;
+
+      form.setValue('slug', uniqueSlug);
+    }
   };
 
   const handleSubmit = async (data: WebflowSourceFormData) => {
-    setIsLoading(true);
+    const status = data.status;
+    setBusyAction(status);
+
     try {
+      setIsLoading(true);
       await onSubmit(toIncoming(data));
-    } catch (e) {
-      console.error('Source form submit error:', e);
+    } catch (error) {
+      console.error('Source form submit error:', error);
+      if (error instanceof Error) {
+        if (
+          error.message.includes('slug') &&
+          error.message.includes('already')
+        ) {
+          throw new Error(
+            `This slug is already in use. Please choose a different slug.`
+          );
+        }
+        throw error;
+      }
+      throw new Error('An unexpected error occurred while saving the source.');
     } finally {
       setIsLoading(false);
+      setBusyAction(null);
     }
   };
 
@@ -161,7 +196,7 @@ export const WebflowSourceForm = forwardRef<
             <Button
               type="button"
               variant="outline"
-              onClick={onCancel}
+              onClick={() => setShowCancelConfirm(true)}
               className="bg-gray-800 border-gray-600 text-gray-300 hover:bg-gray-700"
             >
               Cancel
@@ -177,15 +212,37 @@ export const WebflowSourceForm = forwardRef<
                 Delete
               </Button>
             )}
+            {/* Save as Draft */}
             <SaveConfirmation
+              mode="confirm"
+              preset="draft"
+              triggerLabel="Save as Draft"
+              triggerClassName="bg-gray-700 hover:bg-gray-600 text-white"
+              disabled={isLoading}
+              isSubmitting={busyAction === 'draft'}
+              itemLabel="Source"
               onAction={async (status) => {
+                setBusyAction('draft');
                 form.setValue('status', status);
                 await form.handleSubmit(handleSubmit)();
                 return { slug: form.getValues().slug };
               }}
+            />
+            {/* Publish */}
+            <SaveConfirmation
+              mode="confirm"
+              preset="published"
+              triggerLabel="Publish"
+              triggerClassName="bg-blue-600 hover:bg-blue-700 text-white"
               disabled={isLoading}
-              isSubmitting={isLoading}
+              isSubmitting={busyAction === 'published'}
               itemLabel="Source"
+              onAction={async (status) => {
+                setBusyAction('published');
+                form.setValue('status', status);
+                await form.handleSubmit(handleSubmit)();
+                return { slug: form.getValues().slug };
+              }}
             />
           </div>
         </div>
@@ -314,6 +371,29 @@ export const WebflowSourceForm = forwardRef<
           </button>
         </form>
       </Form>
+
+      {/* Cancel Confirmation Dialog */}
+      <Dialog open={showCancelConfirm} onOpenChange={setShowCancelConfirm}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Cancel Source</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to cancel? Any unsaved changes will be lost.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setShowCancelConfirm(false)}
+            >
+              Continue Editing
+            </Button>
+            <Button variant="destructive" onClick={onCancel}>
+              Yes, Cancel
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 });

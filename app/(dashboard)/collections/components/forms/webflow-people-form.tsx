@@ -13,6 +13,14 @@ import { Form } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { Trash2 } from 'lucide-react';
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle
+} from '@/components/ui/dialog';
+import {
   WebflowTextField,
   WebflowSlugField,
   WebflowTextareaField,
@@ -192,6 +200,10 @@ export const WebflowPeopleForm = forwardRef<
   WebflowPeopleFormProps
 >(({ initialData, onSubmit, onCancel, onDelete, isEditing = false }, ref) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [busyAction, setBusyAction] = useState<null | 'draft' | 'published'>(
+    null
+  );
+  const [showCancelConfirm, setShowCancelConfirm] = useState(false);
 
   const form = useForm<WebflowPeopleFormData>({
     resolver: zodResolver(webflowPeopleSchema),
@@ -342,20 +354,43 @@ export const WebflowPeopleForm = forwardRef<
       form.setValue('status', status)
   }));
 
-  // Manual slug generation from name
+  // Manual slug generation from name with collection type suffix
   const handleGenerateSlug = () => {
     const currentName = form.getValues('name');
-    if (currentName) form.setValue('slug', generateSlug(currentName));
+    if (currentName) {
+      let baseSlug = generateSlug(currentName);
+
+      // Add collection type suffix to reduce chance of conflicts
+      const uniqueSlug = `${baseSlug}-people`;
+
+      form.setValue('slug', uniqueSlug);
+    }
   };
 
   const handleSubmit = async (data: WebflowPeopleFormData) => {
-    setIsLoading(true);
+    const status = data.status;
+    setBusyAction(status);
+
     try {
+      setIsLoading(true);
       await onSubmit(toIncoming(data));
-    } catch (e) {
-      console.error('People form submit error:', e);
+    } catch (error) {
+      console.error('People form submit error:', error);
+      if (error instanceof Error) {
+        if (
+          error.message.includes('slug') &&
+          error.message.includes('already')
+        ) {
+          throw new Error(
+            `This slug is already in use. Please choose a different slug.`
+          );
+        }
+        throw error;
+      }
+      throw new Error('An unexpected error occurred while saving the person.');
     } finally {
       setIsLoading(false);
+      setBusyAction(null);
     }
   };
 
@@ -376,7 +411,7 @@ export const WebflowPeopleForm = forwardRef<
             <Button
               type="button"
               variant="outline"
-              onClick={onCancel}
+              onClick={() => setShowCancelConfirm(true)}
               className="bg-gray-800 border-gray-600 text-gray-300 hover:bg-gray-700"
             >
               Cancel
@@ -393,13 +428,25 @@ export const WebflowPeopleForm = forwardRef<
               </Button>
             )}
             <SaveConfirmation
+              preset="draft"
               onAction={async (status) => {
                 form.setValue('status', status);
                 await form.handleSubmit(handleSubmit)();
                 return { slug: form.getValues().slug };
               }}
               disabled={isLoading}
-              isSubmitting={isLoading}
+              isSubmitting={busyAction === 'draft'}
+              itemLabel="Person"
+            />
+            <SaveConfirmation
+              preset="published"
+              onAction={async (status) => {
+                form.setValue('status', status);
+                await form.handleSubmit(handleSubmit)();
+                return { slug: form.getValues().slug };
+              }}
+              disabled={isLoading}
+              isSubmitting={busyAction === 'published'}
               itemLabel="Person"
             />
           </div>
@@ -808,6 +855,29 @@ export const WebflowPeopleForm = forwardRef<
           </button>
         </form>
       </Form>
+
+      {/* Cancel Confirmation Dialog */}
+      <Dialog open={showCancelConfirm} onOpenChange={setShowCancelConfirm}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Cancel Person</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to cancel? Any unsaved changes will be lost.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setShowCancelConfirm(false)}
+            >
+              Continue Editing
+            </Button>
+            <Button variant="destructive" onClick={onCancel}>
+              Yes, Cancel
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 });

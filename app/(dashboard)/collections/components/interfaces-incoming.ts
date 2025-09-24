@@ -248,11 +248,11 @@ export interface IncomingPostData {
   bulletPointsEnglish?: string;
   bulletPointsArabic?: string;
 
-  // Media (required for posts)
-  thumbnail: IncomingImageField;
-  heroImage: IncomingImageField;
-  mainImage: IncomingImageField;
-  openGraphImage: IncomingImageField;
+  // Media (optional for posts)
+  thumbnail?: IncomingImageField;
+  heroImage?: IncomingImageField;
+  mainImage?: IncomingImageField;
+  openGraphImage?: IncomingImageField;
 
   // Image metadata
   altTextHeroImageEnglish?: string;

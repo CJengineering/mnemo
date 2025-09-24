@@ -12,7 +12,7 @@ import {
   Users
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { SaveConfirmation } from '@/components/ui/save-confirmation';
+// SaveConfirmation removed - individual forms handle their own buttons
 import { toast } from 'react-hot-toast';
 
 // Types
@@ -51,7 +51,10 @@ const getIconForType = (type: CollectionType) => {
 interface DynamicCollectionFormProps {
   collection: Collection;
   item?: APICollectionItem | null;
-  onSubmit: (data: Partial<APICollectionItem>) => Promise<void>;
+  onSubmit: (
+    data: Partial<APICollectionItem>,
+    options?: { statusOnly?: boolean; minimalUpdate?: boolean }
+  ) => Promise<void>;
   onCancel: () => void;
   onDelete?: () => Promise<void>;
   onBackToCollections?: () => void;
@@ -73,9 +76,7 @@ const DynamicCollectionForm: React.FC<DynamicCollectionFormProps> = ({
     type: 'success' | 'error' | null;
     message: string;
   }>({ type: null, message: '' });
-  const [pendingStatus, setPendingStatus] = useState<
-    'published' | 'draft' | null
-  >(null);
+  // pendingStatus removed - individual forms handle their own status
   const IconComponent = getIconForType(collection.id as CollectionType);
   const isTeam = (collection.id as CollectionType) === 'team';
 
@@ -107,30 +108,118 @@ const DynamicCollectionForm: React.FC<DynamicCollectionFormProps> = ({
     console.log('📝 Form Data Received:', JSON.stringify(formData, null, 2));
 
     try {
-      // Use pending status if set, otherwise use form data status
-      const finalStatus = pendingStatus || formData.status || 'draft';
+      // Use form data status (individual forms handle their own status)
+      const finalStatus = formData.status || 'draft';
 
-      // Transform form data to API format
-      const apiData: Partial<APICollectionItem> = {
-        title: formData.title,
-        slug: formData.slug,
-        status: finalStatus,
-        type: collection.id as CollectionType,
-        data: {
-          ...formData, // Include all form data
-          title: formData.title, // Ensure title is in data object
-          slug: formData.slug // Ensure slug is in data object
+      // Smart update detection: determine what type of update this is
+      let isStatusOnlyUpdate = false;
+      let isMinimalUpdate = false;
+      let apiData: Partial<APICollectionItem>;
+
+      if (isEditing && item) {
+        // Check what has actually changed
+        const titleChanged = formData.title !== item.title;
+        const slugChanged = formData.slug !== item.slug;
+        const statusChanged =
+          JSON.stringify(formData.status) !== JSON.stringify(item.status);
+
+        // Get the data fields (excluding title, slug, status)
+        const currentDataFields = Object.fromEntries(
+          Object.entries(formData).filter(
+            ([key]) => !['title', 'slug', 'status'].includes(key)
+          )
+        );
+        const originalDataFields = item.data || {};
+        const dataFieldsChanged =
+          JSON.stringify(currentDataFields) !==
+          JSON.stringify(originalDataFields);
+
+        // Status-only update: only status changed, nothing else
+        isStatusOnlyUpdate =
+          statusChanged && !titleChanged && !slugChanged && !dataFieldsChanged;
+
+        // Minimal update: only title, slug, or status changed (but not data fields)
+        isMinimalUpdate =
+          (titleChanged || slugChanged || statusChanged) && !dataFieldsChanged;
+
+        console.log('🔍 Change detection:', {
+          titleChanged,
+          slugChanged,
+          statusChanged,
+          dataFieldsChanged,
+          isStatusOnlyUpdate,
+          isMinimalUpdate,
+          currentTitle: formData.title,
+          originalTitle: item.title,
+          currentSlug: formData.slug,
+          originalSlug: item.slug,
+          currentStatus: formData.status,
+          originalStatus: item.status
+        });
+
+        // Build payload based on what actually changed (like your curl example)
+        if (isStatusOnlyUpdate) {
+          // Only status changed - send minimal payload
+          apiData = { status: finalStatus };
+        } else if (isMinimalUpdate) {
+          // Only core fields changed - send only changed fields
+          apiData = {};
+          if (titleChanged) apiData.title = formData.title;
+          if (slugChanged) apiData.slug = formData.slug;
+          if (statusChanged) apiData.status = finalStatus;
+        } else {
+          // Full update - send everything
+          apiData = {
+            title: formData.title,
+            slug: formData.slug,
+            status: finalStatus,
+            type: collection.id as CollectionType,
+            data: {
+              // Exclude top-level fields from data to prevent duplication
+              ...Object.fromEntries(
+                Object.entries(formData).filter(
+                  ([key]) => !['title', 'slug', 'status'].includes(key)
+                )
+              )
+            }
+          };
         }
-      };
+      } else {
+        // Creating new item - send full data
+        apiData = {
+          title: formData.title,
+          slug: formData.slug,
+          status: finalStatus,
+          type: collection.id as CollectionType,
+          data: {
+            // Exclude top-level fields from data to prevent duplication
+            ...Object.fromEntries(
+              Object.entries(formData).filter(
+                ([key]) => !['title', 'slug', 'status'].includes(key)
+              )
+            )
+          }
+        };
+      }
 
       if (item?.id) {
         apiData.id = item.id;
       }
 
-      console.log('🔄 Transformed API Data:', JSON.stringify(apiData, null, 2));
+      console.log('🔄 Optimized API Data:', JSON.stringify(apiData, null, 2));
+      console.log(
+        '🔍 Update type:',
+        isStatusOnlyUpdate
+          ? 'Status-only (minimal payload)'
+          : isMinimalUpdate
+            ? 'Minimal update (core fields only)'
+            : 'Full update'
+      );
 
-      console.log('✅ Form submission successful!');
-      await onSubmit(apiData);
+      await onSubmit(apiData, {
+        statusOnly: !!isStatusOnlyUpdate,
+        minimalUpdate: !!isMinimalUpdate
+      });
       console.log('📊 Context data updated, preparing redirect...');
 
       // Show success message with better feedback
@@ -144,16 +233,14 @@ const DynamicCollectionForm: React.FC<DynamicCollectionFormProps> = ({
           type: 'success',
           message: `Successfully ${actionText} and ${statusText}!`
         });
-        // Clear pending status
-        setPendingStatus(null);
+        // Status cleared by individual forms
       } else {
         setSubmissionStatus({
           type: 'success',
           message: `Successfully ${actionText} and ${statusText}! Redirecting to list...`
         });
 
-        // Clear pending status
-        setPendingStatus(null);
+        // Status cleared by individual forms
 
         // Redirect after 1.5 seconds to give user time to see success message and allow data to refresh
         setIsRedirecting(true);
@@ -169,39 +256,38 @@ const DynamicCollectionForm: React.FC<DynamicCollectionFormProps> = ({
       }
     } catch (error) {
       console.error('Form submission error:', error);
+
+      // Better error handling for slug-related issues
+      let errorMessage = 'Failed to save. Please try again.';
+
+      if (error instanceof Error) {
+        errorMessage = error.message;
+
+        // Check for common slug-related errors
+        if (errorMessage.includes('slug') && errorMessage.includes('already')) {
+          errorMessage = `This slug is already in use. Please choose a different slug.`;
+        } else if (
+          errorMessage.includes('duplicate') ||
+          errorMessage.includes('unique')
+        ) {
+          errorMessage = `This slug already exists. Please modify the slug field and try again.`;
+        } else if (errorMessage.includes('500')) {
+          errorMessage = `Server error occurred. This may be due to a duplicate slug or other validation issue. Please check your slug and try again.`;
+        }
+      }
+
       setSubmissionStatus({
         type: 'error',
-        message:
-          error instanceof Error
-            ? error.message
-            : 'Failed to save. Please try again.'
+        message: errorMessage
       });
-      setPendingStatus(null);
+      // Status cleared by individual forms
     } finally {
       setIsLoading(false);
       setIsRedirecting(false);
     }
   };
 
-  // New unified save handler triggered from SaveConfirmation
-  const handleUnifiedSave = async (
-    status: 'draft' | 'published'
-  ): Promise<{ slug?: string; error?: string } | void> => {
-    try {
-      if (formRef.current?.setStatus) {
-        formRef.current.setStatus(status);
-      }
-      setPendingStatus(status);
-      if (formRef.current) {
-        await formRef.current.triggerSubmit();
-      }
-      return { slug: formRef.current?.getValues?.().slug };
-    } catch (e: any) {
-      return { error: e?.message || 'Failed' };
-    } finally {
-      setPendingStatus(null);
-    }
-  };
+  // Unified save handler removed - individual forms handle their own submission logic
 
   // Create a ref to communicate with the form
   const formRef = React.useRef<any>(null);
@@ -264,25 +350,8 @@ const DynamicCollectionForm: React.FC<DynamicCollectionFormProps> = ({
             )}
           </div>
 
-          {/* Right side - Action buttons */}
-          {!isTeam && (
-            <div className="flex items-center gap-2 flex-shrink-0">
-              <Button
-                type="button"
-                onClick={onCancel}
-                disabled={isLoading || isRedirecting}
-                className="bg-gray-800 border border-gray-700 text-gray-300 hover:bg-gray-700"
-              >
-                Cancel
-              </Button>
-              <SaveConfirmation
-                onAction={handleUnifiedSave}
-                disabled={isLoading || isRedirecting}
-                isSubmitting={isLoading}
-                itemLabel={collection.name.slice(0, -1)}
-              />
-            </div>
-          )}
+          {/* Right side - Action buttons - Only shown for team forms */}
+          {/* Individual forms (non-team) handle their own buttons internally */}
         </div>
       </div>
 

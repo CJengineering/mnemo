@@ -1,12 +1,73 @@
 {
-	"version": "2.0.0",
-	"tasks": [
-		{
-			"label": "Test Dynamic Collection Form",
-			"type": "shell",
-			"command": "echo 'Dynamic Collection Form Testing Guide:\n\n1. Visit http://localhost:3000/collections\n2. Select a collection type (e.g., Events, News, Team, etc.)\n3. Click \"Create New\" to test form creation\n4. Test features:\n   - Auto-generated slug from title\n   - Type-specific fields for different collection types\n   - Form validation with Zod schemas\n   - Auto-save functionality (localStorage)\n   - AI Generate button (mock API)\n   - Preview modal\n   - Tag management\n   - Image upload fields\n   - Tabbed interface (Basic Details, Content, Metadata)\n   - Real API integration for CRUD operations\n\n5. Test different collection types:\n   - Event: date/time fields, location, RSVP links\n   - News: publish date, author, category\n   - Team: position, bio, social links\n   - Publication: authors, DOI, abstract\n   - Award: recipient, amount, criteria\n   - Programme: duration, deadlines, eligibility\n   - Innovation: technologies, impact, stage\n   - Prize: winner, judges notes\n   - Partner: contact details, partnership type\n   - Source: credibility, source type\n\n6. Test editing existing items\n7. Test form cancellation and navigation\n\nAPI Endpoints:\n- GET /api/collection-items - List all items\n- POST /api/collection-items - Create new item\n- GET /api/collection-items/[id] - Get specific item\n- PUT /api/collection-items/[id] - Update item\n- DELETE /api/collection-items/[id] - Delete item\n- POST /api/prompt-to-item - AI content generation\n\nAll features are production-ready with proper TypeScript, validation, and error handling!'",
-			"group": "test",
-			"isBackground": false
-		}
-	]
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Test Minimal Payloads",
+            "type": "shell", 
+            "command": "echo",
+            "args": [
+                "🧪 TESTING MINIMAL PAYLOADS - Open Browser DevTools!\n\n",
+                "1. Start dev server: npm run dev\n",
+                "2. Open: http://localhost:3000/collections\n",
+                "3. Select any collection (e.g., Partners)\n", 
+                "4. Edit an existing item\n",
+                "5. Open Browser DevTools -> Console\n",
+                "6. Change ONLY the title field\n",
+                "7. Click 'Save as Draft' or 'Publish'\n",
+                "8. Look for these console logs:\n",
+                "   • '🔍 Change detection:' - shows what changed\n",
+                "   • '🔄 Optimized API Data:' - shows minimal payload\n",
+                "   • '📤 Sending minimal update payload:' - from context\n\n",
+                "✅ SUCCESS: You should see {\"title\": \"New Title\"}\n",
+                "❌ FAILURE: You see full object with type, data, etc.\n\n",
+                "Test other scenarios:\n",
+                "• Change only status: should send {\"status\": \"published\"}\n", 
+                "• Change title + slug: should send {\"title\": \"...\", \"slug\": \"...\"}\n",
+                "• Change description: should send full payload\n\n",
+                "This matches your working curl command! 🚀"
+            ],
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "panel": "new"
+            }
+        },
+        {
+            "label": "Run Payload Detection Test", 
+            "type": "shell",
+            "command": "node",
+            "args": ["test-payload-detection.js"],
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always", 
+                "panel": "new"
+            }
+        },
+        {
+            "label": "Run Update Detection Test", 
+            "type": "shell",
+            "command": "node",
+            "args": ["test-update-detection.js"],
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always", 
+                "panel": "new"
+            }
+        },
+        {
+            "label": "Show Collections API URL",
+            "type": "shell",
+            "command": "bash",
+            "args": ["-lc", "echo NEXT_PUBLIC_COLLECTIONS_API_URL=\"$NEXT_PUBLIC_COLLECTIONS_API_URL\" && node -e \"console.log('Runtime URL:', process.env.NEXT_PUBLIC_COLLECTIONS_API_URL)\""],
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "panel": "new"
+            }
+        }
+    ]
 }
