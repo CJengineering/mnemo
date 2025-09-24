@@ -55,7 +55,7 @@ const storage = createStorage();
 const bucket = storage.bucket(bucketName);
 
 /**
- * Compress and convert an image to WebP format
+ * Compress and convert an image to WebP formatfff
  */
 async function compressToWebP(fileBuffer: Buffer): Promise<Buffer> {
   return await sharp(fileBuffer).webp({ quality: 80 }).toBuffer();
