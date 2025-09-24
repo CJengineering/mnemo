@@ -2,18 +2,62 @@ import { Storage } from '@google-cloud/storage';
 import { NextRequest, NextResponse } from 'next/server';
 import sharp from 'sharp';
 
-const theKey = process.env.PRIVATE_GCL;
+export const runtime = 'nodejs';
 
-const storage = new Storage({
-  projectId: 'cj-tech-381914',
-  credentials: {
-    client_email: 'todo-test@cj-tech-381914.iam.gserviceaccount.com',
-    private_key: `-----BEGIN PRIVATE KEY-----\n${theKey}=\n-----END PRIVATE KEY-----\n`
+const projectId = process.env.GCP_PROJECT_ID || 'cj-tech-381914';
+const bucketName = process.env.GCS_BUCKET || 'mnemo';
+const CDN_BASE_URL =
+  process.env.CDN_BASE_URL || 'https://cdn.communityjameel.io';
+
+function createStorage() {
+  // Prefer base64 JSON credentials
+  const base64Creds = process.env.GOOGLE_CREDENTIALS_BASE64;
+  if (base64Creds) {
+    try {
+      console.log(
+        '🔐 GCS auth: using base64 JSON credentials (upload-collection-image)'
+      );
+      const credentials = JSON.parse(
+        Buffer.from(base64Creds, 'base64').toString()
+      );
+      return new Storage({ projectId, credentials });
+    } catch (error: any) {
+      console.error('❌ Base64 JSON credentials failed:', error.message);
+    }
   }
-});
 
-const bucket = storage.bucket('mnemo');
-const CDN_BASE_URL = 'https://cdn.communityjameel.io';
+  // Fallback to explicit env credentials
+  const rawKey = process.env.PRIVATE_GCL || '';
+  const client_email = process.env.GCP_CLIENT_EMAIL || '';
+  const hasKey = rawKey && rawKey.trim().length > 0;
+  const hasEmail = client_email && client_email.trim().length > 0;
+  if (hasKey && hasEmail) {
+    try {
+      let private_key = rawKey.replace(/\\n/g, '\n');
+      if (!private_key.includes('BEGIN PRIVATE KEY')) {
+        private_key = `-----BEGIN PRIVATE KEY-----\n${private_key}\n-----END PRIVATE KEY-----\n`;
+      }
+      console.log(
+        '🔐 GCS auth: using explicit env credentials (upload-collection-image)'
+      );
+      return new Storage({
+        projectId,
+        credentials: { client_email, private_key }
+      });
+    } catch (error: any) {
+      console.error(
+        '❌ Explicit credentials failed, falling back to ADC:',
+        error.message
+      );
+    }
+  }
+
+  console.warn('⚠️ GCS auth: using ADC (upload-collection-image)');
+  return new Storage({ projectId });
+}
+
+const storage = createStorage();
+const bucket = storage.bucket(bucketName);
 
 /**
  * Compress and convert an image to WebP format
@@ -78,9 +122,9 @@ export async function POST(req: NextRequest) {
 
     // Sanitize filename: remove spaces, special chars, convert to lowercase
     const sanitizedFileName = fileName
-      .replace(/\s+/g, '-') // Replace spaces with hyphens
-      .replace(/[^a-zA-Z0-9.-]/g, '') // Remove special characters except dots and hyphens
-      .toLowerCase(); // Convert to lowercase
+      .replace(/\s+/g, '-')
+      .replace(/[^a-zA-Z0-9.-]/g, '')
+      .toLowerCase();
 
     // Create collection folder structure: /collection/[type]/[slug]/image-name.ext
     const collectionPath = `collection/${collectionType}/${slug}/${sanitizedFileName}`;
