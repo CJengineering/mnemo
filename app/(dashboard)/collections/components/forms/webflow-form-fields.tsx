@@ -493,12 +493,12 @@ export function WebflowImageField({
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                     {field.value.map((image: any, index: number) => (
                       <div key={index} className="relative group">
-                        <div className="aspect-square bg-gray-700 rounded-lg overflow-hidden">
+                        <div className="h-[50px] max-h-[50px] bg-gray-700 rounded-lg overflow-hidden flex items-center justify-center">
                           {image.url ? (
                             <img
                               src={image.url}
                               alt={image.alt || `Image ${index + 1}`}
-                              className="w-full h-full object-cover"
+                              className="max-h-[50px] w-auto object-contain"
                             />
                           ) : (
                             <div className="w-full h-full flex items-center justify-center text-gray-400">
@@ -652,11 +652,11 @@ export function WebflowImageField({
               {/* Current Image Display */}
               {field.value?.url && (
                 <div className="relative group">
-                  <div className="aspect-video bg-gray-700 rounded-lg overflow-hidden">
+                  <div className="bg-gray-700 rounded-lg overflow-hidden inline-flex items-center justify-center">
                     <img
                       src={field.value.url}
                       alt={field.value.alt || 'Uploaded image'}
-                      className="w-full h-full object-cover"
+                      className="h-[50px] max-h-[50px] w-auto object-contain"
                     />
                   </div>
                   <Button
@@ -919,7 +919,7 @@ export function WebflowAdvancedImageField({
                   <img
                     src={preview || field.value?.url}
                     alt="Preview"
-                    className="w-full h-32 object-cover rounded-lg border border-gray-600"
+                    className="h-[50px] max-h-[50px] w-auto object-contain rounded border border-gray-600"
                     onError={() => setPreview('')}
                   />
                 </div>

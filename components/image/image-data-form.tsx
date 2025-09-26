@@ -196,7 +196,7 @@ export function ImageDataForm({ existingData }: { existingData?: any }) {
                 <img
                   src={preview}
                   alt="Preview"
-                  className="mt-2 w-32 h-32 object-cover rounded-md"
+                  className="mt-2 h-[50px] max-h-[50px] w-auto object-contain rounded-md"
                 />
               )}
               <FormMessage />
