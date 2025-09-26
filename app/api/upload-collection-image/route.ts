@@ -127,7 +127,8 @@ export async function POST(req: NextRequest) {
       .toLowerCase();
 
     // Create collection folder structure: /collection/[type]/[slug]/image-name.ext
-    const collectionPath = `collection/${collectionType}/${slug}/${sanitizedFileName}`;
+    // Create folder structure: /website/collections/[type]/[slug]/image-name.ext
+    const collectionPath = `website/collections/${collectionType}/${slug}/${sanitizedFileName}`;
 
     // If preserveFormat is true, keep original format
     if (preserveFormat === 'true') {
