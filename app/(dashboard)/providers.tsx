@@ -8,7 +8,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     <TooltipProvider>
       {children}
       <Toaster
-        position="top-right"
+        position="bottom-right"
         toastOptions={{
           className: 'bg-gray-800 text-white border border-gray-700'
         }}
