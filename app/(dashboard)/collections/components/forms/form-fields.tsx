@@ -44,7 +44,7 @@ interface ImagePreviewProps {
 function ImagePreview({
   url,
   alt,
-  className = 'h-[50px] max-h-[50px] w-auto object-contain rounded border'
+  className = 'max-w-xs max-h-32 object-cover rounded border'
 }: ImagePreviewProps) {
   const [useNextImage, setUseNextImage] = useState(true);
   const [hasError, setHasError] = useState(false);
@@ -93,8 +93,8 @@ function ImagePreview({
       <Image
         src={url}
         alt={alt}
-        width={100}
-        height={50}
+        width={200}
+        height={128}
         className={className}
         onLoad={handleSuccess}
         onError={handleError}
@@ -268,10 +268,10 @@ export function MultiImageField({
                     <Card key={index} className="overflow-hidden">
                       <div className="relative">
                         <ImagePreview
-                          key={`${image.url}-${index}`}
+                          key={`${image.url}-${index}`} // Force re-render when URL changes
                           url={image.url}
                           alt={image.alt || `Image ${index + 1}`}
-                          className="h-[50px] max-h-[50px] w-auto object-contain"
+                          className="w-full h-32 object-cover"
                         />
                         <Button
                           type="button"

@@ -490,10 +490,13 @@ export function WebflowImageField({
 
                 {/* Current Images Display */}
                 {field.value && field.value.length > 0 && (
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                  <div className="grid grid-cols-1 gap-2">
                     {field.value.map((image: any, index: number) => (
-                      <div key={index} className="relative group">
-                        <div className="h-[50px] max-h-[50px] bg-gray-700 rounded-lg overflow-hidden flex items-center justify-center">
+                      <div
+                        key={index}
+                        className="relative group flex items-center gap-3 p-2 rounded-md border border-gray-700 bg-gray-900"
+                      >
+                        <div className="shrink-0 h-[50px] w-[50px] bg-gray-800 rounded overflow-hidden flex items-center justify-center">
                           {image.url ? (
                             <img
                               src={image.url}
@@ -502,7 +505,17 @@ export function WebflowImageField({
                             />
                           ) : (
                             <div className="w-full h-full flex items-center justify-center text-gray-400">
-                              <Upload className="h-8 w-8" />
+                              <Upload className="h-5 w-5" />
+                            </div>
+                          )}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="text-xs text-gray-300 truncate">
+                            {image.url || 'No URL'}
+                          </div>
+                          {image.alt && (
+                            <div className="text-[10px] text-gray-400 truncate">
+                              Alt: {image.alt}
                             </div>
                           )}
                         </div>
@@ -510,7 +523,7 @@ export function WebflowImageField({
                           type="button"
                           variant="destructive"
                           size="sm"
-                          className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                          className="opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
                           onClick={() => {
                             const newImages = field.value.filter(
                               (_: any, i: number) => i !== index
@@ -619,8 +632,8 @@ export function WebflowImageField({
                 {/* Show folder structure info if using collection API */}
                 {useCollectionAPI && slug && (
                   <div className="text-xs text-gray-500 break-all">
-                    📁 Images will be stored at: collection/{collectionType}/
-                    {slug}/
+                    📁 Images will be stored at: website/collections/
+                    {collectionType}/{slug}/
                   </div>
                 )}
               </CardContent>
@@ -651,19 +664,29 @@ export function WebflowImageField({
 
               {/* Current Image Display */}
               {field.value?.url && (
-                <div className="relative group">
-                  <div className="bg-gray-700 rounded-lg overflow-hidden inline-flex items-center justify-center">
+                <div className="relative group flex items-center gap-3 p-2 rounded-md border border-gray-700 bg-gray-900">
+                  <div className="shrink-0 h-[50px] w-[50px] bg-gray-800 rounded overflow-hidden flex items-center justify-center">
                     <img
                       src={field.value.url}
                       alt={field.value.alt || 'Uploaded image'}
-                      className="h-[50px] max-h-[50px] w-auto object-contain"
+                      className="max-h-[50px] w-auto object-contain"
                     />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="text-xs text-gray-300 truncate">
+                      {field.value.url}
+                    </div>
+                    {field.value.alt && (
+                      <div className="text-[10px] text-gray-400 truncate">
+                        Alt: {field.value.alt}
+                      </div>
+                    )}
                   </div>
                   <Button
                     type="button"
                     variant="destructive"
                     size="sm"
-                    className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                    className="opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
                     onClick={() => {
                       field.onChange({ url: '', alt: '' });
                     }}
@@ -803,8 +826,8 @@ export function WebflowImageField({
                 {/* Show folder structure info if using collection API */}
                 {useCollectionAPI && slug && (
                   <div className="text-xs text-gray-500 break-all">
-                    📁 Image will be stored at: collection/{collectionType}/
-                    {slug}/
+                    📁 Image will be stored at: website/collections/
+                    {collectionType}/{slug}/
                   </div>
                 )}
               </div>
@@ -919,7 +942,7 @@ export function WebflowAdvancedImageField({
                   <img
                     src={preview || field.value?.url}
                     alt="Preview"
-                    className="h-[50px] max-h-[50px] w-auto object-contain rounded border border-gray-600"
+                    className="max-h-[50px] w-auto object-contain rounded border border-gray-600"
                     onError={() => setPreview('')}
                   />
                 </div>
@@ -1065,11 +1088,11 @@ interface WebflowReferenceSelectFieldProps {
   label: string; // UI label
   collectionType: string; // e.g. 'programme', 'event', 'people', 'tag', 'source'
   multiple?: boolean; // multi-select
-  required?: boolean;
-  placeholder?: string;
-  helperText?: string;
+  required?: boolean; // required field
+  placeholder?: string; // placeholder text
+  helperText?: string; // helper text
   statusFilter?: 'published' | 'all'; // default published
-  disabled?: boolean;
+  disabled?: boolean; // disable field
   maxSelections?: number; // optional cap for multi
   allowClear?: boolean; // single select clear
   allowCreatePlaceholderItem?: boolean; // future option
@@ -1294,22 +1317,53 @@ export function WebflowReferenceSelectField({
     return [...value, slug];
   };
 
+  // Watch field value to preload any missing selected slugs (hooks at component scope only)
+  const watchedValue = useWatch({ control, name });
+  useEffect(() => {
+    const currentValue = watchedValue || (multiple ? [] : '');
+    const selectedSlugs: string[] = multiple
+      ? (Array.isArray(currentValue) ? currentValue : [])
+          .map((v: any) =>
+            typeof v === 'string'
+              ? v
+              : v && typeof v.slug === 'string'
+                ? v.slug
+                : null
+          )
+          .filter((s): s is string => !!s)
+      : (() => {
+          const single =
+            typeof currentValue === 'string'
+              ? currentValue
+              : currentValue && typeof currentValue.slug === 'string'
+                ? currentValue.slug
+                : null;
+          return single ? [single] : [];
+        })();
+    if (selectedSlugs.length > 0) preloadMissing(selectedSlugs);
+  }, [watchedValue, multiple, preloadMissing]);
+
   return (
     <FormField
       control={control}
       name={name}
       render={({ field }) => {
         const currentValue = field.value || (multiple ? [] : '');
+        // Normalize current value(s) into a string[] of slugs
+        const toSlug = (v: any): string | null =>
+          typeof v === 'string'
+            ? v
+            : v && typeof v.slug === 'string'
+              ? v.slug
+              : null;
         const selectedSlugs: string[] = multiple
-          ? (currentValue as string[])
-          : currentValue
-            ? [currentValue as string]
-            : [];
-
-        // Preload any missing selected slugs
-        useEffect(() => {
-          if (selectedSlugs.length > 0) preloadMissing(selectedSlugs);
-        }, [selectedSlugs, preloadMissing]);
+          ? (Array.isArray(currentValue) ? currentValue : [])
+              .map(toSlug)
+              .filter((s): s is string => !!s)
+          : (() => {
+              const single = toSlug(currentValue);
+              return single ? [single] : [];
+            })();
 
         return (
           <FormItem className="space-y-3" ref={containerRef}>
@@ -1344,6 +1398,7 @@ export function WebflowReferenceSelectField({
                               const newVal = selectedSlugs.filter(
                                 (s) => s !== slug
                               );
+                              // Store slugs in the field value
                               field.onChange(newVal);
                             }}
                           >
@@ -1367,6 +1422,7 @@ export function WebflowReferenceSelectField({
                           className="text-gray-400 hover:text-white"
                           onClick={(e) => {
                             e.stopPropagation();
+                            // Clear to empty string for single-select
                             field.onChange('');
                           }}
                         >
@@ -1464,8 +1520,10 @@ export function WebflowReferenceSelectField({
                                     selectedSlugs,
                                     slug
                                   );
+                                  // Store slugs array
                                   field.onChange(newArray);
                                 } else {
+                                  // Store single slug string
                                   field.onChange(slug);
                                   setOpen(false);
                                 }
@@ -1499,7 +1557,7 @@ export function WebflowReferenceSelectField({
                           className="hover:text-white"
                           onClick={() => field.onChange([])}
                         >
-                          Clear
+                          Clear all
                         </button>
                       </div>
                     )}
@@ -1508,9 +1566,7 @@ export function WebflowReferenceSelectField({
               </div>
             </FormControl>
             {helperText && (
-              <p className="text-xs text-gray-400 leading-relaxed">
-                {helperText}
-              </p>
+              <p className="text-xs text-gray-400">{helperText}</p>
             )}
             <FormMessage className="text-red-400 text-xs" />
           </FormItem>

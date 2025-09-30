@@ -111,10 +111,33 @@ const DynamicCollectionForm: React.FC<DynamicCollectionFormProps> = ({
       // Use form data status (individual forms handle their own status)
       const finalStatus = formData.status || 'draft';
 
+      // Transform form data to API format
+      const apiData: Partial<APICollectionItem> = {
+        title: formData.title,
+        slug: formData.slug,
+        status: finalStatus,
+        type: collection.id as CollectionType,
+        data: {
+          // Exclude top-level fields from data to prevent duplication
+          ...Object.fromEntries(
+            Object.entries(formData).filter(
+              ([key]) => !['title', 'slug', 'status'].includes(key)
+            )
+          )
+        }
+      };
+
+      if (item?.id) {
+        apiData.id = item.id;
+      }
+
+      console.log('🔄 Transformed API Data:', JSON.stringify(apiData, null, 2));
+
+      console.log('✅ Form submission successful!');
+
       // Smart update detection: determine what type of update this is
       let isStatusOnlyUpdate = false;
       let isMinimalUpdate = false;
-      let apiData: Partial<APICollectionItem>;
 
       if (isEditing && item) {
         // Check what has actually changed
@@ -156,57 +179,8 @@ const DynamicCollectionForm: React.FC<DynamicCollectionFormProps> = ({
           currentStatus: formData.status,
           originalStatus: item.status
         });
-
-        // Build payload based on what actually changed (like your curl example)
-        if (isStatusOnlyUpdate) {
-          // Only status changed - send minimal payload
-          apiData = { status: finalStatus };
-        } else if (isMinimalUpdate) {
-          // Only core fields changed - send only changed fields
-          apiData = {};
-          if (titleChanged) apiData.title = formData.title;
-          if (slugChanged) apiData.slug = formData.slug;
-          if (statusChanged) apiData.status = finalStatus;
-        } else {
-          // Full update - send everything
-          apiData = {
-            title: formData.title,
-            slug: formData.slug,
-            status: finalStatus,
-            type: collection.id as CollectionType,
-            data: {
-              // Exclude top-level fields from data to prevent duplication
-              ...Object.fromEntries(
-                Object.entries(formData).filter(
-                  ([key]) => !['title', 'slug', 'status'].includes(key)
-                )
-              )
-            }
-          };
-        }
-      } else {
-        // Creating new item - send full data
-        apiData = {
-          title: formData.title,
-          slug: formData.slug,
-          status: finalStatus,
-          type: collection.id as CollectionType,
-          data: {
-            // Exclude top-level fields from data to prevent duplication
-            ...Object.fromEntries(
-              Object.entries(formData).filter(
-                ([key]) => !['title', 'slug', 'status'].includes(key)
-              )
-            )
-          }
-        };
       }
 
-      if (item?.id) {
-        apiData.id = item.id;
-      }
-
-      console.log('🔄 Optimized API Data:', JSON.stringify(apiData, null, 2));
       console.log(
         '🔍 Update type:',
         isStatusOnlyUpdate
@@ -216,9 +190,11 @@ const DynamicCollectionForm: React.FC<DynamicCollectionFormProps> = ({
             : 'Full update'
       );
 
+      // For posts, always send full payload (backend requires title/slug on update)
+      const forceFullForPost = (collection.id as CollectionType) === 'post';
+
       await onSubmit(apiData, {
-        statusOnly: !!isStatusOnlyUpdate,
-        minimalUpdate: !!isMinimalUpdate
+        statusOnly: forceFullForPost ? false : !!isStatusOnlyUpdate
       });
       console.log('📊 Context data updated, preparing redirect...');
 

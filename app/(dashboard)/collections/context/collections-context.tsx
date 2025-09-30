@@ -8,7 +8,6 @@ import React, {
   useEffect
 } from 'react';
 import { Collection, CollectionItem } from '../lib/types';
-import { buildUpdatePayload, normalizeApiType } from './update-payload';
 
 // API Collection Item interface (matching your existing structure)
 export interface APICollectionItem {
@@ -310,10 +309,7 @@ const CollectionsContext = createContext<CollectionsContextType | undefined>(
 
 // API utilities
 const API_URL =
-  process.env.NEXT_PUBLIC_COLLECTIONS_API_URL ||
-  'https://mnemo-app-100166227581.europe-west1.run.app/api/collection-items';
-
-console.log('🔧 Collections API URL:', API_URL);
+  'https://mnemo-app-e4f6j5kdsq-ew.a.run.app/api/collection-items';
 
 // Webhook helper (client-side) to mirror server-side webhooks when using external API directly
 // DISABLED: These internal webhook endpoints don't exist in this Next.js app
@@ -327,7 +323,7 @@ async function fireCollectionWebhook(
     collectionItem.id,
     '(disabled)'
   );
-  // Webhooks disabled - external API handles this  fff
+  // Webhooks disabled - external API handles this
   return;
 }
 
@@ -388,9 +384,7 @@ export function CollectionsProvider({
     }
 
     try {
-      const response = await fetch(API_URL, {
-        headers: { Accept: 'application/json' }
-      });
+      const response = await fetch(API_URL);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -466,28 +460,101 @@ export function CollectionsProvider({
       dispatch({ type: 'SET_SUBMITTING', payload: true });
       dispatch({ type: 'SET_ERROR', payload: null });
 
+      // Helper slug generator (kept local to avoid cross imports)
+      const genSlug = (input: string) =>
+        input
+          .toLowerCase()
+          .trim()
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/^-+|-+$/g, '')
+          .substring(0, 120);
+
       try {
-        // Validate required fields
-        if (!formData.title?.trim()) {
-          throw new Error('Title is required');
-        }
-        if (!formData.slug?.trim()) {
-          throw new Error('Slug is required');
+        // Raw debug of incoming formData
+        console.debug(
+          '🧾 createItem raw formData keys:',
+          Object.keys(formData || {})
+        );
+        console.debug('🧾 createItem raw formData object:', formData);
+
+        // Normalize type (people -> person)
+        const normalizedType =
+          (formData.type || collectionType) === 'people'
+            ? 'person'
+            : formData.type || collectionType;
+
+        // Pull potential title sources
+        let title = (
+          formData.title ||
+          (formData as any).name ||
+          (formData as any).fullName ||
+          (formData.data as any)?.title ||
+          (formData.data as any)?.name ||
+          ''
+        )
+          .toString()
+          .trim();
+
+        // If title came only from name and original title empty, reflect it back so UI state stays aligned (non-blocking)
+        if (!formData.title && title) {
+          (formData as any).title = title;
         }
 
-        const apiStatus = transformStatusToAPI(formData.status || 'draft');
-        const normalizedType =
-          normalizeApiType(formData.type || collectionType) || collectionType;
-        const payload: any = {
-          status: apiStatus,
-          slug: formData.slug.trim(),
-          title: formData.title.trim(),
-          data: formData.data
-        };
-        if (normalizeApiType(normalizedType)) {
-          payload.type = normalizeApiType(normalizedType);
+        // Gather slug candidates
+        let slug = (formData.slug || (formData.data as any)?.slug || '')
+          .toString()
+          .trim();
+
+        // Auto-generate slug if missing but title present
+        if (!slug && title) {
+          const base = genSlug(title);
+          // Add suffix by type to reduce collision (mirrors per-form patterns)
+          const suffixMap: Record<string, string> = {
+            post: 'post',
+            news: 'news',
+            programme: 'programme',
+            program: 'programme',
+            event: 'event',
+            team: 'team',
+            person: 'people', // keep existing convention used in some forms
+            innovation: 'innovation',
+            award: 'award',
+            publication: 'publication',
+            prize: 'prize',
+            partner: 'partner',
+            source: 'source'
+          };
+          const suffix = suffixMap[normalizedType] || normalizedType;
+          slug = `${base}-${suffix}`;
+          console.debug('⚙️ Auto-generated slug:', slug);
         }
-        console.log('🧭 Create normalized type:', payload.type);
+
+        // Final validation
+        if (!title) throw new Error('Title is required (normalized)');
+        if (!slug) throw new Error('Slug is required (normalized)');
+
+        const apiStatus = transformStatusToAPI(formData.status || 'draft');
+
+        // Build JSON payload aligned with external API: title and slug inside data for CREATE
+        const existingData =
+          formData.data && typeof formData.data === 'object'
+            ? formData.data
+            : {};
+        const payload = {
+          type: normalizedType,
+          status: apiStatus,
+          // Keep top-level for internal consistency if other layers ever read it, but server reads nested on create
+          title: title.trim(),
+          slug: slug.trim(),
+          data: {
+            ...existingData,
+            title: title.trim(),
+            slug: slug.trim()
+          }
+        } as const;
+
+        console.debug('📡 POST URL:', API_URL);
+        console.debug('📤 Sending create payload (normalized JSON):', payload);
 
         const response = await fetch(API_URL, {
           method: 'POST',
@@ -499,16 +566,19 @@ export function CollectionsProvider({
         });
 
         if (!response.ok) {
-          const errorData = await response.json().catch(() => ({}));
-          throw new Error(
-            errorData.message ||
-              `API Error: ${response.status} ${response.statusText}`
-          );
+          let errorMessage = `API Error: ${response.status} ${response.statusText}`;
+          try {
+            const errorData = await response.json();
+            if (errorData?.message || errorData?.error) {
+              errorMessage = errorData.message || errorData.error;
+            }
+          } catch {}
+          console.error('❌ Create API error response:', errorMessage);
+          throw new Error(errorMessage);
         }
 
         const responseData = await response.json();
-        // The API returns the created item nested under 'collectionItem'
-        const createdItemData = responseData.collectionItem;
+        const createdItemData = responseData.collectionItem || responseData;
         const newItem: APICollectionItem = {
           id: createdItemData.id,
           title: createdItemData.title,
@@ -525,10 +595,7 @@ export function CollectionsProvider({
           payload: { collectionType, item: newItem }
         });
 
-        // Fire create webhook client-side (since using external API)
         fireCollectionWebhook('create', createdItemData);
-
-        // Refresh collections to ensure UI is in sync with server (silent)
         await fetchCollections({ silent: true });
 
         return newItem;
@@ -548,7 +615,7 @@ export function CollectionsProvider({
     async (
       id: string,
       formData: Partial<APICollectionItem>,
-      options?: { statusOnly?: boolean; minimalUpdate?: boolean }
+      options?: { statusOnly?: boolean }
     ): Promise<APICollectionItem> => {
       dispatch({ type: 'SET_SUBMITTING', payload: true });
       dispatch({ type: 'SET_ERROR', payload: null });
@@ -560,37 +627,35 @@ export function CollectionsProvider({
       }
 
       try {
-        const payload = buildUpdatePayload(
-          formData as any,
-          options,
-          state.selectedItem?.type
-        );
-        console.log('📤 Computed update payload:', payload);
+        const apiStatus = transformStatusToAPI(formData.status || 'draft');
 
-        const url = `${API_URL}/${id}`;
-        console.log('📡 PUT', url);
-        const response = await fetch(url, {
+        // Create minimal payload for status-only updates (like your working curl)
+        const payload = options?.statusOnly
+          ? { status: apiStatus }
+          : {
+              type: formData.type || state.selectedItem?.type,
+              status: apiStatus,
+              slug: formData.slug?.trim(),
+              title: formData.title?.trim(),
+              data: formData.data
+            };
+
+        const response = await fetch(`${API_URL}/${id}`, {
           method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json'
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         });
 
         if (!response.ok) {
-          const errorText = await response.text().catch(() => '');
-          let errorData: any = {};
-          try {
-            errorData = JSON.parse(errorText);
-          } catch {}
+          const errorData = await response.json().catch(() => ({}));
           throw new Error(
-            (errorData && errorData.message) ||
-              `API Error: ${response.status} ${response.statusText} ${errorText ? '- ' + errorText : ''}`
+            errorData.message ||
+              `API Error: ${response.status} ${response.statusText}`
           );
         }
 
         const responseData = await response.json();
+        // The API returns the updated item nested under 'collectionItem'
         const updatedItemData = responseData.collectionItem;
         const updatedItem: APICollectionItem = {
           id,
@@ -605,7 +670,11 @@ export function CollectionsProvider({
 
         dispatch({ type: 'UPDATE_ITEM', payload: updatedItem });
         dispatch({ type: 'REVERT_OPTIMISTIC', payload: id });
+
+        // Fire update webhook client-side
         fireCollectionWebhook('update', updatedItemData);
+
+        // Refresh collections to ensure UI is in sync with server (silent)
         await fetchCollections({ silent: true });
 
         return updatedItem;
@@ -631,8 +700,7 @@ export function CollectionsProvider({
       try {
         console.log('📡 Sending DELETE request to:', `${API_URL}/${id}`);
         const response = await fetch(`${API_URL}/${id}`, {
-          method: 'DELETE',
-          headers: { Accept: 'application/json' }
+          method: 'DELETE'
         });
 
         if (!response.ok) {
@@ -666,9 +734,7 @@ export function CollectionsProvider({
       dispatch({ type: 'SET_ERROR', payload: null });
 
       try {
-        const response = await fetch(`${API_URL}/${id}`, {
-          headers: { Accept: 'application/json' }
-        });
+        const response = await fetch(`${API_URL}/${id}`);
 
         if (!response.ok) {
           throw new Error(`Failed to fetch item: ${response.status}`);

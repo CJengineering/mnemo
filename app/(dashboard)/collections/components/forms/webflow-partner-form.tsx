@@ -219,12 +219,8 @@ export const WebflowPartnerForm = forwardRef<
               </Button>
             )}
             <SaveConfirmation
-              mode="confirm"
               preset="draft"
-              triggerLabel="Save as Draft"
-              triggerClassName="bg-gray-700 hover:bg-gray-600 text-white"
               onAction={async (status) => {
-                setBusyAction('draft');
                 form.setValue('status', status);
                 await form.handleSubmit(handleSubmit)();
                 return { slug: form.getValues().slug };
@@ -234,12 +230,8 @@ export const WebflowPartnerForm = forwardRef<
               itemLabel="Partner"
             />
             <SaveConfirmation
-              mode="confirm"
               preset="published"
-              triggerLabel="Publish"
-              triggerClassName="bg-blue-600 hover:bg-blue-700 text-white"
               onAction={async (status) => {
-                setBusyAction('published');
                 form.setValue('status', status);
                 await form.handleSubmit(handleSubmit)();
                 return { slug: form.getValues().slug };

@@ -90,7 +90,7 @@ function CollectionsContent() {
 
   const handleSubmitItem = async (
     formData: any,
-    options?: { statusOnly?: boolean; minimalUpdate?: boolean }
+    options?: { statusOnly?: boolean }
   ) => {
     console.log('🎯 handleSubmitItem called with:', {
       formData,

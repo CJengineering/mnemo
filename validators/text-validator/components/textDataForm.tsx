@@ -416,17 +416,17 @@ export function TextDataForm({ id }: { id?: string }) {
                           <img
                             src={parsed.url}
                             alt="Uploaded preview"
-                            className="mt-2 h-[50px] max-h-[50px] w-auto object-contain rounded-md"
+                            className="mt-2 w-32 h-32 object-cover rounded-md"
                           />
                         )}
                       </div>
                     )}
                     {currentType === 'rich-text' && (
                       <SimpleEditor
-                        initialContent={initialContent || field.value}
-                        onChange={(content) => {
-                          field.onChange(content);
-                        }}
+                      initialContent={initialContent || field.value}
+                      onChange={(content) => {
+                        field.onChange(content);
+                      }}
                       />
                     )}
 

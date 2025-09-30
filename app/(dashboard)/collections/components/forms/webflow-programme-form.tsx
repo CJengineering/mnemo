@@ -587,6 +587,21 @@ export const WebflowProgrammeForm = forwardRef<
               triggerLabel="Save as Draft"
               triggerClassName="bg-gray-700 hover:bg-gray-600 text-white"
               onAction={async (status) => {
+                const values = form.getValues();
+                if (!values.title?.trim()) {
+                  return { error: 'Title is required.' } as any;
+                }
+                if (!values.slug?.trim() && values.title) {
+                  form.setValue(
+                    'slug',
+                    `${generateSlug(values.title)}-programme`
+                  );
+                }
+                const isValid = await form.trigger();
+                if (!isValid) {
+                  setBusyAction(null);
+                  return { error: 'Please fix the highlighted errors.' } as any;
+                }
                 setBusyAction('draft');
                 form.setValue('status', status);
                 await form.handleSubmit(handleSubmit)();
@@ -602,6 +617,23 @@ export const WebflowProgrammeForm = forwardRef<
               triggerLabel="Publish"
               triggerClassName="bg-blue-600 hover:bg-blue-700 text-white"
               onAction={async (status) => {
+                const values = form.getValues();
+                if (!values.title?.trim()) {
+                  return { error: 'Title is required.' } as any;
+                }
+                if (!values.slug?.trim() && values.title) {
+                  form.setValue(
+                    'slug',
+                    `${generateSlug(values.title)}-programme`
+                  );
+                }
+                const isValid = await form.trigger();
+                if (!isValid) {
+                  setBusyAction(null);
+                  return {
+                    error: 'Please complete required fields before publishing.'
+                  } as any;
+                }
                 setBusyAction('published');
                 form.setValue('status', status);
                 await form.handleSubmit(handleSubmit)();

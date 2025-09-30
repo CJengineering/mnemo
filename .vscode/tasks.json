@@ -44,30 +44,6 @@
                 "reveal": "always", 
                 "panel": "new"
             }
-        },
-        {
-            "label": "Run Update Detection Test", 
-            "type": "shell",
-            "command": "node",
-            "args": ["test-update-detection.js"],
-            "group": "test",
-            "presentation": {
-                "echo": true,
-                "reveal": "always", 
-                "panel": "new"
-            }
-        },
-        {
-            "label": "Show Collections API URL",
-            "type": "shell",
-            "command": "bash",
-            "args": ["-lc", "echo NEXT_PUBLIC_COLLECTIONS_API_URL=\"$NEXT_PUBLIC_COLLECTIONS_API_URL\" && node -e \"console.log('Runtime URL:', process.env.NEXT_PUBLIC_COLLECTIONS_API_URL)\""],
-            "group": "test",
-            "presentation": {
-                "echo": true,
-                "reveal": "always",
-                "panel": "new"
-            }
         }
     ]
 }

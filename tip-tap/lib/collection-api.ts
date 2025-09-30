@@ -1,6 +1,6 @@
 /**
  * Collection-specific API client for organized image uploads
- * Uses the folder structure: /collection/[collection-type]/[slug]/image-name.extension
+ * Uses the folder structure: website/collections/[collection-type]/[slug]/image-name.extension
  */
 export class CollectionAPI {
   /**
