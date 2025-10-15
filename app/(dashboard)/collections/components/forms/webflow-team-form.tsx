@@ -111,7 +111,7 @@ export const WebflowTeamForm = forwardRef<
       biographyArabic: initialData?.biographyArabic || '',
       metaDescription: initialData?.metaDescription || '',
       metaDescriptionArabic: initialData?.metaDescriptionArabic || '',
-      altTextImage: initialData?.altTextImage || '',
+      altTextImage: initialData?.altTextImage || initialData?.photo?.alt || '',
       altTextImageArabic: initialData?.altTextImageArabic || '',
       filter: initialData?.filter || undefined,
       order: initialData?.order || 0,
@@ -145,7 +145,7 @@ export const WebflowTeamForm = forwardRef<
       biographyArabic: initialData?.biographyArabic || '',
       metaDescription: initialData?.metaDescription || '',
       metaDescriptionArabic: initialData?.metaDescriptionArabic || '',
-      altTextImage: initialData?.altTextImage || '',
+      altTextImage: initialData?.altTextImage || initialData?.photo?.alt || '',
       altTextImageArabic: initialData?.altTextImageArabic || '',
       filter: initialData?.filter || undefined,
       order: initialData?.order || 0,
@@ -175,6 +175,25 @@ export const WebflowTeamForm = forwardRef<
       if (fieldName === 'name' && value.name) {
         form.setValue('title', value.name);
       }
+
+      // Sync alt text between image field and separate alt text field
+      if (fieldName === 'altTextImage' && value.altTextImage !== undefined) {
+        const currentPhoto = form.getValues('photo') || { url: '', alt: '' };
+        if (currentPhoto.url) {
+          form.setValue('photo', {
+            ...currentPhoto,
+            alt: value.altTextImage
+          });
+        }
+      }
+
+      // Reverse sync: when alt text is changed in the image component, update the separate field
+      if (fieldName === 'photo' && value.photo?.alt !== undefined) {
+        const currentAltText = form.getValues('altTextImage');
+        if (currentAltText !== value.photo.alt) {
+          form.setValue('altTextImage', value.photo.alt);
+        }
+      }
     });
     return subscription.unsubscribe;
   }, [form]);
@@ -198,7 +217,10 @@ export const WebflowTeamForm = forwardRef<
       nameArabic: data.nameArabic || undefined,
       position: data.position || undefined,
       positionArabic: data.positionArabic || undefined,
-      photo: { url: data.photo.url, alt: data.photo.alt || '' },
+      photo: {
+        url: data.photo.url,
+        alt: data.altTextImage || data.photo.alt || ''
+      },
       photoHires: data.photoHires || undefined,
       paragraphDescription: data.paragraphDescription,
       biographyArabic: data.biographyArabic || undefined,
@@ -402,6 +424,14 @@ export const WebflowTeamForm = forwardRef<
                       Profile Photo
                     </h3>
 
+                    <div className="bg-gray-800/50 border border-gray-600/50 rounded-lg p-3">
+                      <p className="text-xs text-gray-300">
+                        <strong>Alt Text:</strong> You can add alt text either
+                        directly when uploading the image, or use the separate
+                        fields below for multilingual support.
+                      </p>
+                    </div>
+
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <WebflowImageField
                         control={form.control}
@@ -429,6 +459,7 @@ export const WebflowTeamForm = forwardRef<
                         name="altTextImage"
                         label="Alt Text (English)"
                         placeholder="Describe the image for accessibility"
+                        helperText="Main alt text for screen readers and SEO"
                       />
 
                       <WebflowTextField
@@ -436,7 +467,17 @@ export const WebflowTeamForm = forwardRef<
                         name="altTextImageArabic"
                         label="Alt Text (Arabic)"
                         placeholder="وصف الصورة بالعربية"
+                        helperText="Arabic version of the image description"
                       />
+                    </div>
+
+                    <div className="bg-blue-900/20 border border-blue-600/30 rounded-lg p-3">
+                      <p className="text-xs text-blue-300">
+                        💡 <strong>Alt Text Tips:</strong> Describe what's in
+                        the image (e.g., "Portrait of Dr. Sarah Ahmed, smiling
+                        in a blue suit"). Keep it under 125 characters for best
+                        accessibility.
+                      </p>
                     </div>
                   </div>
 
