@@ -424,8 +424,11 @@ export function CollectionsProvider({
       // Sort items by updated_at descending
       Object.values(groupedCollections).forEach((collection) => {
         collection.items.sort(
-          (a, b) =>
-            new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
+          (a, b) => {
+            const bDate = b.updated_at ? new Date(b.updated_at).getTime() : 0;
+            const aDate = a.updated_at ? new Date(a.updated_at).getTime() : 0;
+            return bDate - aDate;
+          }
         );
       });
 
