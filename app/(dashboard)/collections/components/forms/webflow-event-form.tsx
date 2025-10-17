@@ -540,21 +540,23 @@ export const WebflowEventForm = forwardRef<
                   Custom fields
                 </h2>
                 <div className="space-y-6">
-                  {/* Description Fields */}
-                  <WebflowTextareaField
+                  {/* Description Fields d */}
+                  <WebflowRichTextField
                     control={form.control}
                     name="description"
                     label="Description"
                     placeholder="Enter event description..."
-                    rows={6}
+                    minHeight="200px"
+                    helperText="Rich text editor with formatting options"
                   />
 
-                  <WebflowTextareaField
+                  <WebflowRichTextField
                     control={form.control}
                     name="shortDescription"
                     label="Short Description"
                     placeholder="Brief event summary..."
-                    rows={3}
+                    minHeight="120px"
+                    helperText="Concise rich text summary of the event"
                   />
 
                   {/* Additional Content Fields */}
