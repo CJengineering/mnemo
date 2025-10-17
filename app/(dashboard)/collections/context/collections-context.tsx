@@ -409,7 +409,11 @@ export function CollectionsProvider({
             description: item.data?.description || '',
             status: transformStatusFromAPI(item.status),
             created_at: item.created_at,
-            updated_at: item.updated_at
+            updated_at: item.updated_at,
+            // Preserve the full item data for dynamic columns
+            type: item.type,
+            slug: item.slug,
+            data: item.data
           });
 
           return acc;

@@ -6,11 +6,12 @@ import {
   Search,
   Filter,
   MoreHorizontal,
-  Calendar,
-  User,
   Database
 } from 'lucide-react';
 import { useState } from 'react';
+import { ColumnVisibilitySelector } from './column-visibility-selector';
+import { useColumnVisibility } from '../hooks/use-column-visibility';
+import { getColumnConfigForCollection } from '../config/dynamic-column-configs';
 
 interface ItemsListProps {
   collection: Collection;
@@ -27,38 +28,18 @@ export default function ItemsList({
 }: ItemsListProps) {
   const [searchTerm, setSearchTerm] = useState('');
 
+  // Get column configuration for this collection type
+  const columns = getColumnConfigForCollection(collection.id, collection.items);
+
+  // Use column visibility hook
+  const { visibleColumns, activeColumns, toggleColumn, resetColumns } =
+    useColumnVisibility(collection.id, columns);
+
   const filteredItems = collection.items.filter(
     (item) =>
       item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.description?.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
-  const getStatusBadge = (status: string | undefined) => {
-    const baseClasses =
-      'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium';
-    const statusValue = status || 'draft';
-    switch (statusValue) {
-      case 'published':
-        return `${baseClasses} bg-green-900/60 text-green-300 border border-green-500/30`;
-      case 'draft':
-        return `${baseClasses} bg-yellow-900/60 text-yellow-300 border border-yellow-500/30`;
-      default:
-        return `${baseClasses} bg-gray-700 text-gray-300 border border-gray-600`;
-    }
-  };
-
-  const formatDate = (dateString: string | undefined) => {
-    if (!dateString) return '—';
-    try {
-      return new Date(dateString).toLocaleDateString('en-US', {
-        month: 'short',
-        day: 'numeric',
-        year: 'numeric'
-      });
-    } catch {
-      return '—';
-    }
-  };
 
   return (
     <div className="h-full flex flex-col bg-gray-900">
@@ -101,6 +82,13 @@ export default function ItemsList({
             <Filter className="h-4 w-4 mr-2" />
             Filter
           </button>
+          {/* Column Visibility Selector */}
+          <ColumnVisibilitySelector
+            columns={columns}
+            visibleColumns={visibleColumns}
+            onToggleColumn={toggleColumn}
+            onResetColumns={resetColumns}
+          />
         </div>
       </div>
 
@@ -134,36 +122,15 @@ export default function ItemsList({
               {/* Table Header */}
               <thead className="bg-gray-800/50">
                 <tr>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
-                  >
-                    Title
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
-                  >
-                    Description
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
-                  >
-                    Status
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
-                  >
-                    Date
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
-                  >
-                    Type
-                  </th>
+                  {activeColumns.map((column) => (
+                    <th
+                      key={column.id}
+                      scope="col"
+                      className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
+                    >
+                      {column.label}
+                    </th>
+                  ))}
                   <th scope="col" className="relative px-6 py-3">
                     <span className="sr-only">Actions</span>
                   </th>
@@ -182,38 +149,12 @@ export default function ItemsList({
                     }`}
                     onClick={() => onSelectItem(item)}
                   >
-                    {/* Title */}
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-white line-clamp-2 max-w-xs">
-                        {item.title}
-                      </div>
-                    </td>
-
-                    {/* Description */}
-                    <td className="px-6 py-4">
-                      <div className="text-sm text-gray-400 line-clamp-2 max-w-md">
-                        {item.description || '—'}
-                      </div>
-                    </td>
-
-                    {/* Status */}
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={getStatusBadge(item.status)}>
-                        {item.status || 'draft'}
-                      </span>
-                    </td>
-
-                    {/* Date */}
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
-                      {formatDate(item.date)}
-                    </td>
-
-                    {/* Type */}
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-700 text-gray-300">
-                        {collection.id}
-                      </span>
-                    </td>
+                    {/* Dynamic Columns */}
+                    {activeColumns.map((column) => (
+                      <td key={column.id} className="px-6 py-4">
+                        {column.render(item)}
+                      </td>
+                    ))}
 
                     {/* Actions */}
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
