@@ -62,7 +62,7 @@ export function WebflowTextField({
               type={type}
               placeholder={placeholder}
               {...field}
-              className="bg-gray-800 border-gray-600 text-white placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500 h-12"
+              className="bg-gray-800 border-gray-600 text-white placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 h-12"
             />
           </FormControl>
           {helperText && <p className="text-xs text-gray-400">{helperText}</p>}
@@ -105,7 +105,7 @@ export function WebflowSlugField({
             <Input
               placeholder="url-slug"
               {...field}
-              className="bg-gray-800 border-gray-600 text-white placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500 h-12"
+              className="bg-gray-800 border-gray-600 text-white placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 h-12"
             />
           </FormControl>
           {slugValue && (
@@ -167,7 +167,7 @@ export function WebflowTextareaField({
               placeholder={placeholder}
               rows={rows}
               {...field}
-              className="bg-gray-800 border-gray-600 text-white placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500 resize-none"
+              className="bg-gray-800 border-gray-600 text-white placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 resize-none"
             />
           </FormControl>
           {helperText && <p className="text-xs text-gray-400">{helperText}</p>}
@@ -797,7 +797,7 @@ export function WebflowImageField({
                         alt: e.target.value
                       });
                     }}
-                    className="bg-gray-700 border-gray-600 text-white placeholder-gray-400"
+                    className="bg-gray-700 border-gray-600 text-white placeholder-gray-500"
                   />
                 )}
 
@@ -820,7 +820,7 @@ export function WebflowImageField({
                       alt: currentValue.alt || ''
                     });
                   }}
-                  className="bg-gray-700 border-gray-600 text-white placeholder-gray-400"
+                  className="bg-gray-700 border-gray-600 text-white placeholder-gray-500"
                 />
 
                 {/* Show folder structure info if using collection API */}
@@ -927,7 +927,7 @@ export function WebflowAdvancedImageField({
                   field.onChange({ ...field.value, url: e.target.value });
                   setPreview(e.target.value);
                 }}
-                className="bg-gray-800 border-gray-600 text-white placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500 h-12"
+                className="bg-gray-800 border-gray-600 text-white placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 h-12"
               />
               <Button
                 type="button"
@@ -995,7 +995,7 @@ export function WebflowTagsField({
                   placeholder="Add tag..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="bg-gray-700 border-gray-600 text-white placeholder-gray-400"
+                  className="bg-gray-700 border-gray-600 text-white placeholder-gray-500"
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') {
                       e.preventDefault();
@@ -1482,7 +1482,7 @@ export function WebflowReferenceSelectField({
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                         placeholder="Search..."
-                        className="w-full bg-gray-700 border border-gray-600 rounded px-2 py-1 text-sm text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                        className="w-full bg-gray-700 border border-gray-600 rounded px-2 py-1 text-sm text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                       />
                     </div>
                     <div className="max-h-64 overflow-y-auto custom-scrollbar">
